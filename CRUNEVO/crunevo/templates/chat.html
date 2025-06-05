@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat de la Comunidad - Plataforma Apuntes Cantuta{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <h2>Chat de la Comunidad</h2>
+    <p>Conéctate con otros estudiantes, comparte ideas y colabora.</p>
+
+    <!-- Reglas del Chat (Modal o Banner) -->
+    <div class="chat-rules-banner" id="chat-rules">
+        <p><strong>Reglas del Chat:</strong> Sé respetuoso, mantén las conversaciones relevantes a temas académicos y evita el spam. <button onclick="document.getElementById('chat-rules').style.display='none'">Entendido</button></p>
+    </div>
+
+    <!-- Área para el Widget/Iframe del Chat Externo -->
+    <div class="chat-widget-area">
+        <p><strong>Fase Inicial:</strong> Aquí se integrará un widget de chat externo (Ej: Grupo de Telegram, CometChat, etc.).</p>
+        <!-- Ejemplo de cómo podría verse un iframe -->
+        <!-- 
+        <iframe 
+            src="URL_DEL_WIDGET_DE_CHAT" 
+            width="100%" 
+            height="600px" 
+            frameborder="0" 
+            style="border:1px solid #ccc; border-radius: 8px;"
+            allowfullscreen>
+        </iframe>
+        -->
+        <div style="border: 1px dashed #ccc; padding: 2rem; text-align: center; color: #6c757d; border-radius: 8px; min-height: 400px; display: flex; align-items: center; justify-content: center;">
+            <span>(Espacio reservado para la integración del chat externo)</span>
+        </div>
+    </div>
+
+    <!-- 
+    Fase Posterior (Chat Propio con Socket.io):
+    Se reemplazaría el contenido de chat-widget-area con la interfaz del chat:
+    <div class="chat-interface">
+        <div class="chat-sidebar"> [Lista de Usuarios/Canales] </div>
+        <div class="chat-main">
+            <div class="chat-messages"> [Mensajes] </div>
+            <div class="chat-input"> [Input para escribir mensaje] </div>
+        </div>
+    </div>
+    -->
+
+</div>
+
+<style>
+.chat-container h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+.chat-container > p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.chat-rules-banner {
+    background-color: #fff3cd; /* Amarillo claro alerta */
+    color: #856404;
+    padding: 1rem;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-rules-banner p {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.chat-rules-banner button {
+    background-color: #856404;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.chat-widget-area {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 500px; /* Asegura espacio para el widget */
+}
+
+.chat-widget-area > p {
+    font-style: italic;
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para Fase Posterior (Chat Propio) - Descomentar y adaptar si se implementa */
+/*
+.chat-interface {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    height: 600px; 
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.chat-sidebar {
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 1rem;
+    overflow-y: auto;
+}
+.chat-main {
+    display: flex;
+    flex-direction: column;
+}
+.chat-messages {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+.chat-input {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    display: flex;
+}
+.chat-input input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px 0 0 4px;
+}
+.chat-input button {
+     padding: 0.75rem 1.5rem;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+*/
+
+</style>
+
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Tienda CRUNEVO{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Tienda Oficial</h2>
+  <div class="row">
+    {% for producto in productos %}
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <img src="{{ url_for('static', filename='uploads/productos/' ~ producto.imagen) }}" class="card-img-top" alt="{{ producto.nombre }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text">{{ producto.descripcion[:100] }}...</p>
+          <strong>S/. {{ producto.precio }}</strong><br>
+          <a href="{{ url_for('store.producto', id=producto.id) }}" class="btn btn-sm btn-primary mt-2">Ver más</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

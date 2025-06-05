@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+
+{% block title %}Explorar Apuntes - Apuntes Cantuta{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row gx-lg-5">
+        <!-- Columna de Filtros -->
+        <aside class="col-lg-3 notes-filters mb-4 mb-lg-0">
+            <div class="card sticky-top" style="top: 80px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3"><i class="fas fa-filter me-2"></i>Filtrar Apuntes</h5>
+                    <form action="{{ url_for('note.notes_section') }}" method="GET">
+                        <div class="mb-3">
+                            <label for="search_term" class="form-label text-small fw-medium">Buscar por término:</label>
+                            <input type="text" id="search_term" name="search" class="form-control form-control-sm" placeholder="Título, curso, tag..." value="{{ request.args.get('search', '') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-small fw-medium">Facultad:</label>
+                            {% set selected_faculties = request.args.getlist('faculty') %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="fac_ciencias" name="faculty" value="Ciencias" {% if 'Ciencias' in selected_faculties %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="fac_ciencias">Ciencias</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="fac_humanidades" name="faculty" value="Humanidades" {% if 'Humanidades' in selected_faculties %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="fac_humanidades">Humanidades</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="fac_ingenieria" name="faculty" value="Ingenieria" {% if 'Ingenieria' in selected_faculties %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="fac_ingenieria">Ingeniería</label>
+                            </div>
+                            <!-- Agrega más facultades según sea necesario -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="course" class="form-label text-small fw-medium">Curso:</label>
+                            <input type="text" id="course" name="course" class="form-control form-control-sm" placeholder="Ej: Cálculo I" value="{{ request.args.get('course', '') }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-small fw-medium">Año de Estudio:</label>
+                            {% set selected_years = request.args.getlist('study_year') %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="year_1" name="study_year" value="1" {% if '1' in selected_years %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="year_1">1er Año</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="year_2" name="study_year" value="2" {% if '2' in selected_years %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="year_2">2do Año</label>
+                            </div>
+                            <!-- Agrega más años -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-small fw-medium">Tipo de Archivo:</label>
+                            {% set selected_types = request.args.getlist('file_type') %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="type_pdf" name="file_type" value="pdf" {% if 'pdf' in selected_types %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="type_pdf">PDF</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="type_docx" name="file_type" value="docx" {% if 'docx' in selected_types %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="type_docx">DOCX</label>
+                            </div>
+                             <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="type_png" name="file_type" value="png" {% if 'png' in selected_types %}checked{% endif %}>
+                                <label class="form-check-label text-small" for="type_png">PNG/JPG</label>
+                            </div>
+                            <!-- Más tipos -->
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-check me-1"></i>Aplicar Filtros</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Columna de Resultados de Apuntes -->
+        <section class="col-lg-9 notes-results">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                <h4 class="mb-0 fw-bold">Explorar Apuntes</h4>
+                <div class="btn-group btn-group-sm view-options" role="group" aria-label="Opciones de vista">
+                    <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid"><i class="fas fa-th-large"></i></button>
+                    <button type="button" class="btn btn-outline-secondary view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+
+            {% if notes and notes.items %}
+                <div class="results-grid row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+                    {% for note in notes.items %}
+                    <div class="col">
+                        <div class="card h-100 note-card shadow-sm">
+                            {% if note.file_url and note.file_type in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                <img src="{{ note.file_url }}" class="card-img-top" alt="{{ note.title }}" style="height: 180px; object-fit: cover;">
+                            {% elif note.file_type == 'pdf' %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="far fa-file-pdf fa-3x text-danger"></i>
+                                </div>
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="far fa-file-alt fa-3x text-muted"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title h6 text-truncate" title="{{ note.title }}"><a href="#" data-bs-toggle="modal" data-bs-target="#modalNote{{ note.id }}" class="text-dark text-decoration-none">{{ note.title }}</a></h5>
+                                <p class="card-text text-muted text-small flex-grow-1">{{ note.description|truncate(80) }}</p>
+                                <div class="text-small text-muted mt-2">
+                                    <div><i class="fas fa-user fa-fw me-1"></i> {{ note.uploader.name if note.uploader else "Anónimo" }}</div>
+                                    <div><i class="fas fa-graduation-cap fa-fw me-1"></i> {{ note.course or 'N/A' }}</div>
+                                    <div><i class="fas fa-university fa-fw me-1"></i> {{ note.faculty or 'N/A' }}</div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <div class="d-flex justify-content-between align-items-center text-small">
+                                    <div class="text-muted">
+                                        <span class="me-2"><i class="fas fa-heart text-danger me-1"></i>{{ note.likes_count or 0 }}</span>
+                                        <span><i class="fas fa-download text-primary me-1"></i>{{ note.downloads_count or 0 }}</span>
+                                    </div>
+                                    <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-primary">Descargar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Vista Previa -->
+                    <div class="modal fade" id="modalNote{{ note.id }}" tabindex="-1" aria-labelledby="modalNoteLabel{{ note.id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalNoteLabel{{ note.id }}">{{ note.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            {% if note.file_type == "pdf" %}
+                                                <iframe src="{{ note.file_url }}" width="100%" height="600px" style="border:1px solid #ddd;"></iframe>
+                                            {% elif note.file_url and note.file_type in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                                <img src="{{ note.file_url }}" class="img-fluid rounded" alt="Vista previa de {{note.title}}">
+                                            {% else %}
+                                                <div class="alert alert-warning text-center">
+                                                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i><br>
+                                                    Vista previa no disponible para archivos .{{ note.file_type }}.
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>Descripción:</h6>
+                                            <p class="text-muted">{{ note.description or "Sin descripción disponible." }}</p>
+                                            <hr>
+                                            <p><strong>Subido por:</strong> {{ note.uploader.name if note.uploader else "Anónimo" }}</p>
+                                            <p><strong>Curso:</strong> {{ note.course or 'N/A' }}</p>
+                                            <p><strong>Facultad:</strong> {{ note.faculty or 'N/A' }}</p>
+                                            <p><strong>Fecha:</strong> {{ note.upload_date.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Tipo:</strong> <span class="badge bg-secondary">.{{ note.file_type }}</span></p>
+                                            <hr>
+                                            <div class="d-grid">
+                                                <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-primary btn-lg"><i class="fas fa-download me-2"></i>Descargar Apunte</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Paginación -->
+                {% if notes.has_prev or notes.has_next %}
+                <nav aria-label="Paginación de apuntes" class="mt-4 d-flex justify-content-center">
+                    <ul class="pagination">
+                        <li class="page-item {% if not notes.has_prev %}disabled{% endif %}">
+                            <a class="page-link" href="{{ url_for('note.notes_section', page=notes.prev_num, **request.args) }}" tabindex="-1" aria-disabled="true">Anterior</a>
+                        </li>
+                        {% for page_num in notes.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                <li class="page-item {% if notes.page == page_num %}active{% endif %}">
+                                    <a class="page-link" href="{{ url_for('note.notes_section', page=page_num, **request.args) }}">{{ page_num }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="page-item {% if not notes.has_next %}disabled{% endif %}">
+                            <a class="page-link" href="{{ url_for('note.notes_section', page=notes.next_num, **request.args) }}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+                {% endif %}
+
+            {% else %}
+                <div class="card text-center py-5">
+                    <div class="card-body">
+                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                        <h5 class="card-title">No se encontraron apuntes</h5>
+                        <p class="text-muted">Intenta ajustar tus filtros o <a href="{{ url_for('note.notes_section') }}">ver todos los apuntes</a>.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const viewBtns = document.querySelectorAll('.view-btn');
+    const resultsContainer = document.querySelector('.results-grid'); // Ahora es .results-grid
+
+    if (!resultsContainer) return;
+
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentView = btn.dataset.view;
+            viewBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (currentView === 'grid') {
+                resultsContainer.classList.remove('row-cols-1'); // Quitar clase de lista si existe
+                resultsContainer.classList.add('row-cols-1', 'row-cols-md-2', 'row-cols-lg-3'); // Clases de grid
+                resultsContainer.querySelectorAll('.col').forEach(col => {
+                    col.classList.remove('d-flex', 'mb-3'); // Quitar clases de lista
+                    col.querySelector('.note-card').classList.remove('flex-row', 'align-items-center');
+                    col.querySelector('.card-img-top, .bg-light.d-flex').style.display = 'block'; // Mostrar imagen/icono
+                    col.querySelector('.card-body').classList.remove('ms-3');
+                });
+            } else { // Vista de lista
+                resultsContainer.classList.remove('row-cols-md-2', 'row-cols-lg-3');
+                resultsContainer.classList.add('row-cols-1'); // Una columna para la lista
+                resultsContainer.querySelectorAll('.col').forEach(col => {
+                    col.classList.add('d-flex', 'mb-3'); // Clases para layout de lista
+                    col.querySelector('.note-card').classList.add('flex-row', 'align-items-center', 'w-100');
+                    col.querySelector('.card-img-top, .bg-light.d-flex').style.display = 'none'; // Ocultar imagen/icono en lista
+                    col.querySelector('.card-body').classList.add('ms-3');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+

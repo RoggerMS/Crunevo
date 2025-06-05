@@ -1,0 +1,19 @@
+<!-- templates/foro/nueva_pregunta.html -->
+{% extends 'base.html' %}
+{% block title %}Nueva Pregunta{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Realiza una nueva pregunta</h2>
+  <form action="/foro/nueva" method="POST">
+    <div class="mb-3">
+      <label for="titulo" class="form-label">Título</label>
+      <input type="text" class="form-control" name="titulo" required>
+    </div>
+    <div class="mb-3">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <textarea name="descripcion" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Publicar</button>
+  </form>
+</div>
+{% endblock %}

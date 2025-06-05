@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block title %}Ranking de Colaboradores - Plataforma Apuntes Cantuta{% endblock %}
+
+{% block content %}
+<div class="ranking-container">
+    <h2>Ranking de Colaboradores</h2>
+    <p>¡Gana puntos subiendo apuntes útiles, recibiendo descargas y participando! El ranking se reinicia mensualmente.</p>
+
+    <div class="ranking-table-container">
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Puntos Totales</th>
+                    <th>Apuntes Subidos</th>
+                    <th>Descargas Recibidas</th>
+                    <th>Likes Recibidos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ejemplo de fila (se generará dinámicamente) -->
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <div class="user-info">
+                            <img src="/static/images/default_avatar.png" alt="Avatar" class="rank-avatar">
+                            <div>
+                                <span class="user-name">Usuario Top 1</span>
+                                <span class="user-level-badge small-badge">Experto</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><strong>1580</strong></td>
+                    <td>25</td>
+                    <td>1230</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <div class="user-info">
+                            <img src="/static/images/default_avatar.png" alt="Avatar" class="rank-avatar">
+                             <div>
+                                <span class="user-name">Colaborador Activo</span>
+                                <span class="user-level-badge small-badge">Ayudante</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><strong>950</strong></td>
+                    <td>15</td>
+                    <td>750</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <div class="user-info">
+                            <img src="/static/images/default_avatar.png" alt="Avatar" class="rank-avatar">
+                             <div>
+                                <span class="user-name">Estudiante Ejemplo</span>
+                                <span class="user-level-badge small-badge">Novato</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><strong>420</strong></td>
+                    <td>8</td>
+                    <td>300</td>
+                    <td>40</td>
+                </tr>
+                <!-- Más filas -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación si la tabla es muy larga -->
+    <nav aria-label="Paginación del ranking" class="pagination">
+        <ul class="pagination-list">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sección Mis Badges (Opcional) -->
+    <!-- 
+    <div class="my-badges-section">
+        <h3>Mis Badges</h3>
+        <div class="badges-list">
+            [Icono Badge 1] [Icono Badge 2]
+        </div>
+    </div>
+    -->
+
+</div>
+
+<style>
+.ranking-container h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+.ranking-container > p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.ranking-table-container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow-x: auto; /* Para tablas anchas en móvil */
+    margin-bottom: 2rem;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Evita que la tabla se comprima demasiado */
+}
+
+.ranking-table th, .ranking-table td {
+    padding: 1rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.ranking-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.ranking-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ranking-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.ranking-table td:first-child {
+    font-weight: bold;
+    text-align: center;
+    width: 50px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.rank-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 500;
+}
+
+.small-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    margin-top: 0.2rem;
+    align-self: flex-start; /* Para que no ocupe todo el ancho */
+}
+
+.ranking-table td strong {
+    font-size: 1.1rem;
+    color: #007bff;
+}
+
+/* Estilos de paginación (ya definidos en notes_section.html, se pueden reutilizar) */
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-item .page-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item:not(.disabled) .page-link:hover {
+    background-color: #e9ecef;
+}
+
+/* Sección Mis Badges (Opcional) */
+.my-badges-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.my-badges-section h3 {
+    margin-bottom: 1rem;
+}
+
+.badges-list {
+    /* Estilos para mostrar iconos de badges */
+    font-size: 2rem; /* Ejemplo */
+    color: #ffc107; /* Ejemplo */
+}
+
+</style>
+
+{% endblock %}
+

@@ -1,0 +1,17 @@
+<!-- templates/foro/foro.html -->
+{% extends 'base.html' %}
+{% block title %}Foro CRUNEVO{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">Foro Académico</h2>
+  <a href="/foro/nueva" class="btn btn-primary mb-3">Nueva Pregunta</a>
+  <ul class="list-group">
+    {% for pregunta in preguntas %}
+      <li class="list-group-item">
+        <a href="/foro/{{ pregunta.id }}">{{ pregunta.titulo }}</a>
+        <small class="text-muted d-block">por {{ pregunta.autor.username }} | {{ pregunta.fecha.strftime('%d/%m/%Y') }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil - Plataforma Apuntes Cantuta{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="profile-v2-container">
+    <header class="profile-v2-header">
+        <div class="profile-banner">
+            <img src="{{ url_for('static', filename='images/default_banner.jpg') }}" alt="Banner de Perfil" id="profileBannerImage">
+            <button class="btn btn-sm btn-light edit-banner-btn"><i class="fas fa-camera"></i> Editar Banner</button>
+        </div>
+        <div class="profile-avatar-section">
+            <div class="profile-avatar-wrapper">
+                <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" alt="Foto de perfil" class="profile-v2-avatar" id="profileAvatarImage">
+                <button class="btn btn-sm btn-light edit-avatar-btn"><i class="fas fa-camera"></i></button>
+            </div>
+            <div class="profile-user-info">
+                <h2>{{ user.name or 'Nombre de Usuario' }}</h2>
+                <p class="faculty-career">{{ user.faculty or 'Facultad' }} - {{ user.career or 'Carrera' }}</p>
+                <span class="user-level-badge-v2">{{ user.level or 'Novato' }} <i class="fas fa-star"></i></span>
+            </div>
+            <div class="profile-header-actions">
+                <a href="{{ url_for(\'user.edit_profile\') }}" class="btn btn-primary">Editar Perfil</a>
+                <a href="{{ url_for('note.upload_note') }}" class="btn btn-secondary"><i class="fas fa-upload"></i> Subir Apunte</a>
+            </div>
+        </div>
+        <div class="profile-stats-v2">
+            <div class="stat-item">
+                <strong>{{ user.notes_uploaded or 0 }}</strong>
+                <span>Apuntes Subidos</span>
+            </div>
+            <div class="stat-item">
+                <strong>{{ user.notes_downloaded or 0 }}</strong>
+                <span>Descargas</span>
+            </div>
+            <div class="stat-item">
+                <strong>{{ user.likes_received or 0 }}</strong>
+                <span>Likes Recibidos</span>
+            </div>
+        </div>
+    </header>
+    <div class="profile-v2-content">
+        <p class="text-muted mt-4">Aquí podrás gestionar tus apuntes, ver tu historial y personalizar tu perfil.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const imageUpload = document.getElementById('imageUpload');
+    const profileBannerImage = document.getElementById('profileBannerImage');
+    const profileAvatarImage = document.getElementById('profileAvatarImage');
+
+    document.querySelector('.edit-banner-btn')?.addEventListener('click', () => {
+        imageUpload.onchange = () => {
+            if (imageUpload.files && imageUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profileBannerImage.src = e.target.result;
+                };
+                reader.readAsDataURL(imageUpload.files[0]);
+            }
+        };
+        imageUpload.click();
+    });
+
+    document.querySelector('.edit-avatar-btn')?.addEventListener('click', () => {
+        imageUpload.onchange = () => {
+            if (imageUpload.files && imageUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profileAvatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(imageUpload.files[0]);
+            }
+        };
+        imageUpload.click();
+    });
+});
+</script>
+<input type="file" id="imageUpload" accept="image/*" style="display: none;">
+{% endblock %}

@@ -1,0 +1,11 @@
+
+body {
+    background-color: #f8f9fa;
+}
+.feed .card {
+    transition: transform 0.2s ease;
+}
+.feed .card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}

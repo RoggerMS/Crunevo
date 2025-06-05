@@ -1,0 +1,104 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Panel de Administración - Apuntes Cantuta{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📊 Panel de Administración</h2>
+    <p class="text-muted">Última actualización: {{ stats.last_updated }}</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <div class="col">
+      <div class="card shadow-sm border-start border-primary border-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-users fa-2x text-primary me-3"></i>
+            <div>
+              <h6 class="card-subtitle text-muted mb-1">Usuarios Registrados</h6>
+              <h3 class="fw-bold text-primary">{{ stats.total_users }}</h3>
+            </div>
+          </div>
+          <a href="{{ url_for('admin.manage_users') }}" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card shadow-sm border-start border-success border-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-file-alt fa-2x text-success me-3"></i>
+            <div>
+              <h6 class="card-subtitle text-muted mb-1">Apuntes Subidos</h6>
+              <h3 class="fw-bold text-success">{{ stats.total_notes }}</h3>
+            </div>
+          </div>
+          <a href="{{ url_for('admin.manage_reports') }}" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card shadow-sm border-start border-warning border-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-box fa-2x text-warning me-3"></i>
+            <div>
+              <h6 class="card-subtitle text-muted mb-1">Productos en Tienda</h6>
+              <h3 class="fw-bold text-warning">{{ stats.total_products }}</h3>
+            </div>
+          </div>
+          <a href="{{ url_for('admin.manage_store') }}" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card shadow-sm border-start border-danger border-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle fa-2x text-danger me-3"></i>
+            <div>
+              <h6 class="card-subtitle text-muted mb-1">Reportes Pendientes</h6>
+              <h3 class="fw-bold text-danger">{{ stats.pending_reports }}</h3>
+            </div>
+          </div>
+          <a href="{{ url_for('admin.manage_reports') }}" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h4>Estadísticas Recientes</h4>
+    <canvas id="statsChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('statsChart').getContext('2d');
+  const statsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ stats.dates | tojson }},
+      datasets: [
+        {
+          label: 'Usuarios',
+          data: {{ stats.user_growth | tojson }},
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        },
+        {
+          label: 'Apuntes',
+          data: {{ stats.note_growth | tojson }},
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        },
+      ],
+    },
+  });
+</script>
+{% endblock %}

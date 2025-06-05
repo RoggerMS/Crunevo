@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Subir Apunte{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Sube un nuevo apunte</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.titulo.label(class="form-label") }}
+      {{ form.titulo(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.descripcion.label(class="form-label") }}
+      {{ form.descripcion(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.archivo.label(class="form-label") }}
+      {{ form.archivo(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-success">Subir</button>
+  </form>
+</div>
+{% endblock %}

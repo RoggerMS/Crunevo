@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Cuenta - Apuntes Cantuta{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="text-center mb-4">
+        <i class="fas fa-user-plus fa-3x icon-primary"></i>
+        <h2 class="mt-2">Crear una Cuenta</h2>
+        <p class="text-muted">Únete a la comunidad y empieza a compartir y descargar apuntes.</p>
+    </div>
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Por favor, corrige los errores en el formulario.
+        </div>
+    {% endif %}
+
+    <form action="{{ url_for('auth.register') }}" method="POST" enctype="multipart/form-data" class="auth-form needs-validation" novalidate>
+        {{ form.hidden_tag() if form.hidden_tag }}
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre Completo</label>
+            <input type="text" id="name" name="name" class="form-control form-control-lg {% if form.name.errors %}is-invalid{% endif %}" required value="{{ form.name.data if form.name.data else '' }}">
+            {% if form.name.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.name.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" id="email" name="email" class="form-control form-control-lg {% if form.email.errors %}is-invalid{% endif %}" required value="{{ form.email.data if form.email.data else '' }}">
+            {% if form.email.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control form-control-lg {% if form.password.errors %}is-invalid{% endif %}" required>
+                {% if form.password.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-lg {% if form.confirm_password.errors %}is-invalid{% endif %}" required>
+                {% if form.confirm_password.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.confirm_password.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="faculty" class="form-label">Facultad</label>
+                <select id="faculty" name="faculty" class="form-select form-select-lg {% if form.faculty.errors %}is-invalid{% endif %}">
+                    <option value="" {% if not form.faculty.data %}selected{% endif %}>Selecciona tu facultad</option>
+                    <option value="Ciencias" {% if form.faculty.data == 'Ciencias' %}selected{% endif %}>Ciencias</option>
+                    <option value="Humanidades" {% if form.faculty.data == 'Humanidades' %}selected{% endif %}>Humanidades</option>
+                    <option value="Ingenieria" {% if form.faculty.data == 'Ingenieria' %}selected{% endif %}>Ingeniería</option>
+                    <option value="Educacion" {% if form.faculty.data == 'Educacion' %}selected{% endif %}>Educación</option>
+                    <option value="Agropecuaria y Nutrición" {% if form.faculty.data == 'Agropecuaria y Nutrición' %}selected{% endif %}>Agropecuaria y Nutrición</option>
+                    <option value="Tecnología" {% if form.faculty.data == 'Tecnología' %}selected{% endif %}>Tecnología</option>
+                    <option value="Ciencias Empresariales" {% if form.faculty.data == 'Ciencias Empresariales' %}selected{% endif %}>Ciencias Empresariales</option>
+                </select>
+                {% if form.faculty.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.faculty.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="career" class="form-label">Carrera</label>
+                <input type="text" id="career" name="career" class="form-control form-control-lg {% if form.career.errors %}is-invalid{% endif %}" placeholder="Ej: Matemática e Informática" value="{{ form.career.data if form.career.data else '' }}">
+                {% if form.career.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.career.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="study_year" class="form-label">Año de Estudio</label>
+            <select id="study_year" name="study_year" class="form-select form-select-lg {% if form.study_year.errors %}is-invalid{% endif %}">
+                <option value="" {% if not form.study_year.data %}selected{% endif %}>Selecciona tu año</option>
+                <option value="1" {% if form.study_year.data == '1' %}selected{% endif %}>1er Año</option>
+                <option value="2" {% if form.study_year.data == '2' %}selected{% endif %}>2do Año</option>
+                <option value="3" {% if form.study_year.data == '3' %}selected{% endif %}>3er Año</option>
+                <option value="4" {% if form.study_year.data == '4' %}selected{% endif %}>4to Año</option>
+                <option value="5" {% if form.study_year.data == '5' %}selected{% endif %}>5to Año</option>
+                <option value="egresado" {% if form.study_year.data == 'egresado' %}selected{% endif %}>Egresado</option>
+                <option value="otro" {% if form.study_year.data == 'otro' %}selected{% endif %}>Otro</option>
+            </select>
+            {% if form.study_year.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.study_year.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="profile_picture" class="form-label">Foto de Perfil (Obligatoria)</label>
+            <input type="file" id="profile_picture" name="profile_picture" class="form-control form-control-lg {% if form.profile_picture.errors %}is-invalid{% endif %}" accept="image/*" required>
+            {% if form.profile_picture.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.profile_picture.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+            <div class="form-text text-small">Sube una imagen clara para tu perfil.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Crear Cuenta</button>
+
+        <div class="text-center my-3">
+            <p class="text-muted text-small mb-0">O regístrate con:</p>
+        </div>
+
+        <div class="d-grid gap-2 mb-3">
+            <button type="button" class="btn btn-outline-secondary btn-lg">
+                <img src="{{ url_for('static', filename='images/google-logo.png') }}" alt="Google logo" style="width: 20px; height: 20px; margin-right: 0.5rem;"> Google
+            </button>
+            <!-- Otros proveedores de OAuth aquí -->
+        </div>
+
+        <div class="text-center mt-4">
+            <p class="text-muted text-small mb-0">¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}" class="fw-medium text-decoration-none">Inicia sesión aquí</a></p>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  var forms = document.querySelectorAll('.needs-validation')
+
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+{% endblock %}
+

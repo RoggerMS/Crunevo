@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados de Búsqueda - {{ query }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Resultados de Búsqueda para: <span class="fw-bold">"{{ query }}"</span></h2>
+    {% if category != 'all' %}
+        <p class="text-muted">Mostrando resultados en la categoría: <strong>{{ category|capitalize }}</strong></p>
+    {% endif %}
+
+    {% if apuntes or productos %}
+        {% if apuntes %}
+            <section id="apuntes-results-page" class="mb-4">
+                <h3>Apuntes Encontrados ({{ total_apuntes }})</h3>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for apunte in apuntes %}
+                    <div class="col">
+                        <div class="card h-100 card-apunte-full">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{{ apunte.url }}">{{ apunte.title }}</a></h5>
+                                <p class="card-text"><i class="fas {{ get_icon_for_file_type(apunte.file_type) }} file-type-icon"></i> {{ apunte.course }} - {{ apunte.faculty }}</p>
+                                <p class="card-text text-muted">{{ apunte.description_snippet }}</p>
+                                {% if apunte.tags %}
+                                    <p class="card-text"><small class="text-muted">Tags: {{ apunte.tags }}</small></p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ apunte.url }}" class="btn btn-sm btn-primary">Ver Detalle</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- TODO: Add pagination controls if more than per_page results -->
+            </section>
+        {% endif %}
+
+        {% if productos %}
+            <section id="tienda-results-page" class="mb-4">
+                <h3>Productos Encontrados ({{ total_productos }})</h3>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                    {% for producto in productos %}
+                    <div class="col">
+                        <div class="card h-100 card-producto-full">
+                            <img src="{{ producto.image_url if producto.image_url else url_for('static', filename='images/default_product.png') }}" class="card-img-top" alt="{{ producto.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{{ producto.url }}">{{ producto.name }}</a></h5>
+                                <p class="card-text price">S/ {{ "%.2f"|format(producto.price) }}</p>
+                                <p class="card-text text-muted">Tipo: {{ producto.type }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ producto.url }}" class="btn btn-sm btn-success">Ver Producto</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- TODO: Add pagination controls if more than per_page results -->
+            </section>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            No se encontraron resultados para "{{ query }}"{% if category != 'all' %} en la categoría <strong>{{ category|capitalize }}</strong>{% endif %}.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-primary"><i class="fas fa-home"></i> Ir al Inicio</a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+// Helper function to get file icons, similar to main.js but usable in Jinja context if needed
+// Or ensure main.js functions are globally available if this page needs dynamic JS interaction beyond basic display
+function get_icon_for_file_type(fileType) {
+    if (!fileType) return 'fa-file';
+    const type = fileType.toLowerCase();
+    if (type.includes('pdf')) return 'fa-file-pdf';
+    if (type.includes('doc') || type.includes('word')) return 'fa-file-word';
+    if (type.includes('ppt') || type.includes('powerpoint')) return 'fa-file-powerpoint';
+    if (type.includes('xls') || type.includes('excel')) return 'fa-file-excel';
+    if (type.includes('zip') || type.includes('rar')) return 'fa-file-archive';
+    if (type.includes('txt')) return 'fa-file-alt';
+    if (type.includes('jpg') || type.includes('jpeg') || type.includes('png') || type.includes('gif')) return 'fa-file-image';
+    return 'fa-file';
+}
+
+// Apply icons if rendered by Jinja directly (example)
+document.querySelectorAll('.file-type-icon').forEach(iconElement => {
+    const fileType = iconElement.dataset.fileType; // Assuming you add data-file-type attribute
+    // This is just an example, the class is already applied by Jinja in the template above
+});
+</script>
+{% endblock %}
+

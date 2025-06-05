@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Marketplace Estudiantil</h2>
+<div class="row">
+    {% for producto in productos %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <img src="{{ producto.imagen_url or url_for('static', filename='img/default_product.jpg') }}" class="card-img-top" alt="Producto">
+            <div class="card-body">
+                <h5 class="card-title">{{ producto.nombre }}</h5>
+                <p class="card-text">S/{{ producto.precio }}</p>
+                <a href="{{ url_for('market.ver_producto', id=producto.id) }}" class="btn btn-outline-primary">Ver más</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>No hay productos disponibles aún.</p>
+    {% endfor %}
+</div>
+{% endblock %}
