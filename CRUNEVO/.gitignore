@@ -1,0 +1,13 @@
+# Ignorar archivos sensibles y temporales
+
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+instance/
+venv/
+.idea/
+*.log
+.DS_Store
