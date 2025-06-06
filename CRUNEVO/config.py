@@ -9,9 +9,7 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "clave_segura_por_defecto")
 
     _custom_dir = os.getenv("DATABASE_DIR")
-    if _custom_dir:
-        Path(_custom_dir).mkdir(parents=True, exist_ok=True)
-    else:
+    if not _custom_dir:
         default_dir = Path(__file__).resolve().parent / "crunevo" / "instance"
         try:
             default_dir.mkdir(parents=True, exist_ok=True)
@@ -20,11 +18,17 @@ class Config:
             temp_dir.mkdir(parents=True, exist_ok=True)
             default_dir = temp_dir
         _custom_dir = str(default_dir)
+    else:
+        Path(_custom_dir).mkdir(parents=True, exist_ok=True)
 
-    _default_db = Path(_custom_dir) / "crunevo.sqlite3"
-
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "SQLALCHEMY_DATABASE_URI", f"sqlite:///{_default_db}"
-    )
+    env_uri = os.getenv("SQLALCHEMY_DATABASE_URI")
+    if env_uri:
+        if env_uri.startswith("sqlite:///"):
+            db_path = Path(env_uri.replace("sqlite:///", ""))
+            db_path.parent.mkdir(parents=True, exist_ok=True)
+        SQLALCHEMY_DATABASE_URI = env_uri
+    else:
+        _default_db = Path(_custom_dir) / "crunevo.sqlite3"
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{_default_db}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = os.getenv("DEBUG", "0") == "1"
