@@ -2,10 +2,10 @@
 from flask import Flask
 from flask_login import LoginManager
 from .models import db
-from .models.user import User
-from .models.note import Note, Download, Like, Report
-from .models.product import Product
-from .models.forum import Pregunta, Respuesta
+from .models.user import User as _User
+from .models.note import Note as _Note, Download as _Download, Like as _Like, Report as _Report
+from .models.product import Product as _Product
+from .models.forum import Pregunta as _Pregunta, Respuesta as _Respuesta
 from .routes.main_routes import main_bp
 from .routes.auth_routes import auth_bp
 from .routes.store_routes import store_bp

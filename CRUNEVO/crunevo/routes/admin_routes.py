@@ -73,7 +73,7 @@ def update_report_status(report_id):
     if new_status in ["pending", "reviewed", "resolved"]:
         report.status = new_status
         if new_status == "resolved":
-            flash(f"Reporte resuelto.", "info")
+            flash("Reporte resuelto.", "info")
         if commit_changes():
             flash(f"Estado del reporte actualizado a {new_status}.", "success")
     else:

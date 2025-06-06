@@ -1,8 +1,6 @@
 # src/routes/search_routes.py
-from flask import Blueprint, request, jsonify, render_template # Added render_template
+from flask import Blueprint, request, jsonify, render_template
 from sqlalchemy import or_
-
-from ..models import db
 from ..models.note import Note
 from ..models.product import Product
 
