@@ -52,9 +52,31 @@ out of the box.
 
 ## Deployment on Render
 
-The repository includes a `render.yaml` file that builds the project and starts the application with Gunicorn. A persistent disk is mounted at `/data` and the environment variable `DATABASE_DIR` is set to that path so the SQLite database can be created. Gunicorn is listed in `CRUNEVO/requirements.txt` so it is installed automatically during the build step.
+The repository includes a `render.yaml` file that builds the project and starts
+the application with Gunicorn. A persistent disk is mounted at `/data` and the
+environment variable `DATABASE_DIR` is set to that path so the SQLite database
+can be created. Gunicorn is listed in `CRUNEVO/requirements.txt` so it is
+installed automatically during the build step.
 
 1. Push the repository to a new Render web service.
 2. Make sure the service has a persistent disk attached at `/data`.
-3. Deploy; Render will install the requirements and start the app using the command defined in `render.yaml`.
+3. Deploy; Render will install the requirements and start the app using the
+   command defined in `render.yaml`.
+
+## Deployment on Railway
+
+If you move the project to **Railway**, attach a volume so the SQLite database
+can be stored on a writable filesystem. Set the mount path of that volume using
+the `RAILWAY_VOLUME_MOUNT_PATH` environment variable or define `DATABASE_DIR`
+directly. The application checks those variables on startup and creates the
+database there.
+
+Run the service with Gunicorn just as in Render:
+
+```bash
+gunicorn -b 0.0.0.0:$PORT CRUNEVO.run:app
+```
+
+Without a volume the application falls back to a temporary directory and the
+data will be lost on redeploys.
 
