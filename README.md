@@ -10,7 +10,13 @@ application can write to the configured path.
 Set the environment variable `DATABASE_DIR` (or `SQLALCHEMY_DATABASE_URI`) to a
 writable directory. Paths containing `~` are expanded automatically.
 
-The provided `render.yaml` already mounts a persistent disk at `/data` and sets `DATABASE_DIR=/data` so a simple deployment works out of the box.
+If `DATABASE_DIR` is not defined, the configuration first checks whether the
+directory `/data` exists and is writable. This is where a Render persistent disk
+is mounted. If the check succeeds, that path is used automatically. Otherwise a
+writable directory is created inside the application folder (or in the system
+temporary directory) so the application can still run, though the data will not
+be persisted. The provided `render.yaml` mounts a persistent disk at `/data` and
+sets `DATABASE_DIR=/data`, so deployment works out of the box.
 
 Run tests with:
 
