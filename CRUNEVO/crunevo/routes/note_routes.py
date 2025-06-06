@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
-from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
-import boto3
-from botocore.exceptions import NoCredentialsError, ClientError
+
+from ..utils.storage import ALLOWED_EXTENSIONS, allowed_file, upload_file_to_s3
 
 from ..models import db
 from ..models.note import Note
@@ -13,32 +12,6 @@ note_bp = Blueprint("note", __name__)
 
 # --- Configuración AWS S3 ---
 S3_BUCKET = os.environ.get("S3_BUCKET_NAME", "your-s3-bucket-name-placeholder")
-S3_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BASE_URL = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/"
-s3_client = boto3.client("s3", region_name=S3_REGION)
-
-ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "doc", "docx"}
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def upload_file_to_s3(file, bucket_name, acl="public-read"):
-    filename = secure_filename(file.filename)
-    try:
-        s3_client.upload_fileobj(
-            file,
-            bucket_name,
-            filename,
-            ExtraArgs={
-                "ACL": acl,
-                "ContentType": file.content_type
-            }
-        )
-        return f"{S3_BASE_URL}{filename}"
-    except (NoCredentialsError, ClientError, Exception) as e:
-        flash("Ocurrió un error al subir el archivo.", "danger")
-        current_app.logger.error(f"Error al subir archivo a S3: {e}", exc_info=True)
-        return None
 
 # --- Ruta: Explorar Apuntes ---
 @note_bp.route("/apuntes")
