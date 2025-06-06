@@ -13,6 +13,10 @@ class Config:
         default_dir = Path(__file__).resolve().parent / "crunevo" / "instance"
         try:
             default_dir.mkdir(parents=True, exist_ok=True)
+            test_file = default_dir / ".write_test"
+            with open(test_file, "w"):
+                pass
+            test_file.unlink()
         except OSError:
             temp_dir = Path(tempfile.gettempdir()) / "crunevo_instance"
             temp_dir.mkdir(parents=True, exist_ok=True)
@@ -21,7 +25,11 @@ class Config:
     else:
         Path(_custom_dir).mkdir(parents=True, exist_ok=True)
 
-    env_uri = os.getenv("SQLALCHEMY_DATABASE_URI")
+    env_uri = (
+        os.getenv("SQLALCHEMY_DATABASE_URI")
+        or os.getenv("DATABASE_URI")
+        or os.getenv("DATABASE_URL")
+    )
     if env_uri:
         if env_uri.startswith("sqlite:///"):
             db_path = Path(env_uri.replace("sqlite:///", ""))
