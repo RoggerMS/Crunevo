@@ -2,9 +2,9 @@
 from flask import Blueprint, request, jsonify, render_template # Added render_template
 from sqlalchemy import or_
 
-from src.models import db
-from src.models.note import Note
-from src.models.product import Product
+from ..models import db
+from ..models.note import Note
+from ..models.product import Product
 
 search_bp = Blueprint("search", __name__)
 

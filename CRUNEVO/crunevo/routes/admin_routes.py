@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from functools import wraps
-from src.models import db
-from src.models.user import User
-from src.models.note import Note, Report
-from src.models.product import Product
+from ..models import db
+from ..models.user import User
+from ..models.note import Note, Report
+from ..models.product import Product
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
