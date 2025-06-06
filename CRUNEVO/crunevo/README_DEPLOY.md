@@ -7,7 +7,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
 -   `src/`: Contiene el código fuente principal de la aplicación Flask.
     -   `main.py`: Punto de entrada de la aplicación, configuración de Flask, SQLAlchemy, etc.
     -   `models/`: Define los modelos de la base de datos (User, Note, Product).
-    -   `routes/`: Define las rutas y la lógica de las vistas de la aplicación.
+    -   `routes/`: Define las rutas y la lógica de las vistas de la aplicación (por ejemplo `auth_routes.py`, `store_routes.py` y `note_routes.py`).
     -   `static/`: Contiene los archivos estáticos.
         -   `css/`: Hojas de estilo CSS, incluyendo `bootstrap.min.css` (local) y `style.css` (personalizado).
         -   `images/`: Imágenes utilizadas por la aplicación (ej. `default_avatar.png`).
