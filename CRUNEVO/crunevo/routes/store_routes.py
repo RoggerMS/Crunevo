@@ -1,8 +1,8 @@
 # routes/store_routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from flask_login import login_required
-from models.product import Product  # ✅ CORREGIDO: usamos 'Product'
-from app import db
+from ..models.product import Product
+from ..models import db
 
 store_bp = Blueprint('store', __name__, url_prefix='/tienda')
 
@@ -30,3 +30,4 @@ def remove_from_cart(producto_id):
     session['carrito'] = carrito
     flash('Producto eliminado del carrito.', 'success')
     return redirect(url_for('store.carrito'))
+

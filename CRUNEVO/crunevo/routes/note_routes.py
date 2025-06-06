@@ -5,9 +5,9 @@ import os
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
 
-from src.models import db
-from src.models.note import Note
-from src.models.user import User
+from ..models import db
+from ..models.note import Note
+from ..models.user import User
 
 note_bp = Blueprint("note", __name__)
 
