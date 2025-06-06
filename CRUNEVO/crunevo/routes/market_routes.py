@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 from models.product import Product
 
 market_bp = Blueprint('market', __name__, url_prefix='/marketplace')

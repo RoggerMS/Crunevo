@@ -91,7 +91,6 @@ def upload_note():
 
         title = request.form.get("title")
         faculty = request.form.get("faculty")
-        career = request.form.get("career")
         course = request.form.get("course")
         description = request.form.get("description")
         tags = request.form.get("tags")

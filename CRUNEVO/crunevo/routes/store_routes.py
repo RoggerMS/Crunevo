@@ -1,8 +1,7 @@
 # routes/store_routes.py
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, redirect, url_for, session, flash
 from flask_login import login_required
 from ..models.product import Product
-from ..models import db
 
 store_bp = Blueprint('store', __name__, url_prefix='/tienda')
 

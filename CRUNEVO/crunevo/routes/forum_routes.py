@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.forum import Pregunta, Respuesta
-from models.user import User
 from app import db
 from flask_login import login_required, current_user
 
