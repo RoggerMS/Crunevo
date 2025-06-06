@@ -1,6 +1,6 @@
 # models/forum.py
 from datetime import datetime
-from app import db
+from . import db
 
 class Pregunta(db.Model):
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
