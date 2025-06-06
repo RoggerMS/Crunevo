@@ -21,7 +21,11 @@ class Config:
     else:
         Path(_custom_dir).mkdir(parents=True, exist_ok=True)
 
-    env_uri = os.getenv("SQLALCHEMY_DATABASE_URI")
+    env_uri = (
+        os.getenv("SQLALCHEMY_DATABASE_URI")
+        or os.getenv("DATABASE_URI")
+        or os.getenv("DATABASE_URL")
+    )
     if env_uri:
         if env_uri.startswith("sqlite:///"):
             db_path = Path(env_uri.replace("sqlite:///", ""))
