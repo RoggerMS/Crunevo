@@ -16,7 +16,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
     -   `instance/`: Este directorio se creará automáticamente al ejecutar la aplicación y contendrá la base de datos SQLite (`plataforma_apuntes.db`). Asegúrate de que el servidor tenga permisos para escribir en esta ubicación dentro de `src/`.
 -   `requirements.txt`: Lista todas las dependencias de Python necesarias para el proyecto.
 -   `venv/`: Entorno virtual de Python (generalmente no se sube al servidor, se recrea allí).
--   `.env`: Archivo para variables de entorno (ej. `SECRET_KEY`, `DATABASE_URI`, `DATABASE_DIR`). **Importante:** este archivo contiene información sensible y debe configurarse adecuadamente en el servidor. Puedes definir `DATABASE_DIR` para indicar un directorio con permisos de escritura donde se creará la base de datos SQLite. Si no se define, la aplicación intentará crearla dentro del proyecto y, si ese lugar es de solo lectura, utilizará `/tmp` de forma automática.
+-   `.env`: Archivo para variables de entorno (ej. `SECRET_KEY`, `SQLALCHEMY_DATABASE_URI`, `DATABASE_DIR`). **Importante:** este archivo contiene información sensible y debe configurarse adecuadamente en el servidor. Puedes definir `DATABASE_DIR` para indicar un directorio con permisos de escritura donde se creará la base de datos SQLite. Si no se define o el directorio no es escribible, la aplicación intentará usar `/tmp/crunevo_instance` de forma automática. Del mismo modo, si `SQLALCHEMY_DATABASE_URI` apunta a un archivo SQLite en una ruta sin permisos de escritura, se ajustará automáticamente a ese directorio temporal.
 
 ## Pasos Generales para el Despliegue:
 
@@ -44,7 +44,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
 5.  **Configurar Variables de Entorno:**
     *   Crea o edita el archivo `.env` en la raíz de `deployment_cantuta_app`.
     *   Asegúrate de que `SECRET_KEY` sea una clave fuerte y única.
-    *   Verifica que `DATABASE_URI` (o `DATABASE_DIR`) apunte a una ubicación con permisos de escritura para la base de datos. Si usas SQLite, puedes establecer `DATABASE_DIR` con el directorio deseado y la aplicación generará allí el archivo `crunevo.sqlite3`.
+    *   Verifica que `SQLALCHEMY_DATABASE_URI` (o `DATABASE_URL`) o `DATABASE_DIR` apunten a una ubicación con permisos de escritura para la base de datos. Si usas SQLite, puedes establecer `DATABASE_DIR` con el directorio deseado y la aplicación generará allí el archivo `crunevo.sqlite3`. Si la ruta indicada no es escribible, la aplicación recurrirá a `/tmp/crunevo_instance`.
 
 6.  **Inicializar la Base de Datos (si es la primera vez):**
     *   La aplicación está configurada para crear las tablas y el directorio `instance/` automáticamente al iniciarse si no existen. No obstante, verifica que esto ocurra o ejecuta un script de inicialización si es necesario.
