@@ -65,6 +65,8 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
 
 En servicios como **Render**, el directorio de la aplicación es de solo lectura. Si usas SQLite y no configuras las rutas adecuadas, verás errores como `sqlite3.OperationalError: unable to open database file` al intentar registrarte o iniciar sesión. Define una de las siguientes variables de entorno con una ruta escribible (por ejemplo, `/data` o `/tmp/crunevo_instance`):
 
+Para que SQLite funcione en Render también debes crear un **disk** persistente y montarlo en `/data` o el directorio que elijas.
+
 ```bash
 DATABASE_DIR=/data              # Carpeta donde se guardará `crunevo.sqlite3`
 # o
@@ -82,12 +84,16 @@ services:
     env: python
     buildCommand: pip install -r CRUNEVO/requirements.txt
     startCommand: gunicorn -b 0.0.0.0:$PORT CRUNEVO/run:app
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
     envVars:
       - key: DATABASE_DIR
         value: /data
 ```
 
-Guarda este archivo en la raíz del repositorio antes de conectar el proyecto con **Render**.
+Guarda este archivo en la raíz del repositorio antes de conectar el proyecto con **Render**. Recuerda que en Render la base de datos SQLite solo funcionará si se adjunta un *disk* persistente como el definido arriba.
 
 ## Consideraciones Adicionales:
 
