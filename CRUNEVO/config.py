@@ -13,6 +13,10 @@ class Config:
         default_dir = Path(__file__).resolve().parent / "crunevo" / "instance"
         try:
             default_dir.mkdir(parents=True, exist_ok=True)
+            test_file = default_dir / ".write_test"
+            with open(test_file, "w"):
+                pass
+            test_file.unlink()
         except OSError:
             temp_dir = Path(tempfile.gettempdir()) / "crunevo_instance"
             temp_dir.mkdir(parents=True, exist_ok=True)
