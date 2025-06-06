@@ -51,3 +51,8 @@ class Config:
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{_default_db}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = os.getenv("DEBUG", "0") == "1"
+
+    # Provide visibility into the chosen database path. This is useful when the
+    # application runs on platforms with read-only source directories as it
+    # helps diagnose database initialization errors.
+    print(f"Using database URI: {SQLALCHEMY_DATABASE_URI}")

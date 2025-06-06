@@ -7,7 +7,9 @@ stored on a writable disk. If the app fails with
 `sqlite3.OperationalError: unable to open database file` it usually means the
 application does not have permission to create the database file. Make sure a
 persistent disk is mounted (for example at `/data`) or set a custom writable
-location with the variables described below.
+location with the variables described below.  The application prints the final
+database URI on startup, so you can verify that it points to a writable
+directory.
 
 Set the environment variable `DATABASE_DIR` (or `SQLALCHEMY_DATABASE_URI`) to a
 writable directory. Paths containing `~` are expanded automatically.
