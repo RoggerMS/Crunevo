@@ -11,7 +11,8 @@ class Config:
         os.makedirs(_custom_dir, exist_ok=True)
         _default_db = os.path.join(_custom_dir, "crunevo.sqlite3")
     else:
-        _instance_dir = os.path.join(os.getcwd(), "instance")
+        base_dir = os.path.abspath(os.path.dirname(__file__))
+        _instance_dir = os.path.join(base_dir, "crunevo", "instance")
         os.makedirs(_instance_dir, exist_ok=True)
         _default_db = os.path.join(_instance_dir, "crunevo.sqlite3")
 
