@@ -1,8 +1,8 @@
-# Proyecto Apuntes Cantuta - Instrucciones de Despliegue
+# Proyecto Crunevo - Instrucciones de Despliegue
 
-Este archivo contiene instrucciones básicas para desplegar la aplicación Flask "Apuntes Cantuta" en tu propio servidor.
+Este archivo contiene instrucciones básicas para desplegar la aplicación Flask "Crunevo" en tu propio servidor.
 
-## Estructura del Proyecto (dentro de `deployment_cantuta_app`):
+## Estructura del Proyecto (dentro de `CRUNEVO`):
 
 -   `src/`: Contiene el código fuente principal de la aplicación Flask.
     -   `main.py`: Punto de entrada de la aplicación, configuración de Flask, SQLAlchemy, etc.
@@ -13,7 +13,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
         -   `images/`: Imágenes utilizadas por la aplicación (ej. `default_avatar.png`).
         -   `js/`: Archivos JavaScript (si los hubiera).
     -   `templates/`: Plantillas HTML de Jinja2.
-    -   `instance/`: Este directorio se creará automáticamente al ejecutar la aplicación y contendrá la base de datos SQLite (`plataforma_apuntes.db`). Asegúrate de que el servidor tenga permisos para escribir en esta ubicación dentro de `src/`.
+    -   `instance/`: Este directorio se creará automáticamente al ejecutar la aplicación y contendrá la base de datos SQLite (`crunevo.sqlite3`). Asegúrate de que el servidor tenga permisos para escribir en esta ubicación dentro de `src/`.
 -   `requirements.txt`: Lista todas las dependencias de Python necesarias para el proyecto.
 -   `venv/`: Entorno virtual de Python (generalmente no se sube al servidor, se recrea allí).
 -   `.env`: Archivo para variables de entorno (ej. `SECRET_KEY`, `SQLALCHEMY_DATABASE_URI`, `DATABASE_DIR`). **Importante:** este archivo contiene información sensible y debe configurarse adecuadamente en el servidor. Puedes definir `DATABASE_DIR` para indicar un directorio con permisos de escritura donde se creará la base de datos SQLite. Si no se define o el directorio no es escribible, la aplicación intentará usar `/tmp/crunevo_instance` de forma automática. Del mismo modo, si `SQLALCHEMY_DATABASE_URI` apunta a un archivo SQLite en una ruta sin permisos de escritura, se ajustará automáticamente a ese directorio temporal.
@@ -27,11 +27,11 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
     *   Un servidor web como Nginx o Apache (opcional, pero recomendado para servir archivos estáticos y como proxy inverso).
 
 2.  **Subir los Archivos:**
-    *   Sube el contenido de la carpeta `deployment_cantuta_app` (o el ZIP que te proporcionaré) a tu servidor, excluyendo idealmente la carpeta `venv` (se recreará).
+    *   Sube el contenido de la carpeta `CRUNEVO` (o el ZIP que te proporcionaré) a tu servidor, excluyendo idealmente la carpeta `venv` (se recreará).
 
 3.  **Crear y Activar un Entorno Virtual:**
     ```bash
-    cd ruta/a/deployment_cantuta_app
+    cd ruta/a/CRUNEVO
     python3 -m venv venv
     source venv/bin/activate
     ```
@@ -42,7 +42,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
     ```
 
 5.  **Configurar Variables de Entorno:**
-    *   Crea o edita el archivo `.env` en la raíz de `deployment_cantuta_app`.
+    *   Crea o edita el archivo `.env` en la raíz de `CRUNEVO`.
     *   Asegúrate de que `SECRET_KEY` sea una clave fuerte y única.
     *   Verifica que `SQLALCHEMY_DATABASE_URI` (o `DATABASE_URL`) o `DATABASE_DIR` apunten a una ubicación con permisos de escritura para la base de datos. Si usas SQLite, puedes establecer `DATABASE_DIR` con el directorio deseado y la aplicación generará allí el archivo `crunevo.sqlite3`. Si la ruta indicada no es escribible, la aplicación recurrirá a `/tmp/crunevo_instance`.
 
@@ -51,12 +51,12 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
 
 7.  **Ejecutar con un Servidor WSGI (Ejemplo con Gunicorn):**
     *   Instala Gunicorn: `pip install gunicorn`
-    *   Ejecuta la aplicación (desde el directorio `deployment_cantuta_app` donde está `src/`):
+    *   Ejecuta la aplicación (desde el directorio `CRUNEVO`):
         ```bash
-        gunicorn --workers 4 --bind 0.0.0.0:PUERTO_DESEADO src.main:app
+        gunicorn --workers 4 --bind 0.0.0.0:PUERTO_DESEADO CRUNEVO/run:app
         ```
         Reemplaza `PUERTO_DESEADO` por el puerto en el que quieres que corra la aplicación (ej. 8000).
-        El `src.main:app` le dice a Gunicorn que busque el objeto `app` de Flask dentro del archivo `main.py` que está en el paquete `src`.
+        El `CRUNEVO/run:app` le dice a Gunicorn que busque el objeto `app` de Flask en el archivo `run.py` ubicado en la carpeta `CRUNEVO`.
 
 8.  **Configurar un Servidor Web (Nginx/Apache - Opcional pero Recomendado):**
 *   Configura Nginx o Apache para que actúe como proxy inverso hacia Gunicorn y para servir los archivos estáticos directamente (desde `src/static/`). Esto mejora el rendimiento y la seguridad.
@@ -81,7 +81,7 @@ services:
     name: crunevo
     env: python
     buildCommand: pip install -r CRUNEVO/requirements.txt
-    startCommand: gunicorn -b 0.0.0.0:$PORT CRUNEVO.run:app
+    startCommand: gunicorn -b 0.0.0.0:$PORT CRUNEVO/run:app
     envVars:
       - key: DATABASE_DIR
         value: /data
