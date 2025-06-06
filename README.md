@@ -47,3 +47,12 @@ out of the box.
    ```bash
    pytest -q CRUNEVO/tests
    ```
+
+## Deployment on Render
+
+The repository includes a `render.yaml` file that builds the project and starts the application with Gunicorn. A persistent disk is mounted at `/data` and the environment variable `DATABASE_DIR` is set to that path so the SQLite database can be created. Gunicorn is listed in `CRUNEVO/requirements.txt` so it is installed automatically during the build step.
+
+1. Push the repository to a new Render web service.
+2. Make sure the service has a persistent disk attached at `/data`.
+3. Deploy; Render will install the requirements and start the app using the command defined in `render.yaml`.
+
