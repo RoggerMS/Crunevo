@@ -16,7 +16,7 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
     -   `instance/`: Este directorio se creará automáticamente al ejecutar la aplicación y contendrá la base de datos SQLite (`plataforma_apuntes.db`). Asegúrate de que el servidor tenga permisos para escribir en esta ubicación dentro de `src/`.
 -   `requirements.txt`: Lista todas las dependencias de Python necesarias para el proyecto.
 -   `venv/`: Entorno virtual de Python (generalmente no se sube al servidor, se recrea allí).
--   `.env`: Archivo para variables de entorno (ej. `SECRET_KEY`, `SQLALCHEMY_DATABASE_URI`, `DATABASE_DIR`). **Importante:** este archivo contiene información sensible y debe configurarse adecuadamente en el servidor. Puedes definir `DATABASE_DIR` para indicar un directorio con permisos de escritura donde se creará la base de datos SQLite. Si no se define, la aplicación intentará crearla dentro del proyecto y, si ese lugar es de solo lectura, utilizará `/tmp` de forma automática.
+-   `.env`: Archivo para variables de entorno (ej. `SECRET_KEY`, `SQLALCHEMY_DATABASE_URI`, `DATABASE_DIR`). **Importante:** este archivo contiene información sensible y debe configurarse adecuadamente en el servidor. Puedes definir `DATABASE_DIR` para indicar un directorio con permisos de escritura donde se creará la base de datos SQLite. Si no se define o el directorio no es escribible, la aplicación intentará usar `/tmp/crunevo_instance` de forma automática.
 
 ## Pasos Generales para el Despliegue:
 
