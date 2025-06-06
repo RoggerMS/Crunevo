@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from src.models import db
-from src.models.user import User
+from ..models import db
+from ..models.user import User
 
 # Crear el blueprint para las rutas de usuario
 user_bp = Blueprint("user", __name__, url_prefix="/user")
