@@ -20,3 +20,9 @@ def ranking():
 def feed():
     notes = Note.query.order_by(Note.upload_date.desc()).limit(20).all()
     return render_template('feed.html', notes=notes)
+
+
+@main_bp.route('/about')
+def about():
+    """Página informativa sobre el proyecto."""
+    return render_template('about.html')
