@@ -4,8 +4,10 @@ Crunevo is a small Flask application. The repository contains the `CRUNEVO` fold
 
 The deployment on platforms such as Render requires that the SQLite database is
 stored on a writable disk. If the app fails with
-`sqlite3.OperationalError: unable to open database file` ensure that the
-application can write to the configured path.
+`sqlite3.OperationalError: unable to open database file` it usually means the
+application does not have permission to create the database file. Make sure a
+persistent disk is mounted (for example at `/data`) or set a custom writable
+location with the variables described below.
 
 Set the environment variable `DATABASE_DIR` (or `SQLALCHEMY_DATABASE_URI`) to a
 writable directory. Paths containing `~` are expanded automatically.
