@@ -73,6 +73,22 @@ SQLALCHEMY_DATABASE_URI=sqlite:////data/crunevo.sqlite3
 
 Esto garantiza que la base de datos pueda crearse correctamente y que las operaciones de registro o inicio de sesión funcionen sin problemas.
 
+Un ejemplo de archivo `render.yaml` para automatizar esta configuración sería:
+
+```yaml
+services:
+  - type: web
+    name: crunevo
+    env: python
+    buildCommand: pip install -r CRUNEVO/requirements.txt
+    startCommand: gunicorn -b 0.0.0.0:$PORT CRUNEVO.run:app
+    envVars:
+      - key: DATABASE_DIR
+        value: /data
+```
+
+Guarda este archivo en la raíz del repositorio antes de conectar el proyecto con **Render**.
+
 ## Consideraciones Adicionales:
 
 *   **Modo Debug:** Asegúrate de que `debug=False` en `src/main.py` para producción.
