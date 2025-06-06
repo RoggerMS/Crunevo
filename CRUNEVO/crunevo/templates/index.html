@@ -1,16 +1,36 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Crunevo - Inicio</title>
-    <style>
-        body { background: #5f27cd; color: white; font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { font-size: 2.5rem; }
-    </style>
-</head>
-<body>
-    <h1>Bienvenido a CRUNEVO</h1>
-    <p>Red social educativa en construcción...</p>
-</body>
-</html>
+{% block title %}Inicio - CRUNEVO{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="hero text-center">
+    <h1 class="display-4 fw-bold">Bienvenido a CRUNEVO</h1>
+    <p class="lead">La red social de apuntes para compartir conocimiento universitario.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mt-3">Únete Gratis</a>
+</section>
+
+<section class="features py-5">
+    <div class="row">
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-file-alt fa-3x mb-3 text-primary"></i>
+            <h3>Comparte Apuntes</h3>
+            <p>Sube tus apuntes y ayuda a otros estudiantes.</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+            <h3>Conéctate</h3>
+            <p>Sigue a tus compañeros y descubre nuevo material.</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-star fa-3x mb-3 text-primary"></i>
+            <h3>Ranking</h3>
+            <p>Obtén reconocimiento por tus aportes y gana puntos.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
