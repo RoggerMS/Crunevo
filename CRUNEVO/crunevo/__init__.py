@@ -41,7 +41,16 @@ def create_app():
         return User.query.get(int(user_id))
 
     with app.app_context():
-        db.create_all()
+        from sqlalchemy.exc import OperationalError
+
+        try:
+            db.create_all()
+        except OperationalError as exc:
+            raise RuntimeError(
+                "Failed to initialize the database. Check that the path "
+                "specified in SQLALCHEMY_DATABASE_URI is writable and that "
+                "DATABASE_DIR points to a directory with write permissions."
+            ) from exc
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
