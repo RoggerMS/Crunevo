@@ -53,9 +53,9 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
     *   Instala Gunicorn: `pip install gunicorn`
     *   Ejecuta la aplicación (desde el directorio `deployment_cantuta_app` donde está `src/`):
         ```bash
-        gunicorn --workers 4 --bind 0.0.0.0:PORTA_DESEJADA src.main:app
+        gunicorn --workers 4 --bind 0.0.0.0:PUERTO_DESEADO src.main:app
         ```
-        Reemplaza `PORTA_DESEJADA` por el puerto en el que quieres que corra la aplicación (ej. 8000).
+        Reemplaza `PUERTO_DESEADO` por el puerto en el que quieres que corra la aplicación (ej. 8000).
         El `src.main:app` le dice a Gunicorn que busque el objeto `app` de Flask dentro del archivo `main.py` que está en el paquete `src`.
 
 8.  **Configurar un Servidor Web (Nginx/Apache - Opcional pero Recomendado):**
