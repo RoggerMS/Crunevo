@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from ..models import db
 from ..models.user import User
+import logging
 
 # Crear el blueprint para las rutas de usuario
 user_bp = Blueprint("user", __name__, url_prefix="/user")
@@ -9,15 +10,16 @@ user_bp = Blueprint("user", __name__, url_prefix="/user")
 @user_bp.route("/profile")
 @login_required
 def profile():
-    # TODO: Fetch user's uploaded notes and download history
-    uploaded_notes = []  # Placeholder: Reemplazar con consulta real
-    download_history = []  # Placeholder: Reemplazar con consulta real
+    """Display the profile of the logged in user."""
+    # Obtener los apuntes subidos y el historial de descargas
+    uploaded_notes = current_user.notes
+    download_history = current_user.downloads
 
     # Calcular estadísticas del usuario
     user_stats = {
-        "notes_uploaded": len(uploaded_notes),  # Reemplazar con consulta real
-        "notes_downloaded": len(download_history),  # Reemplazar con consulta real
-        "likes_received": current_user.likes_received if hasattr(current_user, "likes_received") else 0,
+        "notes_uploaded": len(uploaded_notes),
+        "notes_downloaded": len(download_history),
+        "likes_received": sum(note.likes_count for note in uploaded_notes),
     }
 
     # Determinar nivel del usuario basado en créditos
@@ -49,7 +51,7 @@ def edit_profile():
         user.career = request.form.get("career", user.career)
         user.study_year = request.form.get("study_year", user.study_year)
         user.bio = request.form.get("bio", user.bio)
-        # TODO: Manejar actualización de foto de perfil
+        # TODO: agregar soporte para actualizar foto de perfil
 
         try:
             db.session.commit()
@@ -58,7 +60,7 @@ def edit_profile():
         except Exception as e:
             db.session.rollback()
             flash(f"Error al actualizar el perfil: {e}", "danger")
-            # TODO: Registrar el error en un log
+            logging.exception("Error al actualizar el perfil")
 
     # Prellenar el formulario para la solicitud GET
     return render_template("edit_profile.html", user=user)
