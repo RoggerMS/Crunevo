@@ -9,33 +9,43 @@
 
 {% block content %}
 <section class="hero text-center">
-    <h1 class="display-4 fw-bold">Bienvenido a CRUNEVO</h1>
-    <p class="lead">La red social de apuntes para compartir conocimiento universitario y ganar recompensas.</p>
-    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mt-3">Únete Gratis</a>
+    <div class="container py-5">
+        <h1 class="display-4 fw-bold">Bienvenido a CRUNEVO</h1>
+        <p class="lead">La red social de apuntes para compartir conocimiento universitario y ganar recompensas.</p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mt-3">Únete Gratis</a>
+    </div>
 </section>
 
 <section class="features py-5">
-    <div class="row">
-        <div class="col-md-4 text-center mb-4">
-            <a href="{{ url_for('note.upload_note') }}" class="text-decoration-none text-dark">
-                <i class="fas fa-file-alt fa-3x mb-3 text-primary"></i>
-                <h3>Comparte Apuntes</h3>
-                <p>Sube tus apuntes, ayuda a otros estudiantes y acumula créditos que podrás canjear por dinero y productos.</p>
-            </a>
-        </div>
-        <div class="col-md-4 text-center mb-4">
-            <a href="{{ url_for('main.feed') }}" class="text-decoration-none text-dark">
-                <i class="fas fa-users fa-3x mb-3 text-primary"></i>
-                <h3>Conéctate</h3>
-                <p>Sigue a tus compañeros y descubre nuevo material.</p>
-            </a>
-        </div>
-        <div class="col-md-4 text-center mb-4">
-            <a href="{{ url_for('main.ranking') }}" class="text-decoration-none text-dark">
-                <i class="fas fa-star fa-3x mb-3 text-primary"></i>
-                <h3>Ranking</h3>
-                <p>Obtén reconocimiento por tus aportes y gana puntos.</p>
-            </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="feature-card p-3 h-100">
+                    <a href="{{ url_for('note.upload_note') }}" class="text-decoration-none text-dark">
+                        <i class="fas fa-file-alt fa-3x mb-3 icon-primary"></i>
+                        <h3>Comparte Apuntes</h3>
+                        <p>Sube tus apuntes, ayuda a otros estudiantes y acumula créditos que podrás canjear por dinero y productos.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="feature-card p-3 h-100">
+                    <a href="{{ url_for('main.feed') }}" class="text-decoration-none text-dark">
+                        <i class="fas fa-users fa-3x mb-3 icon-primary"></i>
+                        <h3>Conéctate</h3>
+                        <p>Sigue a tus compañeros y descubre nuevo material.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="feature-card p-3 h-100">
+                    <a href="{{ url_for('main.ranking') }}" class="text-decoration-none text-dark">
+                        <i class="fas fa-star fa-3x mb-3 icon-primary"></i>
+                        <h3>Ranking</h3>
+                        <p>Obtén reconocimiento por tus aportes y gana puntos.</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>

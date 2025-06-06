@@ -1,14 +1,35 @@
 .hero {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    background: linear-gradient(135deg, #6610f2 0%, #6f42c1 100%);
     color: #fff;
     padding: 4rem 1rem;
 }
+.hero .btn-primary {
+    background-color: #ffce00;
+    border-color: #ffce00;
+    color: #000;
+}
+.hero .btn-primary:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
 .features h3 {
     margin-top: 1rem;
     font-weight: bold;
 }
 .features p {
     color: #555;
+}
+
+.feature-card {
+    transition: transform 0.2s ease;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
 }
 
 .cta {
