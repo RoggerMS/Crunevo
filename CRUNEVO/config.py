@@ -22,11 +22,17 @@ class Config:
             return fallback
 
     _custom_dir_env = os.getenv("DATABASE_DIR")
-    if not _custom_dir_env:
-        default_dir = _ensure_writable(Path(__file__).resolve().parent / "crunevo" / "instance")
-        _custom_dir = str(default_dir)
-    else:
+    if _custom_dir_env:
         _custom_dir = str(_ensure_writable(Path(_custom_dir_env).expanduser()))
+    else:
+        data_dir = Path("/data")
+        if data_dir.is_dir():
+            _custom_dir = str(_ensure_writable(data_dir))
+        else:
+            default_dir = _ensure_writable(
+                Path(__file__).resolve().parent / "crunevo" / "instance"
+            )
+            _custom_dir = str(default_dir)
 
     env_uri = (
         os.getenv("SQLALCHEMY_DATABASE_URI")
