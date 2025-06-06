@@ -1,6 +1,6 @@
 # Crunevo
 
-Crunevo is a small Flask application. The repository contains the `CRUNEVO` folder with the application and tests.
+Crunevo is a small Flask application. The repository contains the `CRUNEVO` folder with the application and tests. It uses SQLite by default so it works out of the box with almost no configuration.
 
 The deployment on platforms such as Render requires that the SQLite database is
 stored on a writable disk. If the app fails with
@@ -18,8 +18,32 @@ it is, that path is used automatically. The provided `render.yaml` mounts a
 persistent disk at `/data` and sets `DATABASE_DIR=/data`, so deployment works
 out of the box.
 
-Run tests with:
+## Quick start
 
-```bash
-pytest -q CRUNEVO/tests
-```
+1. **Install dependencies**
+
+   ```bash
+   pip install -r CRUNEVO/requirements.txt
+   ```
+
+2. **Choose a writable directory for the database**
+
+   Set the environment variable `DATABASE_DIR` (or `SQLALCHEMY_DATABASE_URI`) to a directory where the application can create the `crunevo.sqlite3` file. For example:
+
+   ```bash
+   export DATABASE_DIR=/data
+   ```
+
+   The directory must exist and be writable. You can also set `SQLALCHEMY_DATABASE_URI` directly if you prefer.
+
+3. **Run the application**
+
+   ```bash
+   python CRUNEVO/run.py
+   ```
+
+4. **Run tests (optional)**
+
+   ```bash
+   pytest -q CRUNEVO/tests
+   ```
