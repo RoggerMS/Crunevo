@@ -21,12 +21,12 @@ class Config:
             fallback.mkdir(parents=True, exist_ok=True)
             return fallback
 
-    _custom_dir = os.getenv("DATABASE_DIR")
-    if not _custom_dir:
+    _custom_dir_env = os.getenv("DATABASE_DIR")
+    if not _custom_dir_env:
         default_dir = _ensure_writable(Path(__file__).resolve().parent / "crunevo" / "instance")
         _custom_dir = str(default_dir)
     else:
-        _custom_dir = str(_ensure_writable(Path(_custom_dir)))
+        _custom_dir = str(_ensure_writable(Path(_custom_dir_env).expanduser()))
 
     env_uri = (
         os.getenv("SQLALCHEMY_DATABASE_URI")
@@ -35,7 +35,7 @@ class Config:
     )
     if env_uri:
         if env_uri.startswith("sqlite:///"):
-            db_path = Path(env_uri.replace("sqlite:///", ""))
+            db_path = Path(env_uri.replace("sqlite:///", "")).expanduser()
             writable_parent = _ensure_writable(db_path.parent)
             db_path = writable_parent / db_path.name
             env_uri = f"sqlite:///{db_path}"
