@@ -59,7 +59,19 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
         El `src.main:app` le dice a Gunicorn que busque el objeto `app` de Flask dentro del archivo `main.py` que está en el paquete `src`.
 
 8.  **Configurar un Servidor Web (Nginx/Apache - Opcional pero Recomendado):**
-    *   Configura Nginx o Apache para que actúe como proxy inverso hacia Gunicorn y para servir los archivos estáticos directamente (desde `src/static/`). Esto mejora el rendimiento y la seguridad.
+*   Configura Nginx o Apache para que actúe como proxy inverso hacia Gunicorn y para servir los archivos estáticos directamente (desde `src/static/`). Esto mejora el rendimiento y la seguridad.
+
+## Despliegue en Render
+
+En servicios como **Render**, el directorio de la aplicación es de solo lectura. Si usas SQLite y no configuras las rutas adecuadas, verás errores como `sqlite3.OperationalError: unable to open database file` al intentar registrarte o iniciar sesión. Define una de las siguientes variables de entorno con una ruta escribible (por ejemplo, `/data` o `/tmp/crunevo_instance`):
+
+```bash
+DATABASE_DIR=/data              # Carpeta donde se guardará `crunevo.sqlite3`
+# o
+SQLALCHEMY_DATABASE_URI=sqlite:////data/crunevo.sqlite3
+```
+
+Esto garantiza que la base de datos pueda crearse correctamente y que las operaciones de registro o inicio de sesión funcionen sin problemas.
 
 ## Consideraciones Adicionales:
 
@@ -69,3 +81,4 @@ Este archivo contiene instrucciones básicas para desplegar la aplicación Flask
 *   **Seguridad:** Revisa las configuraciones de seguridad de Flask y de tu servidor.
 
 ¡Mucha suerte con el despliegue!
+
