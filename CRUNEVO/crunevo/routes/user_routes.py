@@ -20,11 +20,11 @@ def profile():
         "likes_received": current_user.likes_received if hasattr(current_user, "likes_received") else 0,
     }
 
-    # Determinar nivel del usuario basado en puntos
+    # Determinar nivel del usuario basado en créditos
     user_level = "Novato"  # Placeholder
-    if current_user.points > 1000:
+    if current_user.credits > 1000:
         user_level = "Experto"
-    elif current_user.points > 100:
+    elif current_user.credits > 100:
         user_level = "Ayudante"
 
     return render_template(

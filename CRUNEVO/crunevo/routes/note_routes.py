@@ -122,7 +122,7 @@ def upload_note():
 
                     user = User.query.get(user_id)
                     if user:
-                        user.points = (user.points or 0) + 10
+                        user.credits = (user.credits or 0) + 10
 
                     db.session.add(new_note)
                     db.session.commit()
