@@ -26,7 +26,9 @@
             </div>
             <div class="profile-header-actions">
                 <a href="{{ url_for(\'user.edit_profile\') }}" class="btn btn-primary">Editar Perfil</a>
+                {% if current_user.is_authenticated %}
                 <a href="{{ url_for('note.upload_note') }}" class="btn btn-secondary"><i class="fas fa-upload"></i> Subir Apunte</a>
+                {% endif %}
             </div>
         </div>
         <div class="profile-stats-v2">

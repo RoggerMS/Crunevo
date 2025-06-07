@@ -1,5 +1,4 @@
-
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash, current_app
 from flask_login import LoginManager
 from crunevo.models import db
 from crunevo.models.user import User as _User
@@ -31,6 +30,8 @@ from crunevo.routes.admin_routes import admin_bp
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
+login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
+
 
 def create_app():
     app = Flask(__name__)
@@ -38,6 +39,17 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+
+    @login_manager.unauthorized_handler
+    def handle_unauthorized():
+        if request.path in {"/upload", "/subir"}:
+            current_app.logger.warning(
+                f"Upload attempt without login from {request.remote_addr}"
+            )
+        flash(
+            login_manager.login_message, category=login_manager.login_message_category
+        )
+        return redirect(url_for(login_manager.login_view, next=request.url))
 
     @login_manager.user_loader
     def load_user(user_id: str):
