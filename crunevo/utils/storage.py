@@ -7,7 +7,7 @@ from botocore.exceptions import NoCredentialsError, ClientError
 import boto3
 
 # Allowed extensions for note uploads
-ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "doc", "docx"}
+ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "doc", "docx", "txt"}
 
 
 def allowed_file(filename: str) -> bool:

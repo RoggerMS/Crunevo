@@ -39,7 +39,7 @@
                     </p>
                     <p class="mb-2">{{ note.description[:120] }}...</p>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-dark">📄 Ver Apunte</a>
+                        <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-sm btn-outline-dark">📄 Ver Apunte</a>
                         <small class="text-muted align-self-center">{{ note.page_count or '?' }} páginas</small>
                     </div>
                 </div>
@@ -49,6 +49,7 @@
             <button class="btn btn-sm btn-outline-secondary">❤️ Me gusta</button>
             <button class="btn btn-sm btn-outline-secondary">💬 Comentar</button>
             <button class="btn btn-sm btn-outline-secondary">🔖 Guardar</button>
+            <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-primary">⬇️ Descargar</a>
             <button class="btn btn-sm btn-outline-secondary ms-auto">📤 Compartir</button>
         </div>
     </div>

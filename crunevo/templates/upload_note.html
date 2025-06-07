@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.addEventListener('change', function() {
             if (this.files && this.files[0]) {
                 const file = this.files[0];
-                filePreview.textContent = `Archivo seleccionado: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                filePreview.textContent = `Archivo: ${file.name} - ${(file.size / 1024 / 1024).toFixed(2)} MB - ${file.type || 'tipo desconocido'}`;
                 // Aquí se podría añadir lógica para mostrar miniatura si es imagen
             } else {
                 filePreview.textContent = '';

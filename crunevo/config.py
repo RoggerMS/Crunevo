@@ -78,3 +78,5 @@ class Config:
         str(Path(__file__).resolve().parent / "static" / "uploads" / "notes"),
     )
     Path(NOTE_UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
+
+    MAX_NOTE_FILE_SIZE_MB = int(os.getenv("MAX_NOTE_FILE_SIZE_MB", "20"))
