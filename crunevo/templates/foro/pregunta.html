@@ -8,11 +8,17 @@
   <p>{{ pregunta.contenido }}</p>
   <hr>
   <h4>Respuestas</h4>
-  {% for r in respuestas %}
-    <div class="border p-2 mb-2">
-      <strong>{{ r.autor.username }}</strong>: {{ r.contenido }}
-    </div>
-  {% endfor %}
+  {% if respuestas %}
+    {% for r in respuestas %}
+      <div class="border p-2 mb-2">
+        <strong>{{ r.autor.username }}{% if r.autor_id == pregunta.autor_id %} (Autor){% endif %}</strong>:
+        {{ r.contenido }}
+        <div class="text-muted small">{{ r.fecha.strftime('%d/%m/%Y') }} | {{ r.likes }} 👍</div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">No hay respuestas aún.</p>
+  {% endif %}
   <form action="/foro/{{ pregunta.id }}/responder" method="POST" class="mt-3">
       <div class="mb-2">
         <textarea name="contenido" class="form-control" required placeholder="Escribe tu respuesta..."></textarea>

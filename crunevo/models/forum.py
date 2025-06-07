@@ -19,4 +19,5 @@ class Respuesta(db.Model):
     autor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     autor = db.relationship('User', backref='respuestas')
     pregunta_id = db.Column(db.Integer, db.ForeignKey('pregunta.id'), nullable=False)
+    likes = db.Column(db.Integer, default=0)
     fecha = db.Column(db.DateTime, default=datetime.utcnow)

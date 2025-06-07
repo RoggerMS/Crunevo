@@ -7,8 +7,9 @@ forum_bp = Blueprint('forum', __name__, url_prefix='/foro')
 
 @forum_bp.route('/')
 def foro():
-    preguntas = Pregunta.query.order_by(Pregunta.fecha_creacion.desc()).all()
-    return render_template('foro/foro.html', preguntas=preguntas)
+    page = request.args.get('page', 1, type=int)
+    pagination = Pregunta.query.order_by(Pregunta.fecha_creacion.desc()).paginate(page=page, per_page=10)
+    return render_template('foro/foro.html', preguntas=pagination.items, pagination=pagination)
 
 @forum_bp.route('/pregunta/<int:id>')
 def ver_pregunta(id):
@@ -20,8 +21,11 @@ def ver_pregunta(id):
 @login_required
 def nueva_pregunta():
     if request.method == 'POST':
-        titulo = request.form['titulo']
-        contenido = request.form['contenido']
+        titulo = request.form['titulo'].strip()
+        contenido = request.form['contenido'].strip()
+        if len(titulo) < 5 or len(contenido) < 20:
+            flash('El título debe tener al menos 5 caracteres y el contenido 20.', 'danger')
+            return redirect(url_for('forum.nueva_pregunta'))
         nueva = Pregunta(titulo=titulo, contenido=contenido, autor_id=current_user.id)
         db.session.add(nueva)
         db.session.commit()
@@ -29,10 +33,13 @@ def nueva_pregunta():
         return redirect(url_for('forum.foro'))
     return render_template('foro/nueva_pregunta.html')
 
-@forum_bp.route('/responder/<int:pregunta_id>', methods=['POST'])
+@forum_bp.route('/<int:pregunta_id>/responder', methods=['POST'])
 @login_required
 def responder(pregunta_id):
-    contenido = request.form['contenido']
+    contenido = request.form['contenido'].strip()
+    if len(contenido) < 20:
+        flash('La respuesta debe tener al menos 20 caracteres.', 'danger')
+        return redirect(url_for('forum.ver_pregunta', id=pregunta_id))
     respuesta = Respuesta(contenido=contenido, autor_id=current_user.id, pregunta_id=pregunta_id)
     db.session.add(respuesta)
     db.session.commit()
