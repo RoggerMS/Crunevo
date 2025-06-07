@@ -71,6 +71,7 @@ step.
 
 ## Deployment on Railway
 
+For detailed steps see [README_DEPLOY_RAILWAY.md](README_DEPLOY_RAILWAY.md).
 If you move the project to **Railway**, attach a volume so the SQLite database
 can be stored on a writable filesystem. Set the mount path of that volume using
 the `RAILWAY_VOLUME_MOUNT_PATH` environment variable or define `DATABASE_DIR`
