@@ -17,7 +17,7 @@
 
 ### Comando de inicio
 ```bash
-gunicorn -b 0.0.0.0:$PORT crunevo.run:app
+gunicorn -b 0.0.0.0:$PORT run:app
 ```
 
 ## 3. Notas
