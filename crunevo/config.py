@@ -42,16 +42,29 @@ class Config:
         or os.getenv("DATABASE_URI")
         or os.getenv("DATABASE_URL")
     )
-    if env_uri:
-        if env_uri.startswith("sqlite:///"):
-            db_path = Path(env_uri.replace("sqlite:///", "")).expanduser()
-            writable_parent = _ensure_writable(db_path.parent)
-            db_path = writable_parent / db_path.name
-            env_uri = f"sqlite:///{db_path}"
-        SQLALCHEMY_DATABASE_URI = env_uri
+
+    if _custom_dir_env:
+        _custom_dir = str(_ensure_writable(Path(_custom_dir_env).expanduser()))
+        if env_uri and not env_uri.startswith("sqlite:///"):
+            SQLALCHEMY_DATABASE_URI = env_uri
+        else:
+            if env_uri and env_uri.startswith("sqlite:///"):
+                db_path = Path(env_uri.replace("sqlite:///", "")).expanduser()
+                filename = db_path.name
+            else:
+                filename = "crunevo_v2.sqlite3"
+            SQLALCHEMY_DATABASE_URI = f"sqlite:///{Path(_custom_dir) / filename}"
     else:
-        _default_db = Path(_custom_dir) / "crunevo.sqlite3"
-        SQLALCHEMY_DATABASE_URI = f"sqlite:///{_default_db}"
+        if env_uri:
+            if env_uri.startswith("sqlite:///"):
+                db_path = Path(env_uri.replace("sqlite:///", "")).expanduser()
+                writable_parent = _ensure_writable(db_path.parent)
+                db_path = writable_parent / db_path.name
+                env_uri = f"sqlite:///{db_path}"
+            SQLALCHEMY_DATABASE_URI = env_uri
+        else:
+            _default_db = Path(_custom_dir) / "crunevo_v2.sqlite3"
+            SQLALCHEMY_DATABASE_URI = f"sqlite:///{_default_db}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = os.getenv("DEBUG", "0") == "1"
 
