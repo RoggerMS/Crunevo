@@ -23,14 +23,14 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('store.tienda') }}">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.ranking') }}">Ranking</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('forum.foro') }}">Foro</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">Acerca de</a></li>
                     {% if current_user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Mis Apuntes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.my_notes') }}">Mis Apuntes</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('note.upload_note') }}">Subir</a></li>
                         {% if current_user.role == 'admin' %}
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Panel Admin</a></li>
                         {% endif %}
                     {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">Acerca de</a></li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     {% if current_user.is_authenticated %}

@@ -63,3 +63,11 @@ def edit_profile():
 
     # Prellenar el formulario para la solicitud GET
     return render_template("edit_profile.html", user=user)
+
+
+@user_bp.route("/notes")
+@login_required
+def my_notes():
+    """Display notes uploaded by the current user."""
+    uploaded_notes = current_user.notes
+    return render_template("my_notes.html", notes=uploaded_notes)
