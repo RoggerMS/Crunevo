@@ -81,7 +81,7 @@ database there.
 Run the service with Gunicorn just as in Render:
 
 ```bash
-gunicorn -b 0.0.0.0:$PORT crunevo.run:app
+gunicorn -b 0.0.0.0:$PORT run:app
 ```
 
 Without a volume the application falls back to a temporary directory and the
