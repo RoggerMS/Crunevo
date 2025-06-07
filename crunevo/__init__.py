@@ -25,6 +25,9 @@ from crunevo.routes.main_routes import main_bp
 from crunevo.routes.auth_routes import auth_bp
 from crunevo.routes.store_routes import store_bp
 from crunevo.routes.note_routes import note_bp
+from crunevo.routes.forum_routes import forum_bp
+from crunevo.routes.user_routes import user_bp
+from crunevo.routes.admin_routes import admin_bp
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
@@ -56,5 +59,8 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(store_bp)
     app.register_blueprint(note_bp)
+    app.register_blueprint(forum_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(admin_bp)
 
     return app

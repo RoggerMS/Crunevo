@@ -1,18 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f0f2f5;
     margin: 0;
     padding: 20px;
+    color: #2c2c2c;
 }
 
 .container {
     background: white;
     padding: 30px;
     border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .navbar-brand {
     font-weight: 600;
+}
+
+.navbar {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    text-decoration: underline;
 }
 
 .auth-container {
@@ -26,4 +40,10 @@ body {
 
 .icon-primary {
     color: #0d6efd;
+}
+
+.btn:hover,
+.btn:focus {
+    opacity: 0.9;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }

@@ -5,10 +5,11 @@
     <title>{% block title %}CRUNEVO{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     {% block head_extra %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">CRUNEVO</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,10 +22,19 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('note.notes_section') }}">Apuntes</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('store.tienda') }}">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.ranking') }}">Ranking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('forum.foro') }}">Foro</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">Acerca de</a></li>
-                </ul>
-                <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Mis Apuntes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('note.upload_note') }}">Subir</a></li>
+                        {% if current_user.role == 'admin' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Panel Admin</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}"><i class="fas fa-user-circle"></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Salir</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Ingresar</a></li>

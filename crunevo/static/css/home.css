@@ -3,6 +3,11 @@
     color: #fff;
     padding: 4rem 1rem;
 }
+.hero-box {
+    background: rgba(255,255,255,0.85);
+    color: #1a1a1a;
+    border-radius: 0.5rem;
+}
 .hero .btn-primary {
     background-color: #ffce00;
     border-color: #ffce00;
