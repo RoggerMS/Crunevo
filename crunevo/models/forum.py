@@ -1,6 +1,6 @@
 # models/forum.py
 from datetime import datetime
-from . import db
+from crunevo.models import db
 
 class Pregunta(db.Model):
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

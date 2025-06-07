@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from models.product import Product
+from crunevo.models.product import Product
 
 market_bp = Blueprint('market', __name__, url_prefix='/marketplace')
 

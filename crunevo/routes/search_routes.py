@@ -1,8 +1,8 @@
 # src/routes/search_routes.py
 from flask import Blueprint, request, jsonify, render_template
 from sqlalchemy import or_
-from ..models.note import Note
-from ..models.product import Product
+from crunevo.models.note import Note
+from crunevo.models.product import Product
 
 search_bp = Blueprint("search", __name__)
 

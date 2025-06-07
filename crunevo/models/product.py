@@ -1,5 +1,5 @@
 from datetime import datetime
-from . import db # Import db from the models package
+from crunevo.models import db  # Import db from the models package
 
 class Product(db.Model):
     __tablename__ = 'products'
