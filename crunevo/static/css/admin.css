@@ -1,0 +1,18 @@
+.admin-sidebar {
+  min-height: 100%;
+  background-color: #343a40;
+}
+.admin-sidebar .nav-link {
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link:hover {
+  background-color: #495057;
+}
+.admin-content {
+  padding: 1rem;
+}
+.admin-header {
+  background-color: #f8f9fa;
+}

@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, current_app
+import importlib
+import crunevo.config as config_module
 from flask_login import LoginManager
 from crunevo.models import db
 from crunevo.models.user import User as _User
@@ -35,7 +37,8 @@ login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object("crunevo.config.Config")
+    config = importlib.reload(config_module)
+    app.config.from_object(config.Config)
 
     db.init_app(app)
     login_manager.init_app(app)
