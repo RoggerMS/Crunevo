@@ -3,20 +3,66 @@
 {% block content %}
 <div class="container mt-4">
   <h2>Tienda Oficial</h2>
-  <div class="row">
-    {% for producto in productos %}
-    <div class="col-md-4 mb-3">
-      <div class="card">
-        <img src="{{ url_for('static', filename='uploads/productos/' ~ producto.imagen) }}" class="card-img-top" alt="{{ producto.nombre }}">
-        <div class="card-body">
-          <h5 class="card-title">{{ producto.nombre }}</h5>
-          <p class="card-text">{{ producto.descripcion[:100] }}...</p>
-          <strong>S/. {{ producto.precio }}</strong><br>
-          <a href="{{ url_for('store.producto', id=producto.id) }}" class="btn btn-sm btn-primary mt-2">Ver más</a>
-        </div>
+
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <input type="text" name="search" class="form-control" placeholder="Buscar" value="{{ search or '' }}">
+    </div>
+    <div class="col-md-2">
+      <select name="category" class="form-select">
+        <option value="">Todas</option>
+        <option value="utiles" {% if category == 'utiles' %}selected{% endif %}>Útiles</option>
+        <option value="ropa" {% if category == 'ropa' %}selected{% endif %}>Ropa</option>
+        <option value="snacks" {% if category == 'snacks' %}selected{% endif %}>Snacks</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input type="number" step="0.01" name="min_price" class="form-control" placeholder="Precio mín" value="{{ min_price if min_price is not none else '' }}">
+    </div>
+    <div class="col-md-2">
+      <input type="number" step="0.01" name="max_price" class="form-control" placeholder="Precio máx" value="{{ max_price if max_price is not none else '' }}">
+    </div>
+    <div class="col-md-2 d-flex align-items-center">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="available" name="available" {% if available %}checked{% endif %}>
+        <label class="form-check-label" for="available">Disponibles</label>
       </div>
     </div>
-    {% endfor %}
+    <div class="col-12 col-md-auto">
+      <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+  </form>
+
+  <div class="row">
+    {% if productos %}
+      {% for producto in productos %}
+      <div class="col-6 col-md-4 mb-3">
+        <div class="card h-100">
+          <img src="{{ producto.image_url or url_for('static', filename='images/product_placeholder.png') }}" class="card-img-top" alt="{{ producto.name }}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ producto.name }}</h5>
+            <p class="card-text flex-grow-1">{{ producto.description[:100] }}...</p>
+            <strong>S/. {{ producto.price }}</strong>
+            <a href="{{ url_for('store.producto', id=producto.id) }}" class="btn btn-sm btn-primary mt-2">Ver más</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">No hay productos disponibles.</p>
+      {% for i in range(3) %}
+      <div class="col-6 col-md-4 mb-3">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='images/product_placeholder.png') }}" class="card-img-top" alt="Ejemplo">
+          <div class="card-body">
+            <h5 class="card-title">Producto {{ i + 1 }}</h5>
+            <p class="card-text">Descripción del producto de ejemplo.</p>
+            <strong>S/. 0.00</strong>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 {% endblock %}

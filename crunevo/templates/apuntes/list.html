@@ -10,7 +10,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-truncate" title="{{ note.titulo }}">{{ note.titulo }}</h5>
                     <p class="card-text text-truncate flex-grow-1">{{ note.descripcion[:120] }}...</p>
-                    <a href="{{ url_for('notes.detalle_apunte', id=note.id) }}" class="btn btn-outline-primary mt-auto">Ver más</a>
+                    <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-outline-primary mt-auto">Ver más</a>
                 </div>
             </div>
         </div>

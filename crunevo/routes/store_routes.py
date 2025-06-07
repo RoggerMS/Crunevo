@@ -1,5 +1,5 @@
 # routes/store_routes.py
-from flask import Blueprint, render_template, redirect, url_for, session, flash
+from flask import Blueprint, render_template, redirect, url_for, session, flash, request
 from flask_login import login_required
 from crunevo.models.product import Product
 
@@ -7,8 +7,34 @@ store_bp = Blueprint('store', __name__, url_prefix='/tienda')
 
 @store_bp.route('/')
 def tienda():
-    productos = Product.query.all()
-    return render_template('tienda/store.html', productos=productos)
+    query = Product.query
+    search = request.args.get('search', '')
+    category = request.args.get('category')
+    min_price = request.args.get('min_price', type=float)
+    max_price = request.args.get('max_price', type=float)
+    available = request.args.get('available')
+
+    if search:
+        query = query.filter(Product.name.ilike(f"%{search}%"))
+    if category:
+        query = query.filter(Product.type == category)
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+    if available:
+        query = query.filter(Product.availability.is_(True))
+
+    productos = query.order_by(Product.created_at.desc()).all()
+    return render_template(
+        'tienda/store.html',
+        productos=productos,
+        search=search,
+        category=category,
+        min_price=min_price,
+        max_price=max_price,
+        available=bool(available),
+    )
 
 @store_bp.route('/<int:id>')
 def producto(id):

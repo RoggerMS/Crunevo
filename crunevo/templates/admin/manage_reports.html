@@ -8,7 +8,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <p class="mb-1"><strong>Motivo:</strong> {{ report.reason }}</p>
-        <p class="mb-1"><strong>Apunte:</strong> <a href="{{ url_for('notes.detail', note_id=report.note.id) }}">{{ report.note.title }}</a></p>
+        <p class="mb-1"><strong>Apunte:</strong> <a href="{{ url_for('note.note_detail', note_id=report.note.id) }}">{{ report.note.title }}</a></p>
         <p class="mb-3"><strong>Usuario:</strong> {{ report.reporter.username }} - {{ report.report_date.strftime('%Y-%m-%d') }}</p>
         <form action="{{ url_for('admin.update_report_status', report_id=report.id) }}" method="post" class="d-flex align-items-center">
           <select id="status-{{ report.id }}" name="status" class="form-select me-2 w-auto">

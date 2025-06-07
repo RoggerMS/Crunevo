@@ -24,7 +24,7 @@
         <small>{{ note.uploader.name }}</small>
       </div>
       <div class="mt-2 mt-md-0 d-flex gap-2">
-        <a href="{{ url_for('notes.detail', note_id=note.id) }}" class="btn btn-sm btn-outline-secondary">Ver</a>
+        <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-sm btn-outline-secondary">Ver</a>
         <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" onsubmit="return confirm('¿Estás seguro de eliminar este apunte?');">
           <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
         </form>

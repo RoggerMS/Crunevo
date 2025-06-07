@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
-{% block title %}{{ producto.nombre }}{% endblock %}
+{% block title %}{{ producto.name }}{% endblock %}
 {% block content %}
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-6">
-      <img src="{{ url_for('static', filename='uploads/productos/' ~ producto.imagen) }}" class="img-fluid">
+      <img src="{{ producto.image_url or url_for('static', filename='images/product_placeholder.png') }}" class="img-fluid" alt="{{ producto.name }}">
     </div>
     <div class="col-md-6">
-      <h2>{{ producto.nombre }}</h2>
-      <p>{{ producto.descripcion }}</p>
-      <h4>S/. {{ producto.precio }}</h4>
-      <p>Stock: {{ producto.stock }}</p>
-      <button class="btn btn-success">Añadir al carrito</button>
+      <h2>{{ producto.name }}</h2>
+      <p>{{ producto.description }}</p>
+      <h4>S/. {{ producto.price }}</h4>
+      <p>{% if producto.availability %}Disponible{% else %}Agotado{% endif %}</p>
+      <button class="btn btn-success" {% if not producto.availability %}disabled{% endif %}>Añadir al carrito</button>
     </div>
   </div>
 </div>
