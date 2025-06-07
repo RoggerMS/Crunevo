@@ -1,6 +1,6 @@
 # Crunevo
 
-Crunevo is a small Flask application. The repository contains the `CRUNEVO` folder with the application and tests. It uses SQLite by default so it works out of the box with almost no configuration.
+Crunevo is a small Flask application. The source code now lives in the `crunevo/` folder. It uses SQLite by default so it works out of the box with almost no configuration.
 
 The deployment on platforms such as Render requires that the SQLite database is
 stored on a writable disk. If the app fails with
@@ -25,7 +25,7 @@ out of the box.
 1. **Install dependencies**
 
    ```bash
-   pip install -r CRUNEVO/requirements.txt
+   pip install -r requirements.txt
    ```
 
 2. **Choose a writable directory for the database**
@@ -41,18 +41,18 @@ out of the box.
 3. **Run the application**
 
    ```bash
-   python CRUNEVO/run.py
+   python run.py
    ```
 
 4. **Run tests (optional)**
 
    ```bash
-   pytest -q CRUNEVO/tests
+   PYTHONPATH=. pytest -q crunevo/tests
    ```
    Make sure the requirements are installed first:
 
    ```bash
-   pip install -r CRUNEVO/requirements.txt
+   pip install -r requirements.txt
    ```
 
 ## Deployment on Render
@@ -61,7 +61,7 @@ For deployments on **Render**, create a `render.yaml` file that builds the
 project and starts the application with Gunicorn. The file should mount a
 persistent disk at `/data` and set the environment variable `DATABASE_DIR` to
 that path so the SQLite database can be created. Gunicorn is listed in
-`CRUNEVO/requirements.txt` so it is installed automatically during the build
+`requirements.txt` so it is installed automatically during the build
 step.
 
 1. Push the repository to a new Render web service.
@@ -81,7 +81,7 @@ database there.
 Run the service with Gunicorn just as in Render:
 
 ```bash
-gunicorn -b 0.0.0.0:$PORT CRUNEVO.run:app
+gunicorn -b 0.0.0.0:$PORT crunevo.run:app
 ```
 
 Without a volume the application falls back to a temporary directory and the
