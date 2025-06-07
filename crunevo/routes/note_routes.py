@@ -58,6 +58,7 @@ def notes_section():
 
 # --- Ruta: Subir Apunte ---
 @note_bp.route("/subir", methods=["GET", "POST"])
+@note_bp.route("/upload", methods=["GET", "POST"])
 def upload_note():
     if request.method == "POST":
         user_id = 1  # Usuario simulado por ahora

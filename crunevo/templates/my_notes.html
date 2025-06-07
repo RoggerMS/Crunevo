@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Mis Apuntes</h2>
+<ul>
+  {% for note in notes %}
+  <li>{{ note.title }}</li>
+  {% else %}
+  <li>No hay apuntes.</li>
+  {% endfor %}
+</ul>
+<a href="{{ url_for('main.index') }}">Volver al inicio</a>
+{% endblock %}

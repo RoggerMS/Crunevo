@@ -1,5 +1,5 @@
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from crunevo.models import db
 from crunevo.models.user import User as _User
@@ -62,5 +62,9 @@ def create_app():
     app.register_blueprint(forum_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        return render_template("500.html"), 500
 
     return app
