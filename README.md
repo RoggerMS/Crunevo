@@ -49,6 +49,11 @@ out of the box.
    ```bash
    pytest -q CRUNEVO/tests
    ```
+   Make sure the requirements are installed first:
+
+   ```bash
+   pip install -r CRUNEVO/requirements.txt
+   ```
 
 ## Deployment on Render
 
