@@ -8,7 +8,8 @@ main_bp = Blueprint('main', __name__)
 @main_bp.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('main.feed'))
+        notes = Note.query.order_by(Note.upload_date.desc()).limit(20).all()
+        return render_template('feed.html', notes=notes, user=current_user)
     return render_template('index.html')
 
 
@@ -18,10 +19,8 @@ def ranking():
 
 
 @main_bp.route('/feed')
-@login_required
-def feed():
-    notes = Note.query.order_by(Note.upload_date.desc()).limit(20).all()
-    return render_template('feed.html', notes=notes, user=current_user)
+def feed_redirect():
+    return redirect(url_for('main.index'))
 
 
 @main_bp.route('/about')
