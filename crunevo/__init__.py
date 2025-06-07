@@ -31,6 +31,7 @@ from crunevo.routes.admin_routes import admin_bp
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
+login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
 
 def create_app():
     app = Flask(__name__)

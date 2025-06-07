@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, send_from_directory
+from flask_login import login_required, current_user
 from datetime import datetime
 import os
 
@@ -59,9 +60,10 @@ def notes_section():
 # --- Ruta: Subir Apunte ---
 @note_bp.route("/subir", methods=["GET", "POST"])
 @note_bp.route("/upload", methods=["GET", "POST"])
+@login_required
 def upload_note():
     if request.method == "POST":
-        user_id = 1  # Usuario simulado por ahora
+        user_id = current_user.id
 
         title = request.form.get("title")
         faculty = request.form.get("faculty")
@@ -125,7 +127,7 @@ def upload_note():
                 flash("Ocurrió un error al guardar el archivo.", "danger")
                 current_app.logger.error("No se pudo obtener la URL del archivo")
         else:
-            flash("Archivo no válido o formato no permitido.", "danger")
+            flash("Solo se permiten archivos PDF, DOCX o PNG.", "danger")
 
     return render_template("upload_note.html")
 
