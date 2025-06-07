@@ -1,4 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, send_from_directory
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+    current_app,
+    send_from_directory,
+)
+from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from datetime import datetime
 import os
@@ -14,6 +24,7 @@ note_bp = Blueprint("note", __name__)
 # --- Configuración AWS S3 ---
 S3_BUCKET = os.environ.get("S3_BUCKET_NAME", "your-s3-bucket-name-placeholder")
 
+
 # --- Ruta: Explorar Apuntes ---
 @note_bp.route("/apuntes")
 def notes_section():
@@ -26,10 +37,10 @@ def notes_section():
 
         if search_term:
             query = query.filter(
-                Note.title.ilike(f"%{search_term}%") |
-                Note.description.ilike(f"%{search_term}%") |
-                Note.course.ilike(f"%{search_term}%") |
-                Note.tags.ilike(f"%{search_term}%")
+                Note.title.ilike(f"%{search_term}%")
+                | Note.description.ilike(f"%{search_term}%")
+                | Note.course.ilike(f"%{search_term}%")
+                | Note.tags.ilike(f"%{search_term}%")
             )
 
         if faculty_filter:
@@ -43,7 +54,7 @@ def notes_section():
             notes=notes,
             pagination=pagination,
             search_term=search_term,
-            faculty_filter=faculty_filter
+            faculty_filter=faculty_filter,
         )
 
     except Exception as e:
@@ -54,8 +65,9 @@ def notes_section():
             notes=[],
             pagination=None,
             search_term="",
-            faculty_filter=[]
+            faculty_filter=[],
         )
+
 
 # --- Ruta: Subir Apunte ---
 @note_bp.route("/subir", methods=["GET", "POST"])
@@ -71,13 +83,17 @@ def upload_note():
         description = request.form.get("description")
         tags = request.form.get("tags")
         note_file = request.files.get("note_file")
+        filename = secure_filename(note_file.filename) if note_file else ""
         terms_accepted = request.form.get("terms")
 
         if not all([title, faculty, course, note_file, terms_accepted]):
-            flash("Completa todos los campos requeridos y acepta los términos.", "danger")
+            flash(
+                "Completa todos los campos requeridos y acepta los términos.", "danger"
+            )
             return render_template("upload_note.html", form_data=request.form)
 
-        if note_file and allowed_file(note_file.filename):
+        if note_file and allowed_file(filename):
+            note_file.filename = filename
             note_file.seek(0, os.SEEK_END)
             size_mb = note_file.tell() / (1024 * 1024)
             note_file.seek(0)
@@ -96,7 +112,7 @@ def upload_note():
 
             if file_url:
                 try:
-                    file_type = note_file.filename.rsplit(".", 1)[1].lower()
+                    file_type = filename.rsplit(".", 1)[1].lower()
                     new_note = Note(
                         title=title,
                         description=description,
@@ -106,7 +122,7 @@ def upload_note():
                         course=course,
                         faculty=faculty,
                         tags=tags,
-                        upload_date=datetime.utcnow()
+                        upload_date=datetime.utcnow(),
                     )
 
                     user = User.query.get(user_id)
@@ -121,8 +137,13 @@ def upload_note():
 
                 except Exception as e:
                     db.session.rollback()
-                    current_app.logger.error(f"Error al guardar apunte: {e}", exc_info=True)
-                    flash("Ocurrió un error al guardar el apunte en la base de datos.", "danger")
+                    current_app.logger.error(
+                        f"Error al guardar apunte: {e}", exc_info=True
+                    )
+                    flash(
+                        "Ocurrió un error al guardar el apunte en la base de datos.",
+                        "danger",
+                    )
             else:
                 flash("Ocurrió un error al guardar el archivo.", "danger")
                 current_app.logger.error("No se pudo obtener la URL del archivo")
@@ -137,7 +158,9 @@ def download_note_file(note_id: int):
     note = Note.query.get_or_404(note_id)
     if note.file_url.startswith(current_app.static_url_path):
         rel_path = note.file_url.replace(current_app.static_url_path + "/", "")
-        return send_from_directory(current_app.static_folder, rel_path, as_attachment=True)
+        return send_from_directory(
+            current_app.static_folder, rel_path, as_attachment=True
+        )
     return redirect(note.file_url)
 
 
