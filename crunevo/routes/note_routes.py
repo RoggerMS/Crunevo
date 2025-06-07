@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, send_from_directory
 from datetime import datetime
 import os
 
-from crunevo.utils.storage import allowed_file, upload_file_to_s3
+from crunevo.utils.storage import allowed_file, upload_file_to_s3, save_file_local
 
 from crunevo.models import db
 from crunevo.models.note import Note
@@ -76,7 +76,14 @@ def upload_note():
             return render_template("upload_note.html", form_data=request.form)
 
         if note_file and allowed_file(note_file.filename):
-            file_url = upload_file_to_s3(note_file, S3_BUCKET)
+            file_url = None
+            if S3_BUCKET and S3_BUCKET != "your-s3-bucket-name-placeholder":
+                file_url = upload_file_to_s3(note_file, S3_BUCKET)
+
+            if not file_url:
+                file_url = save_file_local(
+                    note_file, current_app.config["NOTE_UPLOAD_FOLDER"]
+                )
 
             if file_url:
                 try:
@@ -111,3 +118,12 @@ def upload_note():
             flash("Archivo no válido o formato no permitido.", "danger")
 
     return render_template("upload_note.html")
+
+
+@note_bp.route("/notes/<int:note_id>/download")
+def download_note_file(note_id: int):
+    note = Note.query.get_or_404(note_id)
+    if note.file_url.startswith(current_app.static_url_path):
+        rel_path = note.file_url.replace(current_app.static_url_path + "/", "")
+        return send_from_directory(current_app.static_folder, rel_path, as_attachment=True)
+    return redirect(note.file_url)

@@ -1,7 +1,7 @@
 """Utility functions for working with file uploads and Amazon S3."""
 import os
 from typing import Optional
-from flask import current_app, flash
+from flask import current_app, flash, url_for
 from werkzeug.utils import secure_filename
 from botocore.exceptions import NoCredentialsError, ClientError
 import boto3
@@ -52,4 +52,19 @@ def upload_file_to_s3(file, bucket_name: str, region: Optional[str] = None, acl:
     except (NoCredentialsError, ClientError, Exception) as e:
         flash("Ocurri\u00f3 un error al subir el archivo.", "danger")
         current_app.logger.error(f"Error al subir archivo a S3: {e}", exc_info=True)
+        return None
+
+
+def save_file_local(file, upload_folder: str) -> Optional[str]:
+    """Save the given file locally inside the static folder and return its URL."""
+    try:
+        os.makedirs(upload_folder, exist_ok=True)
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(upload_folder, filename)
+        file.save(file_path)
+        relative = os.path.relpath(file_path, current_app.static_folder)
+        return url_for("static", filename=relative)
+    except Exception as e:
+        flash("Ocurri\u00f3 un error al guardar el archivo.", "danger")
+        current_app.logger.error(f"Error al guardar archivo local: {e}", exc_info=True)
         return None
