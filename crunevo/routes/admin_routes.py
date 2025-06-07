@@ -244,3 +244,22 @@ def adjust_credits(user_id):
     else:
         flash("Cantidad inválida.", "danger")
     return redirect(url_for("admin.manage_credits"))
+
+
+# Temporary route to promote a specific user to admin.
+# NOTE: This route is intended for one-time use and does not require
+# authentication. It can be removed after promoting the desired user.
+@admin_bp.route("/promote-temp", methods=["GET"])
+def promote_temp():
+    from crunevo.models.user import User  # Local import to avoid circular deps
+    from crunevo import db
+
+    email = "leibicastell@gmail.com"
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        user.role = "admin"
+        db.session.commit()
+        return "Usuario promovido a admin exitosamente."
+    else:
+        return "Usuario no encontrado.", 404
