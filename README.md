@@ -87,3 +87,14 @@ gunicorn -b 0.0.0.0:$PORT crunevo.run:app
 Without a volume the application falls back to a temporary directory and the
 data will be lost on redeploys.
 
+
+## Docker
+
+You can build and run the application using Docker:
+
+```bash
+docker build -t crunevo .
+docker run -p 8080:8080 crunevo
+```
+
+The container exposes port `8080` by default and starts the app with Gunicorn.
