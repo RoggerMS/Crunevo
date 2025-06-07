@@ -1,4 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+    current_app,
+)
 from functools import wraps
 from flask_login import login_required, current_user
 from crunevo.models import db
@@ -7,6 +15,36 @@ from crunevo.models.note import Note, Report
 from crunevo.models.product import Product
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+@admin_bp.before_request
+def log_admin_access():
+    if current_user.is_authenticated:
+        current_app.logger.info(
+            "Admin access user=%s ip=%s ua=%s",
+            current_user.id,
+            request.remote_addr,
+            request.user_agent.string,
+        )
+
+
+def roles_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        @login_required
+        def decorated_function(*args, **kwargs):
+            if current_user.role not in roles:
+                flash("Acceso no autorizado.", "danger")
+                return redirect(url_for("main.index"))
+            return f(*args, **kwargs)
+
+        return decorated_function
+
+    return decorator
+
+
+admin_required = roles_required("admin")
+
 
 # Función auxiliar para manejar commits
 def commit_changes():
@@ -18,31 +56,26 @@ def commit_changes():
         flash(f"Error: {e}", "danger")
         return False
 
-# Decorador para verificar permisos de administrador
-def admin_required(f):
-    @wraps(f)
-    @login_required
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or current_user.role != "admin":
-            flash("Acceso no autorizado.", "danger")
-            return redirect(url_for("main.index"))
-        return f(*args, **kwargs)
-    return decorated_function
 
 @admin_bp.route("/")
 @admin_required
 def dashboard():
     stats = {
         "total_users": User.query.count(),
+        "active_users": User.query.filter_by(is_banned=False).count(),
+        "inactive_users": User.query.filter_by(is_banned=True).count(),
         "total_notes": Note.query.count(),
-        "total_products": Product.query.count(),
         "pending_reports": Report.query.filter_by(status="pending").count(),
+        "top_downloads": Note.query.order_by(Note.downloads_count.desc())
+        .limit(5)
+        .all(),
         "dates": [],
         "user_growth": [],
         "note_growth": [],
-        "last_updated": ""
+        "last_updated": "",
     }
     return render_template("admin/dashboard.html", stats=stats)
+
 
 @admin_bp.route("/users")
 @admin_required
@@ -51,12 +84,23 @@ def manage_users():
     users = User.query.order_by(User.created_at.desc()).paginate(page=page, per_page=10)
     return render_template("admin/manage_users.html", users=users)
 
+
 @admin_bp.route("/notes")
-@admin_required
+@roles_required("admin", "moderator")
 def manage_notes():
     page = request.args.get("page", 1, type=int)
-    notes = Note.query.order_by(Note.upload_date.desc()).paginate(page=page, per_page=10)
-    return render_template("admin/manage_notes.html", notes=notes)
+    query = Note.query
+    title = request.args.get("title")
+    user = request.args.get("user")
+    if title:
+        query = query.filter(Note.title.ilike(f"%{title}%"))
+    if user:
+        query = query.join(User).filter(User.username.ilike(f"%{user}%"))
+    notes = query.order_by(Note.upload_date.desc()).paginate(page=page, per_page=10)
+    return render_template(
+        "admin/manage_notes.html", notes=notes, search_title=title, search_user=user
+    )
+
 
 @admin_bp.route("/notes/delete/<int:note_id>", methods=["POST"])
 @admin_required
@@ -66,6 +110,7 @@ def delete_note(note_id):
     if commit_changes():
         flash("Apunte eliminado exitosamente.", "success")
     return redirect(url_for("admin.manage_notes"))
+
 
 @admin_bp.route("/users/<int:user_id>/toggle_ban")
 @admin_required
@@ -80,15 +125,19 @@ def toggle_user_ban(user_id):
         flash("No se puede modificar el estado de un administrador.", "danger")
     return redirect(url_for("admin.manage_users"))
 
+
 @admin_bp.route("/reports")
-@admin_required
+@roles_required("admin", "moderator")
 def manage_reports():
     page = request.args.get("page", 1, type=int)
-    reports = Report.query.order_by(Report.report_date.desc()).paginate(page=page, per_page=10)
+    reports = Report.query.order_by(Report.report_date.desc()).paginate(
+        page=page, per_page=10
+    )
     return render_template("admin/manage_reports.html", reports=reports)
 
+
 @admin_bp.route("/reports/<int:report_id>/update_status", methods=["POST"])
-@admin_required
+@roles_required("admin", "moderator")
 def update_report_status(report_id):
     report = Report.query.get_or_404(report_id)
     new_status = request.form.get("status")
@@ -102,15 +151,19 @@ def update_report_status(report_id):
         flash("Estado no válido.", "warning")
     return redirect(url_for("admin.manage_reports"))
 
+
 @admin_bp.route("/store")
-@admin_required
+@roles_required("admin", "editor")
 def manage_store():
     page = request.args.get("page", 1, type=int)
-    products = Product.query.order_by(Product.created_at.desc()).paginate(page=page, per_page=10)
+    products = Product.query.order_by(Product.created_at.desc()).paginate(
+        page=page, per_page=10
+    )
     return render_template("admin/manage_store.html", products=products)
 
+
 @admin_bp.route("/store/add", methods=["GET", "POST"])
-@admin_required
+@roles_required("admin", "editor")
 def add_product():
     if request.method == "POST":
         name = request.form.get("name")
@@ -122,7 +175,9 @@ def add_product():
 
         if not all([name, price, type]):
             flash("Nombre, precio y tipo son requeridos.", "danger")
-            return render_template("admin/add_edit_product.html", form_data=request.form, action="add")
+            return render_template(
+                "admin/add_edit_product.html", form_data=request.form, action="add"
+            )
 
         new_product = Product(
             name=name,
@@ -130,7 +185,7 @@ def add_product():
             price=price,
             type=type,
             availability=availability,
-            image_url=image_url
+            image_url=image_url,
         )
         db.session.add(new_product)
         if commit_changes():
@@ -139,8 +194,9 @@ def add_product():
 
     return render_template("admin/add_edit_product.html", action="add")
 
+
 @admin_bp.route("/store/edit/<int:product_id>", methods=["GET", "POST"])
-@admin_required
+@roles_required("admin", "editor")
 def edit_product(product_id):
     product = Product.query.get_or_404(product_id)
     if request.method == "POST":
@@ -154,13 +210,37 @@ def edit_product(product_id):
             flash("Producto actualizado exitosamente.", "success")
             return redirect(url_for("admin.manage_store"))
 
-    return render_template("admin/add_edit_product.html", action="edit", product=product)
+    return render_template(
+        "admin/add_edit_product.html", action="edit", product=product
+    )
+
 
 @admin_bp.route("/store/delete/<int:product_id>", methods=["POST"])
-@admin_required
+@roles_required("admin", "editor")
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
     db.session.delete(product)
     if commit_changes():
         flash("Producto eliminado exitosamente.", "success")
     return redirect(url_for("admin.manage_store"))
+
+
+@admin_bp.route("/credits", methods=["GET"])
+@roles_required("admin")
+def manage_credits():
+    users = User.query.order_by(User.username.asc()).all()
+    return render_template("admin/manage_credits.html", users=users)
+
+
+@admin_bp.route("/credits/<int:user_id>", methods=["POST"])
+@roles_required("admin")
+def adjust_credits(user_id):
+    user = User.query.get_or_404(user_id)
+    amount = request.form.get("amount", type=int)
+    if amount is not None:
+        user.credits = (user.credits or 0) + amount
+        if commit_changes():
+            flash("Créditos actualizados.", "success")
+    else:
+        flash("Cantidad inválida.", "danger")
+    return redirect(url_for("admin.manage_credits"))

@@ -3,6 +3,17 @@
 {% block admin_content %}
 <div class="container">
   <h3 class="my-3">Apuntes</h3>
+  <form class="row g-2 mb-3" method="get">
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="title" placeholder="Título" value="{{ search_title }}">
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="user" placeholder="Usuario" value="{{ search_user }}">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+  </form>
   {% if notes.items %}
   <ul class="list-group">
     {% for note in notes.items %}
@@ -12,9 +23,12 @@
         <br>
         <small>{{ note.uploader.name }}</small>
       </div>
-      <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" class="mt-2 mt-md-0" onsubmit="return confirm('¿Estás seguro de eliminar este apunte?');">
-        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-      </form>
+      <div class="mt-2 mt-md-0 d-flex gap-2">
+        <a href="{{ url_for('notes.detail', note_id=note.id) }}" class="btn btn-sm btn-outline-secondary">Ver</a>
+        <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" onsubmit="return confirm('¿Estás seguro de eliminar este apunte?');">
+          <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+      </div>
     </li>
     {% endfor %}
   </ul>
