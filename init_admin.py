@@ -2,9 +2,9 @@
 from crunevo import create_app, db
 from crunevo.models.user import User
 
-ADMIN_EMAIL = "admin@crunevo.com"
+ADMIN_EMAIL = "leibicastell@gmail.com"
 ADMIN_USERNAME = "admin"
-DEFAULT_PASSWORD = "admin123"
+DEFAULT_PASSWORD = "munito"
 
 app = create_app()
 
