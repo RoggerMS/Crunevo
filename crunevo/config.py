@@ -72,3 +72,11 @@ class Config:
     # application runs on platforms with read-only source directories as it
     # helps diagnose database initialization errors.
     print(f"Using database URI: {SQLALCHEMY_DATABASE_URI}")
+
+    NOTE_UPLOAD_FOLDER = os.getenv(
+        "NOTE_UPLOAD_FOLDER",
+        str(Path(__file__).resolve().parent / "static" / "uploads" / "notes"),
+    )
+    Path(NOTE_UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
+
+    MAX_NOTE_FILE_SIZE_MB = int(os.getenv("MAX_NOTE_FILE_SIZE_MB", "20"))
