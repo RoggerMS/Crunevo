@@ -1,12 +1,24 @@
-// Lógica para el menú hamburguesa
-const navbarToggler = document.querySelector(".navbar-toggler");
-const navbarCollapse = document.querySelector(".navbar-collapse");
+// Lógica para el menú offcanvas y su integración con el botón atrás
+document.addEventListener("DOMContentLoaded", () => {
+    const offcanvasEl = document.getElementById("mobileMenu");
+    if (offcanvasEl) {
+        const offcanvas = new bootstrap.Offcanvas(offcanvasEl);
+        offcanvasEl.addEventListener("shown.bs.offcanvas", () => {
+            history.pushState({ offcanvas: true }, "");
+        });
+        offcanvasEl.addEventListener("hidden.bs.offcanvas", () => {
+            if (history.state && history.state.offcanvas) {
+                history.back();
+            }
+        });
 
-if (navbarToggler && navbarCollapse) {
-    navbarToggler.addEventListener("click", () => {
-        navbarCollapse.classList.toggle("show");
-    });
-}
+        window.addEventListener("popstate", (evt) => {
+            if (evt.state && evt.state.offcanvas) {
+                offcanvas.hide();
+            }
+        });
+    }
+});
 
 // Lógica para el Modal de Búsqueda Global
 document.addEventListener("DOMContentLoaded", () => {
