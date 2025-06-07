@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from functools import wraps
+from flask_login import login_required, current_user
 from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.note import Note, Report
@@ -20,8 +21,9 @@ def commit_changes():
 # Decorador para verificar permisos de administrador
 def admin_required(f):
     @wraps(f)
+    @login_required
     def decorated_function(*args, **kwargs):
-        if session.get("user_role") != "admin":
+        if not current_user.is_authenticated or current_user.role != "admin":
             flash("Acceso no autorizado.", "danger")
             return redirect(url_for("main.index"))
         return f(*args, **kwargs)
@@ -34,7 +36,11 @@ def dashboard():
         "total_users": User.query.count(),
         "total_notes": Note.query.count(),
         "total_products": Product.query.count(),
-        "pending_reports": Report.query.filter_by(status="pending").count()
+        "pending_reports": Report.query.filter_by(status="pending").count(),
+        "dates": [],
+        "user_growth": [],
+        "note_growth": [],
+        "last_updated": ""
     }
     return render_template("admin/dashboard.html", stats=stats)
 
@@ -44,6 +50,22 @@ def manage_users():
     page = request.args.get("page", 1, type=int)
     users = User.query.order_by(User.created_at.desc()).paginate(page=page, per_page=10)
     return render_template("admin/manage_users.html", users=users)
+
+@admin_bp.route("/notes")
+@admin_required
+def manage_notes():
+    page = request.args.get("page", 1, type=int)
+    notes = Note.query.order_by(Note.upload_date.desc()).paginate(page=page, per_page=10)
+    return render_template("admin/manage_notes.html", notes=notes)
+
+@admin_bp.route("/notes/delete/<int:note_id>", methods=["POST"])
+@admin_required
+def delete_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    db.session.delete(note)
+    if commit_changes():
+        flash("Apunte eliminado exitosamente.", "success")
+    return redirect(url_for("admin.manage_notes"))
 
 @admin_bp.route("/users/<int:user_id>/toggle_ban")
 @admin_required

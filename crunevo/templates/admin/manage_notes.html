@@ -1,0 +1,41 @@
+{% extends 'base_admin.html' %}
+{% block title %}Gestionar Apuntes{% endblock %}
+{% block admin_content %}
+<div class="container">
+  <h3 class="my-3">Apuntes</h3>
+  {% if notes.items %}
+  <ul class="list-group">
+    {% for note in notes.items %}
+    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+      <div>
+        <strong>{{ note.title }}</strong>
+        <br>
+        <small>{{ note.uploader.name }}</small>
+      </div>
+      <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" class="mt-2 mt-md-0" onsubmit="return confirm('¿Estás seguro de eliminar este apunte?');">
+        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="mt-3">
+    <nav>
+      <ul class="pagination">
+        {% if notes.has_prev %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('admin.manage_notes', page=notes.prev_num) }}">Anterior</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+        {% endif %}
+        {% if notes.has_next %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('admin.manage_notes', page=notes.next_num) }}">Siguiente</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% else %}
+  <p class="text-muted">No hay apuntes disponibles.</p>
+  {% endif %}
+</div>
+{% endblock %}
