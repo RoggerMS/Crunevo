@@ -18,7 +18,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.feed') }}">Feed</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.feed') }}">Feed</a></li>
+                    {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('note.notes_section') }}">Apuntes</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('store.tienda') }}">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.ranking') }}">Ranking</a></li>
