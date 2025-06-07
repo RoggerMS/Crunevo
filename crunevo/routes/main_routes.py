@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template
 from flask_login import login_required
-from ..models.note import Note
+from crunevo.models.note import Note
 
 main_bp = Blueprint('main', __name__)
 

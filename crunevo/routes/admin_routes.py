@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from functools import wraps
-from ..models import db
-from ..models.user import User
-from ..models.note import Note, Report
-from ..models.product import Product
+from crunevo.models import db
+from crunevo.models.user import User
+from crunevo.models.note import Note, Report
+from crunevo.models.product import Product
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 

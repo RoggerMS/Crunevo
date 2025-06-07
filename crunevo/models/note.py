@@ -1,5 +1,5 @@
 from datetime import datetime
-from . import db # Import db from the models package
+from crunevo.models import db  # Import db from the models package
 
 class Note(db.Model):
     __tablename__ = 'notes'

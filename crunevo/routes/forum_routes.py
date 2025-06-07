@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from models.forum import Pregunta, Respuesta
-from app import db
+from crunevo.models.forum import Pregunta, Respuesta
+from crunevo.models import db
 from flask_login import login_required, current_user
 
 forum_bp = Blueprint('forum', __name__, url_prefix='/foro')

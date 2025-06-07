@@ -2,11 +2,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from datetime import datetime
 import os
 
-from ..utils.storage import allowed_file, upload_file_to_s3
+from crunevo.utils.storage import allowed_file, upload_file_to_s3
 
-from ..models import db
-from ..models.note import Note
-from ..models.user import User
+from crunevo.models import db
+from crunevo.models.note import Note
+from crunevo.models.user import User
 
 note_bp = Blueprint("note", __name__)
 
