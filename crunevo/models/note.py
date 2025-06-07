@@ -26,6 +26,12 @@ class Note(db.Model):
     like_records = db.relationship('Like', back_populates='note', lazy=True, cascade="all, delete-orphan")
     report_records = db.relationship('Report', back_populates='note', lazy=True, cascade="all, delete-orphan")
 
+    @property
+    def page_count(self):
+        """Return the number of pages for PDF notes if available."""
+        # Placeholder for future implementation
+        return None
+
     def __repr__(self):
         return f'<Note {self.title}>'
 

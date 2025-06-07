@@ -1,6 +1,10 @@
 
 body {
-    background-color: #f8f9fa;
+    background-color: #f9f9f9;
+}
+
+.feed-divider {
+    border-top: 1px solid #e0e0e0;
 }
 .feed .card {
     transition: transform 0.2s ease;
