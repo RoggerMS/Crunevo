@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: crunevo
+    env: python
+    buildCommand: pip install -r CRUNEVO/requirements.txt
+    startCommand: gunicorn -b 0.0.0.0:$PORT CRUNEVO.run:app
+    autoDeploy: false
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_DIR
+        value: /data
