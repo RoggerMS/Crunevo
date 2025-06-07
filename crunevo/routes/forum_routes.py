@@ -13,7 +13,8 @@ def foro():
 @forum_bp.route('/pregunta/<int:id>')
 def ver_pregunta(id):
     pregunta = Pregunta.query.get_or_404(id)
-    return render_template('foro/pregunta.html', pregunta=pregunta)
+    respuestas = Respuesta.query.filter_by(pregunta_id=id).order_by(Respuesta.fecha.desc()).all()
+    return render_template('foro/pregunta.html', pregunta=pregunta, respuestas=respuestas)
 
 @forum_bp.route('/nueva', methods=['GET', 'POST'])
 @login_required

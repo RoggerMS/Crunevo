@@ -5,13 +5,15 @@
 <div class="container mt-4">
   <h2 class="mb-3">Foro Académico</h2>
   <a href="/foro/nueva" class="btn btn-primary mb-3">Nueva Pregunta</a>
-  <ul class="list-group">
-    {% for pregunta in preguntas %}
-      <li class="list-group-item">
-        <a href="/foro/{{ pregunta.id }}">{{ pregunta.titulo }}</a>
-        <small class="text-muted d-block">por {{ pregunta.autor.username }} | {{ pregunta.fecha.strftime('%d/%m/%Y') }}</small>
-      </li>
-    {% endfor %}
-  </ul>
+  {% for pregunta in preguntas %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><a href="/foro/{{ pregunta.id }}" class="text-decoration-none">{{ pregunta.titulo }}</a></h5>
+        <p class="card-text">{{ pregunta.contenido[:120] }}...</p>
+        <small class="text-muted">por {{ pregunta.autor.username }} el {{ pregunta.fecha.strftime('%d/%m/%Y') }}</small>
+        <a href="/foro/{{ pregunta.id }}" class="btn btn-sm btn-primary float-end">Ver</a>
+      </div>
+    </div>
+  {% endfor %}
 </div>
 {% endblock %}
