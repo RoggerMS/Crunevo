@@ -1,0 +1,17 @@
+# Use an official Python runtime as the base image
+FROM python:3.12-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy project files into the container
+COPY . /app
+
+# Install dependencies
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Command to run the application
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "crunevo.run:app"]
