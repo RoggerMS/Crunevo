@@ -306,3 +306,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const noteInput = document.querySelector(".input-wrapper input.form-control");
+    if (noteInput) {
+        const placeholders = [
+            "¿Qué estás aprendiendo hoy?",
+            "Comparte tus apuntes aquí",
+            "Sube algo útil para otros",
+        ];
+        let index = 0;
+        setInterval(() => {
+            index = (index + 1) % placeholders.length;
+            noteInput.setAttribute("placeholder", placeholders[index]);
+        }, 4000);
+    }
+});

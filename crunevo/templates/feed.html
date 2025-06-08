@@ -17,10 +17,12 @@
                 class="rounded-circle me-3"
                 width="40"
                 height="40">
-            <input
-                type="text"
-                class="form-control me-2"
-                placeholder="Comparte lo que estás aprendiendo..." readonly>
+            <div class="input-wrapper flex-grow-1 me-2">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="¿Qué estás aprendiendo hoy?" readonly>
+            </div>
             {% if current_user.is_authenticated %}
             <a
                 href="{{ url_for('note.upload_note') }}"
@@ -79,25 +81,29 @@
             {% endif %}
             <p class="note-desc">{{ note.description[:120] }}...</p>
         </div>
-        <div class="note-actions card-footer bg-white d-flex justify-content-between">
-            <button class="action-btn" aria-label="Me gusta">
-                <i class="fas fa-heart me-1"></i>Me gusta
-            </button>
-            <button class="action-btn" aria-label="Comentar">
-                <i class="fas fa-comment me-1"></i>Comentar
-            </button>
-            <button class="action-btn" aria-label="Guardar">
-                <i class="fas fa-bookmark me-1"></i>Guardar
-            </button>
-            <a
-                href="{{ url_for('note.download_note_file', note_id=note.id) }}"
-                class="action-btn"
-                aria-label="Descargar">
-                <i class="fas fa-download me-1"></i>Descargar
-            </a>
-            <button class="action-btn" aria-label="Compartir">
-                <i class="fas fa-share me-1"></i>Compartir
-            </button>
+        <div class="note-actions card-footer bg-white">
+            <div class="action-row d-flex">
+                <button class="action-btn" aria-label="Me gusta">
+                    <i class="fas fa-heart me-1"></i>Me gusta
+                </button>
+                <button class="action-btn" aria-label="Comentar">
+                    <i class="fas fa-comment me-1"></i>Comentar
+                </button>
+                <button class="action-btn" aria-label="Guardar">
+                    <i class="fas fa-bookmark me-1"></i>Guardar
+                </button>
+            </div>
+            <div class="action-row d-flex border-top">
+                <a
+                    href="{{ url_for('note.download_note_file', note_id=note.id) }}"
+                    class="action-btn"
+                    aria-label="Descargar">
+                    <i class="fas fa-download me-1"></i>Descargar
+                </a>
+                <button class="action-btn" aria-label="Compartir">
+                    <i class="fas fa-share me-1"></i>Compartir
+                </button>
+            </div>
         </div>
     </article>
 
