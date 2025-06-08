@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Cargar el archivo .env desde la raíz del proyecto (fuera de /crunevo)
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -9,6 +10,9 @@ load_dotenv(BASE_DIR / ".env")
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "clave_segura_por_defecto")
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
+    assert (
+        SQLALCHEMY_DATABASE_URI is not None and SQLALCHEMY_DATABASE_URI != ""
+    ), "ERROR: URI de base de datos no cargada correctamente desde .env"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = os.getenv("DEBUG", "0") == "1"
 
