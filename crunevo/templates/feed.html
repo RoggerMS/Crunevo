@@ -84,10 +84,10 @@
         <div class="note-actions card-footer bg-white">
             <div class="action-row d-flex">
                 <button class="action-btn" data-action="like" aria-label="Me gusta">
-                    <i class="fas fa-heart me-1"></i>Me gusta
+                    <i class="fas fa-heart me-1"></i> Me gusta <small>(3)</small>
                 </button>
                 <button class="action-btn" data-action="comment" aria-label="Comentar">
-                    <i class="fas fa-comment me-1"></i>Comentar
+                    <i class="fas fa-comment me-1"></i> Comentar <small>(2)</small>
                 </button>
                 <button class="action-btn" data-action="save" aria-label="Guardar">
                     <i class="fas fa-bookmark me-1"></i>Guardar
@@ -109,7 +109,7 @@
     </article>
 
     {% if loop.index % 3 == 0 %}
-    <div class="note-card text-center p-3 bg-light">
+    <div class="note-card text-center p-3 bg-light" onclick="location.href='/tienda'">
         🎓 ¿Sabías que puedes ganar puntos subiendo apuntes?
     </div>
     {% endif %}

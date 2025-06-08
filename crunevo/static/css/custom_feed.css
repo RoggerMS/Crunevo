@@ -31,6 +31,7 @@
     border: none;
     color: #050505;
     transition: transform 0.2s ease-in-out;
+    animation: fadeUp 0.4s ease-in-out;
 }
 
 .note-card:hover {
@@ -195,4 +196,15 @@
 }
 .badge[data-facultad="Humanidades"] {
     background-color: #6f42c1;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #18191a;
+        color: #e4e6eb;
+    }
+    .note-card {
+        background: #242526;
+        color: #e4e6eb;
+    }
 }
