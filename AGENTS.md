@@ -65,3 +65,20 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Refactor] Cambiar sidebar de íconos a burbuja flotante inferior derecha
+
+- Modificados:
+  - crunevo/templates/components/sidebar_icons.html
+  - crunevo/templates/base.html
+  - crunevo/static/js/main.js
+  - crunevo/static/css/style.css
+
+- Detalles:
+  - Se reemplazó el sidebar lateral izquierdo por un menú flotante en la esquina inferior derecha para escritorio.
+  - Se eliminó el ícono de “Salir” y se agregó un botón flotante con toggle.
+  - Se aplicaron estilos y transiciones CSS para una mejor experiencia.
+
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q`
