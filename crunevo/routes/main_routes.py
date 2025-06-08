@@ -8,8 +8,20 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     if current_user.is_authenticated:
-        notes = Note.query.order_by(Note.upload_date.desc()).limit(20).all()
-        return render_template("feed.html", notes=notes, user=current_user)
+        notes = Note.query.order_by(Note.downloads_count.desc()).limit(10).all()
+        posts = [
+            {
+                "uploader": current_user,
+                "content": "¡Bienvenido al nuevo feed social de CRUNEVO!",
+                "image_url": None,
+            },
+            {
+                "uploader": current_user,
+                "content": "Comparte tus mejores tips de estudio.",
+                "image_url": None,
+            },
+        ]
+        return render_template("feed.html", notes=notes, posts=posts, user=current_user)
     return render_template("index.html")
 
 

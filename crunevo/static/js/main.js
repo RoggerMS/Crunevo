@@ -324,3 +324,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("toggleMode");
+  const uploadOptions = document.getElementById("uploadOptions");
+  const input = document.getElementById("noteInput");
+
+  let mode = 'apunte';
+
+  toggleBtn.addEventListener("click", () => {
+    mode = mode === 'apunte' ? 'social' : 'apunte';
+    toggleBtn.textContent = mode === 'apunte' ? '📘' : '🖼️';
+    uploadOptions.classList.toggle("d-none", mode === 'apunte');
+    input.placeholder =
+      mode === 'apunte' ? "¿Qué estás aprendiendo hoy?" : "Escribe algo educativo...";
+  });
+});

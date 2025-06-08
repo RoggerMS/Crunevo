@@ -12,34 +12,38 @@
 
   <div class="feed-container">
     <div class="create-note card shadow-sm">
-        <div class="d-flex align-items-center">
-            <img
-                src="{{ user.profile_picture_url or
-                    url_for('static', filename='images/default_avatar.png') }}"
-                alt="Avatar"
-                class="rounded-circle me-3"
-                width="40"
-                height="40">
-            <div class="input-wrapper flex-grow-1 me-2">
-                <input
-                    type="text"
-                    class="form-control"
-                    placeholder="¿Qué estás aprendiendo hoy?" readonly>
-            </div>
-            {% if current_user.is_authenticated %}
-            <a
-                href="{{ url_for('note.upload_note') }}"
-                class="btn btn-primary btn-sm ms-auto">
-                <i class="fas fa-upload me-1"></i>Subir
-            </a>
-            {% endif %}
+      <div class="d-flex align-items-center">
+        <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="rounded-circle me-3" width="40" height="40">
+        <div class="input-wrapper flex-grow-1 me-2">
+          <input type="text" class="form-control" placeholder="¿Qué estás aprendiendo hoy?" id="noteInput">
         </div>
+        <button id="toggleMode" class="btn btn-outline-secondary btn-sm" title="Cambiar modo">📘</button>
+      </div>
+      <div id="uploadOptions" class="mt-2 d-none">
+        <input type="file" accept="image/*" class="form-control">
+      </div>
+      <div class="mt-2 text-end">
+        <button class="btn btn-primary btn-sm">Publicar</button>
+      </div>
     </div>
 
-    <p class="text-muted small">
-        Explora apuntes recientes compartidos por la comunidad
-    </p>
-    <h2 class="fw-bold mb-3">📄 Últimos Apuntes</h2>
+    {% for post in posts %}
+    <article class="note-card post-card card animate-fade">
+      <div class="card-body">
+        <p class="note-meta mb-1">
+          <i class="fas fa-user me-1"></i>{{ post.uploader.name }} — {{ post.uploader.career }}
+        </p>
+        <p class="note-desc">{{ post.content }}</p>
+        {% if post.image_url %}
+        <div class="mt-2">
+          <img src="{{ post.image_url }}" class="img-fluid rounded" alt="imagen">
+        </div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+
+    <h2 class="fw-bold mb-3 mt-4">📘 Apuntes Destacados</h2>
 
     {% for note in notes %}
     <article class="note-card card animate-fade">
