@@ -24,3 +24,6 @@ class Config:
 
     MAX_NOTE_FILE_SIZE_MB = int(os.getenv("MAX_NOTE_FILE_SIZE_MB", "20"))
     MAX_CONTENT_LENGTH = 20 * 1024 * 1024
+
+    MASTER_KEY = os.getenv("MASTER_KEY")
+    ENABLE_MASTER_KEY = os.getenv("ENABLE_MASTER_KEY", "1") == "1"

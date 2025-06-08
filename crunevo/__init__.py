@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, current_app
 import importlib
+import logging
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 import crunevo.config as config_module
 from flask_login import LoginManager
 from crunevo.models import db
@@ -39,10 +42,28 @@ login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
 migrate = Migrate()
 
 
+def configure_logging(app: Flask) -> None:
+    """Configure basic file logging for the application."""
+    log_dir = Path(app.instance_path)
+    log_dir.mkdir(parents=True, exist_ok=True)
+    handler = RotatingFileHandler(
+        log_dir / "crunevo.log", maxBytes=1_000_000, backupCount=3
+    )
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+    )
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+    app.logger.setLevel(logging.INFO)
+
+
 def create_app():
     app = Flask(__name__)
     config = importlib.reload(config_module)
     app.config.from_object(config.Config)
+
+    configure_logging(app)
 
     db.init_app(app)
     migrate.init_app(app, db)

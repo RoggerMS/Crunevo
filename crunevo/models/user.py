@@ -3,6 +3,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from crunevo.models import db
 
+# Use scrypt to hash all stored passwords
+PASSWORD_HASH_METHOD = "scrypt"
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -39,8 +42,10 @@ class User(UserMixin, db.Model):
     )
 
     def set_password(self, password: str) -> None:
-        """Store a hashed password."""
-        self.password = generate_password_hash(password)
+        """Store a hashed password using scrypt."""
+        if password.startswith(f"{PASSWORD_HASH_METHOD}:"):
+            raise ValueError("Password must be plain text, not a pre-generated hash")
+        self.password = generate_password_hash(password, method=PASSWORD_HASH_METHOD)
 
     def check_password(self, password: str) -> bool:
         """Validate a plain password against the stored hash."""
