@@ -85,7 +85,7 @@ body {
         margin: 0 !important;
         width: 100vw !important;
         overflow-x: hidden !important;
-        background: #fff !important;
+        background: #f0f2f5 !important;
     }
 
     .main-container,
@@ -99,7 +99,7 @@ body {
         width: 100vw !important;
         max-width: 100vw !important;
         border-radius: 0 !important;
-        background-color: #fff !important;
+        background-color: #f0f2f5 !important;
     }
 
     .card-body,
