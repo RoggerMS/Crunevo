@@ -1,4 +1,5 @@
 """Utility functions for working with file uploads and Amazon S3."""
+
 import os
 from typing import Optional
 from flask import current_app, flash, url_for
@@ -16,7 +17,9 @@ def allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def upload_file_to_s3(file, bucket_name: str, region: Optional[str] = None, acl: str = "public-read") -> Optional[str]:
+def upload_file_to_s3(
+    file, bucket_name: str, region: Optional[str] = None, acl: str = "public-read"
+) -> Optional[str]:
     """Upload the given file object to an S3 bucket.
 
     Parameters

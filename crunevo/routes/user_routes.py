@@ -6,6 +6,7 @@ import logging
 # Crear el blueprint para las rutas de usuario
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
+
 @user_bp.route("/profile")
 @login_required
 def profile():
@@ -36,6 +37,7 @@ def profile():
         uploaded_notes=uploaded_notes,
         download_history=download_history,
     )
+
 
 @user_bp.route("/profile/edit", methods=["GET", "POST"])
 @login_required

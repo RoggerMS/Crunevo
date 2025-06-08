@@ -298,3 +298,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".note-actions .action-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            btn.classList.toggle("active");
+        });
+    });
+});

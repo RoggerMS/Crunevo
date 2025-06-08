@@ -4,6 +4,7 @@ from crunevo.app import create_app
 from crunevo.models import db
 from crunevo.models.user import User
 
+
 @pytest.fixture
 def app(tmp_path):
     os.environ["DATABASE_DIR"] = str(tmp_path)
@@ -12,9 +13,11 @@ def app(tmp_path):
     application.config["WTF_CSRF_ENABLED"] = False
     return application
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 @pytest.fixture
 def admin_user(app):
@@ -27,8 +30,12 @@ def admin_user(app):
         db.session.commit()
         return u
 
+
 def login(client, email, password):
-    return client.post("/login", data={"email": email, "password": password}, follow_redirects=True)
+    return client.post(
+        "/login", data={"email": email, "password": password}, follow_redirects=True
+    )
+
 
 def test_admin_notes_no_error(client, admin_user):
     login(client, "admin@example.com", "admin123")
