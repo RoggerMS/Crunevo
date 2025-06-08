@@ -149,3 +149,17 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ❌ `PYTHONPATH=. pytest -q` (faltan dependencias)
+
+### [Enhancement] Acciones interactivas y tarjetas de sugerencia (2025-06-08)
+
+- Modificados:
+  - `crunevo/templates/feed.html`
+  - `crunevo/static/js/main.js`
+  - `crunevo/static/css/custom_feed.css`
+- Detalles:
+  - Botones de acciones con `data-action` que se activan al tocarlos.
+  - Después de cada 3 notas se muestra una tarjeta de recomendación.
+  - Se agregó escala en `.btn-primary:active` y sombra en `.note-card`.
+- Pruebas:
+  ✅ `black .`
+  ❌ `pytest -q` (faltan dependencias)
