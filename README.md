@@ -8,6 +8,9 @@ hosting platform (for example Railway).
 
 Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
 
+ℹ️ Asegúrate de que el archivo `.env` esté en la raíz del proyecto (fuera de
+`/crunevo`) para que Flask lo lea correctamente.
+
 ## Quick start
 
 1. **Install dependencies**
