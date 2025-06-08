@@ -10,15 +10,30 @@
 <div class="feed-container">
     <div class="create-note card p-3 shadow-sm">
         <div class="d-flex align-items-center">
-            <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" alt="Avatar" class="rounded-circle me-3" width="40" height="40">
-            <input type="text" class="form-control me-2" placeholder="Comparte lo que estás aprendiendo..." readonly>
+            <img
+                src="{{ user.profile_picture_url or
+                    url_for('static', filename='images/default_avatar.png') }}"
+                alt="Avatar"
+                class="rounded-circle me-3"
+                width="40"
+                height="40">
+            <input
+                type="text"
+                class="form-control me-2"
+                placeholder="Comparte lo que estás aprendiendo..." readonly>
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('note.upload_note') }}" class="btn btn-primary ms-auto"><i class="fas fa-upload me-1"></i>Subir</a>
+            <a
+                href="{{ url_for('note.upload_note') }}"
+                class="btn btn-primary btn-sm ms-auto">
+                <i class="fas fa-upload me-1"></i>Subir
+            </a>
             {% endif %}
         </div>
     </div>
 
-    <p class="text-muted small">Explora apuntes recientes compartidos por la comunidad</p>
+    <p class="text-muted small">
+        Explora apuntes recientes compartidos por la comunidad
+    </p>
     <h2 class="fw-bold mb-3">📄 Últimos Apuntes</h2>
 
     <div class="feed">
@@ -26,9 +41,17 @@
     <article class="note-card card animate-fade">
         <div class="note-image">
             {% if note.file_type == 'pdf' %}
-                <embed src="{{ note.file_url }}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;" />
+                <embed
+                    src="{{ note.file_url }}#page=1"
+                    type="application/pdf"
+                    class="w-100"
+                    style="height:180px; object-fit:cover;" />
             {% elif note.file_url and note.file_type in ['jpg', 'jpeg', 'png'] %}
-                <img src="{{ note.file_url }}" class="w-100" style="max-height:180px; object-fit:cover;" alt="{{ note.title }}">
+                <img
+                    src="{{ note.file_url }}"
+                    class="w-100"
+                    style="max-height:180px; object-fit:cover;"
+                    alt="{{ note.title }}">
             {% else %}
                 <div class="text-center py-4">
                     <i class="far fa-file-alt fa-3x text-muted"></i>
@@ -38,21 +61,50 @@
         <div class="card-body">
             <h5 class="note-title mb-1">{{ note.title }}</h5>
             {% if note.course %}
-            <span class="badge bg-secondary mb-2">{{ note.course }}</span>
+            <span class="badge bg-secondary mb-2">
+                <i class="fas fa-book-open me-1"></i>{{ note.course }}
+            </span>
             {% endif %}
-            <p class="note-meta mb-1">Subido por {{ note.uploader.name }} – {{ note.uploader.career or 'Carrera' }}</p>
+            {% if note.faculty %}
+            <span class="badge bg-secondary mb-2">
+                <i class="fas fa-university me-1"></i>{{ note.faculty }}
+            </span>
+            {% endif %}
+            <p class="note-meta mb-1">
+                Subido por {{ note.uploader.name }} –
+                {{ note.uploader.career or 'Carrera' }}
+            </p>
             <p class="note-desc mb-2">{{ note.description[:120] }}...</p>
             <div class="text-center mb-2">
-                <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-primary">📄 Ver Apunte</a>
+                <a
+                    href="{{ url_for('note.note_detail', note_id=note.id) }}"
+                    class="btn btn-primary">
+                    📄 Ver Apunte
+                </a>
             </div>
-            <p class="text-center text-muted mb-0">{{ note.page_count or '?' }} páginas</p>
+            <p class="text-center text-muted mb-0">
+                {{ note.page_count or '?' }} páginas
+            </p>
         </div>
-        <div class="note-actions card-footer bg-white">
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Me gusta">❤️ Me gusta</button>
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Comentar">💬 Comentar</button>
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Guardar">🔖 Guardar</button>
-            <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-primary" aria-label="Descargar">⬇️ Descargar</a>
-            <button class="btn btn-sm btn-outline-secondary" aria-label="Compartir">📤 Compartir</button>
+        <div class="note-actions card-footer bg-white d-flex justify-content-between">
+            <button class="action-btn" aria-label="Me gusta">
+                <i class="fas fa-heart me-1"></i>Me gusta
+            </button>
+            <button class="action-btn" aria-label="Comentar">
+                <i class="fas fa-comment me-1"></i>Comentar
+            </button>
+            <button class="action-btn" aria-label="Guardar">
+                <i class="fas fa-bookmark me-1"></i>Guardar
+            </button>
+            <a
+                href="{{ url_for('note.download_note_file', note_id=note.id) }}"
+                class="action-btn"
+                aria-label="Descargar">
+                <i class="fas fa-download me-1"></i>Descargar
+            </a>
+            <button class="action-btn" aria-label="Compartir">
+                <i class="fas fa-share me-1"></i>Compartir
+            </button>
         </div>
     </article>
 
@@ -63,7 +115,9 @@
                 <h6 class="text-muted mb-1">¿Sabías que…?</h6>
                 <strong>Hay productos útiles en la tienda para tus cursos</strong>
             </div>
-            <a href="{{ url_for('store.tienda') }}" class="btn btn-sm btn-outline-primary">Ver productos</a>
+            <a
+                href="{{ url_for('store.tienda') }}"
+                class="btn btn-sm btn-outline-primary">Ver productos</a>
         </div>
     </div>
     {% endif %}
