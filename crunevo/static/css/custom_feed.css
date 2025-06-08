@@ -239,3 +239,41 @@
     padding: 0.4rem 0.8rem;
   }
 }
+/* Espaciado y línea sutil entre tarjetas (global) */
+.note-card + .note-card {
+  border-top: 1px solid #e0e0e0;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+/* En modo oscuro, línea más tenue */
+@media (prefers-color-scheme: dark) {
+  .note-card + .note-card {
+    border-top-color: #3a3b3c;
+  }
+}
+
+.input-wrapper input.form-control {
+  font-size: 1rem !important;
+  font-weight: 500;
+  padding: 0.6rem 0.75rem 0.6rem 2.5rem;
+  border-radius: 20px;
+  background-color: #f0f2f5;
+  border: none;
+  color: #050505;
+  box-shadow: inset 0 0 0 1px #ccc;
+}
+
+/* Ícono de libro como decoración izquierda */
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper::before {
+  content: '\1F4DA';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  opacity: 0.5;
+}
