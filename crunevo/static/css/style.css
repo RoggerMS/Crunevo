@@ -57,21 +57,24 @@ body {
     width: 1.5rem;
 }
 
-#iconSidebar {
+#floatingSidebar {
+    bottom: 20px;
+    right: 20px;
     transition: all 0.3s ease;
 }
 
-#iconSidebar.hide {
-    transform: translateX(-100%);
-}
-
-#iconSidebarContent a {
+#floatingSidebarContent a {
     font-size: 1.5rem;
     text-decoration: none;
+    transition: transform 0.2s;
+}
+
+#floatingSidebarContent a:hover {
+    transform: scale(1.1);
 }
 
 @media (max-width: 991px) {
-    #iconSidebar {
+    #floatingSidebar {
         display: none !important;
     }
 }

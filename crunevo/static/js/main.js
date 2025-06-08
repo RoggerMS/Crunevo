@@ -287,12 +287,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const toggleBtn = document.getElementById("toggleSidebarBtn");
-    const sidebar = document.getElementById("iconSidebar");
+    const toggleBtn = document.getElementById("toggleFloatingSidebar");
+    const content = document.getElementById("floatingSidebarContent");
 
-    if (toggleBtn && sidebar) {
+    if (toggleBtn && content) {
         toggleBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("hide");
+            content.classList.toggle("d-none");
+            const expanded = !content.classList.contains("d-none");
+            toggleBtn.setAttribute("aria-expanded", expanded);
         });
     }
 });
