@@ -76,3 +76,27 @@ pytest -q
   - `crunevo/templates/base.html`
   - `crunevo/static/js/main.js`
   - `crunevo/static/css/style.css`
+
+### [Refactor] Rediseñar feed de apuntes para móviles con estilo moderno (2025-06-08)
+- Modificados:
+  - `crunevo/templates/feed.html`
+  - `crunevo/static/css/custom_feed.css`
+- Detalles:
+  - Se reorganizó el HTML usando `article.note-card` y un contenedor `.feed-container` para un aspecto de app.
+  - Se añadió diseño responsive con `border-radius`, `box-shadow` e íconos centrados.
+  - Las miniaturas ahora ocupan todo el ancho superior y el botón principal se centra.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Enhancement] Mejoras visuales en el feed móvil (2025-06-08)
+- Modificados:
+  - `crunevo/templates/feed.html`
+  - `crunevo/static/css/custom_feed.css`
+- Detalles:
+  - Se añadió animación de aparición a las tarjetas con `.animate-fade` y `@keyframes fadeUp`.
+  - Se agregó subtítulo informativo, nuevo placeholder y mejoras de accesibilidad con `aria-label`.
+  - Botón de subir con mayor padding en móviles.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
