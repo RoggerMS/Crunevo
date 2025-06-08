@@ -65,3 +65,14 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Fix] Reposicionar men\u00fa flotante a esquina inferior derecha correctamente (2025-06-08)
+
+- Se movi\u00f3 el men\u00fa de navegaci\u00f3n colapsable de lateral izquierdo a burbuja flotante.
+- El bot\u00f3n abre/cierra los \u00edconos en pantallas grandes.
+- Se elimin\u00f3 el \u00edcono de cierre de sesi\u00f3n.
+- Archivos modificados:
+  - `crunevo/templates/components/sidebar_icons.html`
+  - `crunevo/templates/base.html`
+  - `crunevo/static/js/main.js`
+  - `crunevo/static/css/style.css`
