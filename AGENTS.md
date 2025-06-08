@@ -100,3 +100,11 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Refactor] Mejorar feed móvil para experiencia inmersiva tipo app (2025-06-08)
+
+- Rediseñado el feed móvil eliminando espacios y ampliando visuales.
+- Inspirado en el diseño del feed de Facebook Mobile.
+- Archivos modificados:
+  - crunevo/templates/feed.html
+  - crunevo/static/css/custom_feed.css

@@ -53,16 +53,31 @@
 
 .note-actions {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: space-between;
+    gap: 0.25rem;
     border-top: none;
-    padding: 0.75rem;
+    padding: 0.5rem;
+}
+
+.action-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #495057;
+}
+
+.action-btn:hover {
+    background-color: #f0f2f5;
 }
 
 @media (max-width: 768px) {
     .feed-container {
-        padding: 1rem;
+        padding: 0;
+        margin-left: -20px;
+        margin-right: -20px;
+        max-width: none;
     }
     .note-card {
         width: 100%;
@@ -75,5 +90,18 @@
     .create-note .btn {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+    .note-image img,
+    .note-image embed {
+        height: 220px;
+    }
+    .note-title {
+        font-size: 1.4rem;
+    }
+    .note-desc {
+        font-size: 1rem;
+    }
+    .action-btn {
+        font-size: 1rem;
     }
 }
