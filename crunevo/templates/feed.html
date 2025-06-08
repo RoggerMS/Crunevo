@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="feed-container">
-    <div class="create-note card p-3 shadow-sm">
+    <div class="create-note card shadow-sm">
         <div class="d-flex align-items-center">
             <img
                 src="{{ user.profile_picture_url or
@@ -59,32 +59,28 @@
             {% endif %}
         </div>
         <div class="card-body">
-            <h5 class="note-title mb-1">{{ note.title }}</h5>
-            {% if note.course %}
-            <span class="badge bg-secondary mb-2">
-                <i class="fas fa-book-open me-1"></i>{{ note.course }}
-            </span>
-            {% endif %}
-            {% if note.faculty %}
-            <span class="badge bg-secondary mb-2">
-                <i class="fas fa-university me-1"></i>{{ note.faculty }}
-            </span>
-            {% endif %}
-            <p class="note-meta mb-1">
-                Subido por {{ note.uploader.name }} –
-                {{ note.uploader.career or 'Carrera' }}
-            </p>
-            <p class="note-desc mb-2">{{ note.description[:120] }}...</p>
-            <div class="text-center mb-2">
+            <h5 class="note-title">{{ note.title }}</h5>
+            <div class="mb-2">
                 <a
                     href="{{ url_for('note.note_detail', note_id=note.id) }}"
-                    class="btn btn-primary">
+                    class="btn btn-primary w-100 mb-2">
                     📄 Ver Apunte
                 </a>
             </div>
-            <p class="text-center text-muted mb-0">
-                {{ note.page_count or '?' }} páginas
+            <p class="note-meta mb-1">
+                <i class="fas fa-user-graduate me-1"></i>{{ note.uploader.name }} –
+                {{ note.uploader.career or 'Carrera' }}
             </p>
+            <p class="note-meta mb-1">{{ note.page_count or '?' }} páginas</p>
+            {% if note.faculty %}
+            <span class="badge text-white mb-1" data-facultad="{{ note.faculty }}">{{ note.faculty }}</span>
+            {% endif %}
+            {% if note.course %}
+            <span class="badge bg-secondary mb-1">
+                <i class="fas fa-book-open me-1"></i>{{ note.course }}
+            </span>
+            {% endif %}
+            <p class="note-desc">{{ note.description[:120] }}...</p>
         </div>
         <div class="note-actions card-footer bg-white d-flex justify-content-between">
             <button class="action-btn" aria-label="Me gusta">
