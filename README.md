@@ -4,8 +4,7 @@ Crunevo is a small Flask application. The source code lives in the `crunevo/` fo
 
 The application now relies on PostgreSQL in production. Set the environment
 variable `SQLALCHEMY_DATABASE_URI` with the connection string provided by your
-hosting platform (for example Railway). The selected URI is printed on startup
-for verification.
+hosting platform (for example Railway).
 
 Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
 
