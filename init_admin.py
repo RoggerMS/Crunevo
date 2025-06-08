@@ -1,4 +1,5 @@
 """Create a default admin user if it does not exist."""
+
 from crunevo import create_app, db
 from crunevo.models.user import User
 

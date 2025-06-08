@@ -2,6 +2,7 @@ import os
 import pytest
 from crunevo.app import create_app
 
+
 @pytest.fixture
 def app(tmp_path):
     os.environ["DATABASE_DIR"] = str(tmp_path)
@@ -10,9 +11,11 @@ def app(tmp_path):
     application.config["WTF_CSRF_ENABLED"] = False
     return application
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 def test_store_page_loads(client):
     resp = client.get("/tienda/")

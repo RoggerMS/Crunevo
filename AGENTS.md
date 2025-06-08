@@ -108,3 +108,20 @@ pytest -q
 - Archivos modificados:
   - crunevo/templates/feed.html
   - crunevo/static/css/custom_feed.css
+
+### [Feat] Feed móvil inmersivo estilo app (2025-06-08)
+
+- Modificados:
+  - `crunevo/templates/base.html`
+  - `crunevo/static/css/style.css`
+  - `crunevo/templates/feed.html`
+  - `crunevo/static/css/custom_feed.css`
+  - `crunevo/static/js/main.js`
+- Detalles:
+  - `.container` y `.feed-container` sin márgenes laterales en móviles.
+  - Tarjetas a ancho completo con bordes mínimos y sombra intensa.
+  - Barra inferior de acciones con íconos grandes y color activo.
+  - Títulos de 1.4rem y descripciones justificadas.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q`

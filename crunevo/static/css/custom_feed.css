@@ -1,6 +1,6 @@
 :root {
     --card-radius: 1rem;
-    --card-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .feed-container {
@@ -17,6 +17,8 @@
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
     overflow: hidden;
+    background: #fff;
+    border: none;
 }
 
 .animate-fade {
@@ -39,11 +41,18 @@
     width: 100%;
     height: auto;
     border-radius: var(--card-radius) var(--card-radius) 0 0;
+    border: none;
 }
 
 .note-title {
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.4rem;
+}
+
+.note-desc {
+    text-align: justify;
+    line-height: 1.5;
+    margin-bottom: 1rem;
 }
 
 .note-meta {
@@ -55,7 +64,7 @@
     display: flex;
     justify-content: space-between;
     gap: 0.25rem;
-    border-top: none;
+    border-top: 1px solid #e0e0e0;
     padding: 0.5rem;
 }
 
@@ -64,8 +73,20 @@
     border: none;
     background: transparent;
     padding: 0.5rem 0;
-    font-size: 0.95rem;
-    color: #495057;
+    font-size: 1rem;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.action-btn i {
+    font-size: 1.3rem;
+}
+
+.action-btn.active {
+    color: #0d6efd;
 }
 
 .action-btn:hover {
@@ -75,13 +96,13 @@
 @media (max-width: 768px) {
     .feed-container {
         padding: 0;
-        margin-left: -20px;
-        margin-right: -20px;
+        margin: 0;
         max-width: none;
     }
     .note-card {
         width: 100%;
         margin-bottom: 1rem;
+        border-radius: 0;
     }
     .create-note input.form-control {
         font-size: 0.9rem;
@@ -94,6 +115,7 @@
     .note-image img,
     .note-image embed {
         height: 220px;
+        border-radius: 0;
     }
     .note-title {
         font-size: 1.4rem;

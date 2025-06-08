@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "clave_segura_por_defecto")
 
@@ -21,9 +22,8 @@ class Config:
             fallback.mkdir(parents=True, exist_ok=True)
             return fallback
 
-    _custom_dir_env = (
-        os.getenv("DATABASE_DIR")
-        or os.getenv("RAILWAY_VOLUME_MOUNT_PATH")
+    _custom_dir_env = os.getenv("DATABASE_DIR") or os.getenv(
+        "RAILWAY_VOLUME_MOUNT_PATH"
     )
     if _custom_dir_env:
         _custom_dir = str(_ensure_writable(Path(_custom_dir_env).expanduser()))

@@ -6,6 +6,7 @@ from crunevo.app import create_app
 from crunevo.models import db
 from crunevo.models.user import User
 
+
 @pytest.fixture
 def app(tmp_path):
     os.environ["DATABASE_DIR"] = str(tmp_path)
@@ -14,9 +15,11 @@ def app(tmp_path):
     application.config["WTF_CSRF_ENABLED"] = False
     return application
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 @pytest.fixture
 def user(app):
@@ -31,7 +34,9 @@ def user(app):
 
 
 def login(client, email, password):
-    return client.post("/login", data={"email": email, "password": password}, follow_redirects=True)
+    return client.post(
+        "/login", data={"email": email, "password": password}, follow_redirects=True
+    )
 
 
 def test_upload_requires_login(client):
@@ -51,7 +56,9 @@ def test_reject_invalid_extension(app, client, user):
         "terms": "y",
         "note_file": (io.BytesIO(b"bad"), "malware.exe"),
     }
-    resp = client.post("/upload", data=data, content_type="multipart/form-data", follow_redirects=True)
+    resp = client.post(
+        "/upload", data=data, content_type="multipart/form-data", follow_redirects=True
+    )
     assert b"Solo se permiten archivos" in resp.data
 
 
@@ -82,7 +89,9 @@ def test_accept_valid_upload(app, client, user):
         "terms": "y",
         "note_file": (io.BytesIO(b"%PDF-1.4"), "doc.pdf"),
     }
-    resp = client.post("/upload", data=data, content_type="multipart/form-data", follow_redirects=True)
+    resp = client.post(
+        "/upload", data=data, content_type="multipart/form-data", follow_redirects=True
+    )
     assert b"Apunte subido exitosamente" in resp.data
 
 
