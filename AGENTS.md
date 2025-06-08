@@ -1,4 +1,6 @@
 # AGENTS.md – Guía para Agentes de Código (Codex, etc.)
+**Recuerda actualizar este archivo con cada cambio importante para que GitHub muestre la información correcta.**
+
 
 ## Estructura del Proyecto
 - `crunevo/models/`: Modelos de SQLAlchemy
