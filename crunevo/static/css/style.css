@@ -107,6 +107,13 @@ body {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
 
     .note-image embed,
     .note-image img {
