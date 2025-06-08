@@ -56,3 +56,22 @@ body {
 .offcanvas .nav-link i {
     width: 1.5rem;
 }
+
+#iconSidebar {
+    transition: all 0.3s ease;
+}
+
+#iconSidebar.hide {
+    transform: translateX(-100%);
+}
+
+#iconSidebarContent a {
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+@media (max-width: 991px) {
+    #iconSidebar {
+        display: none !important;
+    }
+}
