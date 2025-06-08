@@ -13,29 +13,33 @@
             <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" alt="Avatar" class="rounded-circle me-3" width="50" height="50">
             <input type="text" class="form-control me-2" placeholder="¿Qué estás estudiando?" readonly>
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('note.upload_note') }}" class="btn btn-success"><i class="fas fa-upload me-1"></i>Subir Apunte</a>
+            <a href="{{ url_for('note.upload_note') }}" class="btn btn-dark ms-auto"><i class="fas fa-upload me-1"></i>Subir Apunte</a>
             {% endif %}
         </div>
     </div>
 </div>
 
-<h2 class="mb-3">Últimos Apuntes</h2>
+<h2 class="mb-3">📄 Últimos Apuntes</h2>
 <div class="feed">
     {% for note in notes %}
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm rounded">
         <div class="card-body">
             <div class="row g-0">
-                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                  <div class="col-md-2 d-flex align-items-center justify-content-center">
                     {% if note.file_type == 'pdf' %}
-                        <embed src="{{ note.file_url }}#page=1" type="application/pdf" width="80" height="100" class="rounded border" />
+                          <embed src="{{ note.file_url }}#page=1" type="application/pdf" width="80" height="100" class="rounded border" style="object-fit: cover;" />
                     {% elif note.file_url and note.file_type in ['jpg', 'jpeg', 'png'] %}
-                        <img src="{{ note.file_url }}" class="img-fluid rounded" style="max-height:100px;" alt="{{ note.title }}">
+                          <img src="{{ note.file_url }}" class="img-fluid rounded" style="max-height:100px; object-fit: cover;" alt="{{ note.title }}">
                     {% else %}
                         <i class="far fa-file-alt fa-3x text-muted"></i>
                     {% endif %}
                 </div>
                 <div class="col-md-10">
-                    <h5 class="mb-1">{{ note.title }}</h5>
+                      <h5 class="mb-1 d-flex align-items-center">{{ note.title }}
+                          {% if note.course %}
+                          <span class="badge bg-secondary ms-2">{{ note.course }}</span>
+                          {% endif %}
+                      </h5>
                     <p class="mb-1 text-muted">
                         Subido por {{ note.uploader.name }} – {{ note.uploader.career or 'Carrera' }}
                     </p>
@@ -47,12 +51,12 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer bg-white d-flex gap-2">
+        <div class="card-footer bg-white d-flex flex-wrap justify-content-center gap-2">
             <button class="btn btn-sm btn-outline-secondary">❤️ Me gusta</button>
             <button class="btn btn-sm btn-outline-secondary">💬 Comentar</button>
             <button class="btn btn-sm btn-outline-secondary">🔖 Guardar</button>
             <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-primary">⬇️ Descargar</a>
-            <button class="btn btn-sm btn-outline-secondary ms-auto">📤 Compartir</button>
+            <button class="btn btn-sm btn-outline-secondary">📤 Compartir</button>
         </div>
     </div>
 
