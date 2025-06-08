@@ -9,6 +9,7 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
+    {% include 'components/sidebar_icons.html' %}
     {% include 'navbar.html' %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -22,7 +23,7 @@
       {% endif %}
     {% endwith %}
 
-    <div class="container">
+    <div class="container ms-lg-6">
         {% block content %}{% endblock %}
     </div>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>

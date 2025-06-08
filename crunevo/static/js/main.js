@@ -285,3 +285,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("toggleSidebarBtn");
+    const sidebar = document.getElementById("iconSidebar");
+
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("hide");
+        });
+    }
+});
