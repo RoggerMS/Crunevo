@@ -11,18 +11,19 @@
     <div class="create-note card p-3 shadow-sm">
         <div class="d-flex align-items-center">
             <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" alt="Avatar" class="rounded-circle me-3" width="40" height="40">
-            <input type="text" class="form-control me-2" placeholder="¿Qué estás estudiando?" readonly>
+            <input type="text" class="form-control me-2" placeholder="Comparte lo que estás aprendiendo..." readonly>
             {% if current_user.is_authenticated %}
             <a href="{{ url_for('note.upload_note') }}" class="btn btn-primary ms-auto"><i class="fas fa-upload me-1"></i>Subir</a>
             {% endif %}
         </div>
     </div>
 
+    <p class="text-muted small">Explora apuntes recientes compartidos por la comunidad</p>
     <h2 class="fw-bold mb-3">📄 Últimos Apuntes</h2>
 
     <div class="feed">
     {% for note in notes %}
-    <article class="note-card card">
+    <article class="note-card card animate-fade">
         <div class="note-image">
             {% if note.file_type == 'pdf' %}
                 <embed src="{{ note.file_url }}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;" />
@@ -47,11 +48,11 @@
             <p class="text-center text-muted mb-0">{{ note.page_count or '?' }} páginas</p>
         </div>
         <div class="note-actions card-footer bg-white">
-            <button class="btn btn-sm btn-outline-secondary">❤️ Me gusta</button>
-            <button class="btn btn-sm btn-outline-secondary">💬 Comentar</button>
-            <button class="btn btn-sm btn-outline-secondary">🔖 Guardar</button>
-            <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-primary">⬇️ Descargar</a>
-            <button class="btn btn-sm btn-outline-secondary">📤 Compartir</button>
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Me gusta">❤️ Me gusta</button>
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Comentar">💬 Comentar</button>
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Guardar">🔖 Guardar</button>
+            <a href="{{ url_for('note.download_note_file', note_id=note.id) }}" class="btn btn-sm btn-outline-primary" aria-label="Descargar">⬇️ Descargar</a>
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Compartir">📤 Compartir</button>
         </div>
     </article>
 

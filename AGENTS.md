@@ -88,3 +88,15 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Enhancement] Mejoras visuales en el feed móvil (2025-06-08)
+- Modificados:
+  - `crunevo/templates/feed.html`
+  - `crunevo/static/css/custom_feed.css`
+- Detalles:
+  - Se añadió animación de aparición a las tarjetas con `.animate-fade` y `@keyframes fadeUp`.
+  - Se agregó subtítulo informativo, nuevo placeholder y mejoras de accesibilidad con `aria-label`.
+  - Botón de subir con mayor padding en móviles.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
