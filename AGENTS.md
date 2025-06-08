@@ -45,3 +45,23 @@ Notas (migraciones nuevas, archivos añadidos, etc.)
 black .
 pytest -q
 ```
+
+## 2025-06-08
+
+### [Feat] Añadir sidebar collapsible y eliminar íconos superiores en desktop
+
+- Modificados:
+  - crunevo/templates/base.html
+  - crunevo/templates/navbar.html
+  - crunevo/static/js/main.js
+  - crunevo/static/css/style.css
+  - crunevo/templates/components/sidebar_icons.html (nuevo)
+
+- Detalles:
+  - Se ocultan los íconos del navbar en escritorio y se muestran en un sidebar colapsable.
+  - El contenedor principal se desplaza con `ms-lg-6`.
+  - Toggle manejado con JS y estilos añadidos.
+
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
