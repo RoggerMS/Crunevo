@@ -125,3 +125,15 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q`
+
+### [Fix] Eliminar espacio gris lateral en móviles (2025-06-08)
+
+- Modificados:
+  - `crunevo/templates/base.html`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Se reemplazó el contenedor principal por `.container-fluid p-0` para quitar padding.
+  - Se añadieron reglas globales que eliminan márgenes y padding en móviles para `.container`, `.container-fluid` y `.feed-container`.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
