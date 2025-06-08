@@ -8,10 +8,12 @@ from crunevo.models.user import User
 
 @pytest.fixture
 def app(tmp_path):
-    os.environ["DATABASE_DIR"] = str(tmp_path)
+    os.environ["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{tmp_path}/test.db"
     application = create_app()
     application.config["TESTING"] = True
     application.config["WTF_CSRF_ENABLED"] = False
+    with application.app_context():
+        db.create_all()
     return application
 
 
