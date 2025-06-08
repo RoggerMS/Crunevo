@@ -80,9 +80,24 @@ body {
 }
 
 @media (max-width: 768px) {
-    .container {
+    body, html {
         padding: 0 !important;
         margin: 0 !important;
-        max-width: 100vw !important;
+        width: 100vw !important;
+        overflow-x: hidden;
+    }
+
+    .container,
+    .container-fluid,
+    .feed-container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100vw !important;
+    }
+
+    .note-card {
+        border-radius: 0 !important;
     }
 }
