@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, current_app
 import importlib
-import os
 import crunevo.config as config_module
 from flask_login import LoginManager
 from crunevo.models import db
@@ -63,19 +62,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id: str):
         return User.query.get(int(user_id))
-
-    with app.app_context():
-        from sqlalchemy.exc import OperationalError
-
-        try:
-            if not os.getenv("CRUNEVO_NO_CREATE_ALL"):
-                db.create_all()
-        except OperationalError as exc:
-            raise RuntimeError(
-                "Failed to initialize the database. Check that the path "
-                "specified in SQLALCHEMY_DATABASE_URI is writable and that "
-                "DATABASE_DIR points to a directory with write permissions."
-            ) from exc
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)

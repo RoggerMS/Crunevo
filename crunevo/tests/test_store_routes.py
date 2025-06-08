@@ -5,10 +5,14 @@ from crunevo.app import create_app
 
 @pytest.fixture
 def app(tmp_path):
-    os.environ["DATABASE_DIR"] = str(tmp_path)
+    os.environ["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{tmp_path}/test.db"
     application = create_app()
     application.config["TESTING"] = True
     application.config["WTF_CSRF_ENABLED"] = False
+    with application.app_context():
+        from crunevo.models import db
+
+        db.create_all()
     return application
 
 

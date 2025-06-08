@@ -180,3 +180,9 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Migration] Cambio completo a PostgreSQL en producción (2025-06-08)
+
+- Eliminado `db.create_all()` y `DATABASE_DIR`.
+- PostgreSQL gestionado vía `SQLALCHEMY_DATABASE_URI` en Railway.
+- Se mantiene Flask-Migrate como gestor de cambios estructurales.
