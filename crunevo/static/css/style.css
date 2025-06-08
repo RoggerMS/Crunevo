@@ -75,3 +75,17 @@ body {
         display: none !important;
     }
 }
+
+#floatingSidebarContent a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+#floatingSidebarContent a:hover {
+    transform: scale(1.1);
+}
+@media (max-width: 991px) {
+    #floatingSidebar {
+        display: none !important;
+    }
+}

@@ -296,3 +296,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("toggleFloatingSidebar");
+    const content = document.getElementById("floatingSidebarContent");
+
+    if (toggleBtn && content) {
+        toggleBtn.addEventListener("click", () => {
+            content.classList.toggle("d-none");
+        });
+    }
+});
