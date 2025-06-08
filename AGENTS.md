@@ -163,3 +163,20 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ❌ `pytest -q` (faltan dependencias)
+
+### [Feat] Crear modelo Post y habilitar feed social (2025-06-08)
+
+- Nuevos archivos:
+  - `crunevo/models/post.py`
+  - `crunevo/tests/test_social_posts.py`
+  - `migrations/` con versión inicial `b547bec8a90a_create_post_model.py`
+- Modificados:
+  - `crunevo/__init__.py` ahora usa Flask-Migrate.
+  - `crunevo/routes/main_routes.py`, `feed.html`, `main.js`, `custom_feed.css`.
+- Detalles:
+  - Los usuarios pueden alternar entre subir apuntes y publicaciones sociales.
+  - Se añadió el modelo `Post` con relación a `User` y ruta `/crear_post`.
+  - Integrado Flask-Migrate y primer migración automática.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`

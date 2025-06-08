@@ -324,3 +324,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("toggleMode");
+  const uploadOptions = document.getElementById("uploadOptions");
+  const input = document.getElementById("noteInput");
+  const publishBtn = document.getElementById("publishBtn");
+  const form = document.getElementById("postForm");
+
+  let mode = 'apunte';
+
+  toggleBtn.addEventListener("click", () => {
+    mode = mode === 'apunte' ? 'social' : 'apunte';
+    toggleBtn.textContent = mode === 'apunte' ? '📘' : '🖼️';
+    uploadOptions.classList.toggle("d-none", mode === 'apunte');
+    input.placeholder =
+      mode === 'apunte' ? "¿Qué estás aprendiendo hoy?" : "Escribe algo educativo...";
+  });
+
+  publishBtn.addEventListener("click", () => {
+    if (mode === 'apunte') {
+      window.location.href = "/subir";
+    } else if (form) {
+      form.submit();
+    }
+  });
+});

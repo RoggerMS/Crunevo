@@ -277,3 +277,17 @@
   font-size: 1.1rem;
   opacity: 0.5;
 }
+
+.post-card .note-actions {
+  display: none;
+}
+
+.post-card .note-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.post-card .note-desc {
+  color: #333;
+  font-size: 0.95rem;
+}
