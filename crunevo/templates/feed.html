@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="feed-container">
+<div class="main-container">
+  <div class="sidebar-left d-none d-lg-block"></div>
+
+  <div class="feed-container">
     <div class="create-note card shadow-sm">
         <div class="d-flex align-items-center">
             <img
@@ -116,5 +119,7 @@
     {% else %}
     <p>No hay apuntes disponibles.</p>
     {% endfor %}
+  </div>
+  <div class="sidebar-right d-none d-lg-block"></div>
 </div>
 {% endblock %}
