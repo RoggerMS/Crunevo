@@ -10,6 +10,7 @@ from crunevo.models.note import (
     Like as _Like,
     Report as _Report,
 )
+from crunevo.models.post import Post as _Post
 from crunevo.models.product import Product as _Product
 from crunevo.models.forum import Pregunta as _Pregunta, Respuesta as _Respuesta
 
@@ -22,6 +23,7 @@ Report = _Report
 Product = _Product
 Pregunta = _Pregunta
 Respuesta = _Respuesta
+Post = _Post
 from crunevo.routes.main_routes import main_bp
 from crunevo.routes.auth_routes import auth_bp
 from crunevo.routes.store_routes import store_bp

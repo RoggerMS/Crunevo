@@ -12,19 +12,21 @@
 
   <div class="feed-container">
     <div class="create-note card shadow-sm">
-      <div class="d-flex align-items-center">
-        <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="rounded-circle me-3" width="40" height="40">
-        <div class="input-wrapper flex-grow-1 me-2">
-          <input type="text" class="form-control" placeholder="¿Qué estás aprendiendo hoy?" id="noteInput">
+      <form id="postForm" method="POST" action="{{ url_for('main.crear_post') }}" enctype="multipart/form-data">
+        <div class="d-flex align-items-center">
+          <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="rounded-circle me-3" width="40" height="40">
+          <div class="input-wrapper flex-grow-1 me-2">
+            <input type="text" name="content" class="form-control" placeholder="¿Qué estás aprendiendo hoy?" id="noteInput">
+          </div>
+          <button id="toggleMode" type="button" class="btn btn-outline-secondary btn-sm" title="Cambiar modo">📘</button>
         </div>
-        <button id="toggleMode" class="btn btn-outline-secondary btn-sm" title="Cambiar modo">📘</button>
-      </div>
-      <div id="uploadOptions" class="mt-2 d-none">
-        <input type="file" accept="image/*" class="form-control">
-      </div>
-      <div class="mt-2 text-end">
-        <button class="btn btn-primary btn-sm">Publicar</button>
-      </div>
+        <div id="uploadOptions" class="mt-2 d-none">
+          <input type="file" name="image" accept="image/*" class="form-control">
+        </div>
+        <div class="mt-2 text-end">
+          <button id="publishBtn" type="button" class="btn btn-primary btn-sm">Publicar</button>
+        </div>
+      </form>
     </div>
 
     {% for post in posts %}
