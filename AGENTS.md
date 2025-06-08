@@ -137,3 +137,15 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Fix] Eliminar sombras y bordes de tarjetas en móviles (2025-06-08)
+
+- Modificados:
+  - `crunevo/static/css/custom_feed.css`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Se eliminaron `border-radius` y `box-shadow` de `.note-card` y `.create-note.card` en móviles.
+  - Regla global para `.card` en pantallas pequeñas evita sombras y bordes.
+- Pruebas:
+  ✅ `black .`
+  ❌ `PYTHONPATH=. pytest -q` (faltan dependencias)
