@@ -10,6 +10,10 @@
     letter-spacing: 0.2px;
 }
 
+.feed-container .btn-primary:active {
+    transform: scale(0.98);
+}
+
 .feed-container {
     width: 100%;
     max-width: none;
@@ -21,7 +25,7 @@
 
 .note-card {
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: var(--card-shadow);
     overflow: hidden;
     background: #fff;
     border: none;

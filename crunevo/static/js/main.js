@@ -303,6 +303,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".note-actions .action-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             btn.classList.toggle("active");
+            const action = btn.dataset.action;
+            console.log(`Action: ${action}`);
         });
     });
 });
