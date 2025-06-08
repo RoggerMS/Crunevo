@@ -125,20 +125,3 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ✅ `PYTHONPATH=. pytest -q`
-
-### [Fix] Corregir espacio gris y aplicar feed 100% ancho en móviles (2025-06-08)
-
-- Modificados:
-  - `crunevo/templates/base.html`
-  - `crunevo/static/css/style.css` (o `crunevo/static/css/custom_feed.css`)
-- Detalles:
-  - Reemplazar `<div class="container">` por `<div class="container-fluid p-0 main-container">` en `base.html`.
-  - Añadir reglas CSS que eliminen padding y margen laterales en móviles para `.container`, `.main-container`, `.feed-container`, `body` y `html`.
-  - Asegurar que `.note-card`, `.create-note.card`, `.note-image` y `.note-actions` ocupen todo el ancho en móviles sin bordes residuales.
-
-### [Enhancement] Estilo tipo app (2025-06-08)
-- `\.action-btn i` con tamaño `1.3rem`.
-- Títulos de al menos `1.4rem` en el feed.
-- `.note-desc { text-align: justify; }`.
-- Botón "Ver Apunte" debe ocupar el ancho disponible y resaltar.
-
