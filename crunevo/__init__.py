@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, current_app
 import importlib
+import os
 import crunevo.config as config_module
 from flask_login import LoginManager
 from crunevo.models import db
+from flask_migrate import Migrate
 from crunevo.models.user import User as _User
 from crunevo.models.note import (
     Note as _Note,
@@ -35,6 +37,7 @@ from crunevo.routes.admin_routes import admin_bp
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
+migrate = Migrate()
 
 
 def create_app():
@@ -43,6 +46,7 @@ def create_app():
     app.config.from_object(config.Config)
 
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     @login_manager.unauthorized_handler
@@ -64,7 +68,8 @@ def create_app():
         from sqlalchemy.exc import OperationalError
 
         try:
-            db.create_all()
+            if not os.getenv("CRUNEVO_NO_CREATE_ALL"):
+                db.create_all()
         except OperationalError as exc:
             raise RuntimeError(
                 "Failed to initialize the database. Check that the path "
