@@ -3,44 +3,50 @@
 {% block title %}Acerca de - CRUNEVO{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div
-    class="card shadow-lg rounded-3 bg-light p-4 animate-fade"
-    style="background: url('{{ url_for('static', filename='images/about_bg.svg') }}') right bottom/150px no-repeat;"
-  >
+<div id="about-page" class="py-5 d-flex justify-content-center">
+  <div class="about-card animate-fade">
     <h1 class="text-center mb-4">
       <i class="fas fa-brain me-2"></i>¿Qué es CRUNEVO?
     </h1>
     <p class="lead text-center">
-      Plataforma universitaria para compartir apuntes y potenciar el aprendizaje.
+      CRUNEVO es una plataforma colaborativa que impulsa el aprendizaje universitario a través del intercambio libre de apuntes, recursos y conocimientos.
     </p>
-    <hr>
-    <h2 class="h4">
-      <i class="fas fa-chart-line me-2"></i>Misión y visión
+
+    <h2 class="h5 mt-4">
+      <i class="fas fa-bullseye me-2"></i>Misión
     </h2>
     <p>
-      Democratizar el conocimiento y fomentar la excelencia académica mediante
-      colaboración libre.
+      Brindar acceso gratuito y equitativo a apuntes y materiales educativos de calidad, fortaleciendo el aprendizaje autónomo entre estudiantes.
     </p>
-    <h2 class="h4 mt-3">
-      <i class="fas fa-unlock-alt me-2"></i>Valores
+
+    <h2 class="h5 mt-4">
+      <i class="fas fa-eye me-2"></i>Visión
+    </h2>
+    <p>
+      Convertirse en la red académica más confiable de apuntes en español, conectando a estudiantes de todo el mundo a través del conocimiento compartido.
+    </p>
+
+    <h2 class="h5 mt-4">
+      <i class="fas fa-star me-2"></i>Valores
     </h2>
     <ul>
-      <li>Educación libre</li>
-      <li>Colaboración</li>
-      <li>Meritocracia</li>
+      <li>📘 Educación libre</li>
+      <li>🤝 Colaboración solidaria</li>
+      <li>🏅 Reconocimiento al esfuerzo</li>
+      <li>🧠 Curiosidad y crecimiento continuo</li>
     </ul>
-    <h2 class="h4 mt-3">
+
+    <h2 class="h5 mt-4">
       <i class="fas fa-users me-2"></i>Comunidad
     </h2>
-    <p>Somos estudiantes ayudando a estudiantes.</p>
-    <h2 class="h4 mt-3">
+    <p>CRUNEVO es un ecosistema educativo donde cada estudiante puede contribuir, recibir apoyo y formar parte de algo más grande que sí mismo.</p>
+
+    <h2 class="h5 mt-4">
       <i class="fas fa-cogs me-2"></i>Tecnología
     </h2>
-    <p>Flask, PostgreSQL, Cohere y más.</p>
-    <div class="mt-4 text-center">
-      <em class="fs-5">"El conocimiento compartido construye el futuro."</em>
-    </div>
+    <p>Desarrollado con <strong>Flask</strong>, <strong>PostgreSQL</strong>, <strong>Cohere</strong> y tecnologías de código abierto.</p>
+
+    <blockquote class="text-center mt-4 fst-italic">"El conocimiento compartido construye el futuro."</blockquote>
   </div>
 </div>
 {% endblock %}

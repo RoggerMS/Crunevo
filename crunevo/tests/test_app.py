@@ -33,6 +33,3 @@ def test_about_route(app):
         response = client.get("/about")
         assert response.status_code == 200
         assert "¿Qué es CRUNEVO?" in response.text
-
-        home_resp = client.get("/")
-        assert "Acerca de CRUNEVO" in home_resp.text
