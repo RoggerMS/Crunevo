@@ -11,21 +11,32 @@
   <div class="sidebar-left d-none d-lg-block"></div>
 
   <div class="feed-container">
-    <div class="create-note card shadow-sm">
-      <form id="postForm" method="POST" action="{{ url_for('main.crear_post') }}" enctype="multipart/form-data">
-        <div class="d-flex align-items-center">
-          <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="rounded-circle me-3" width="40" height="40">
-          <div class="input-wrapper flex-grow-1 me-2">
-            <input type="text" name="content" class="form-control" placeholder="¿Qué estás aprendiendo hoy?" id="noteInput">
-          </div>
-          <button id="toggleMode" type="button" class="btn btn-outline-secondary btn-sm" title="Cambiar modo">📘</button>
+    <div class="post-toggle card shadow-sm p-3 mb-3">
+      <div class="toggle-tabs d-flex mb-2">
+        <button class="btn btn-outline-primary me-2 active" data-mode="apunte">📄 Subir Apunte</button>
+        <button class="btn btn-outline-secondary" data-mode="post">🗨️ Publicar Texto</button>
+      </div>
+
+      <form id="postForm" enctype="multipart/form-data">
+        <div id="mode-apunte">
+          <input type="text" name="title" class="form-control mb-2" placeholder="Título del apunte" required>
+          <textarea name="description" class="form-control mb-2" rows="2" placeholder="Descripción o resumen opcional"></textarea>
+          <input type="file" name="file" accept=".pdf" class="form-control mb-2" required>
+          <select name="categoria" class="form-select mb-2">
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <option value="matematicas">Matemáticas</option>
+            <option value="historia">Historia</option>
+            <option value="otros">Otros</option>
+          </select>
         </div>
-        <div id="uploadOptions" class="mt-2 d-none">
-          <input type="file" name="image" accept="image/*" class="form-control">
+
+        <div id="mode-post" class="d-none">
+          <textarea name="content" class="form-control mb-2" rows="3" placeholder="Comparte una idea, resumen o duda académica..."></textarea>
+          <input type="file" name="image" accept="image/*" class="form-control mb-2">
+          <div class="preview-img mt-2"></div>
         </div>
-        <div class="mt-2 text-end">
-          <button id="publishBtn" type="button" class="btn btn-primary btn-sm">Publicar</button>
-        </div>
+
+        <button type="submit" class="btn btn-primary mt-2 w-100">📤 Publicar</button>
       </form>
     </div>
 
