@@ -307,6 +307,11 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(`Action: ${action}`);
         });
     });
+    document.querySelectorAll('.post-actions button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+        });
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -441,11 +446,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const imageInput = document.querySelector('input[name="image"]');
+  const imageInput = document.getElementById("uploadImage");
   if (imageInput) {
     imageInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
-      if (!file) return;
+      const label = document.getElementById("fileLabelText");
+      label.textContent = `📎 ${file?.name || "Seleccionar imagen"}`;
+      if (!file) {
+        document.querySelector(".preview-img").innerHTML = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (ev) => {
         document.querySelector(
@@ -510,7 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const article = document.createElement("article");
     article.className = "note-card post-card card animate-fade";
     const imgPart = post.image_url
-      ? `<div class="mt-2"><img src="${post.image_url}" class="img-fluid rounded" alt="imagen"></div>`
+      ? `<div class="text-center mt-2"><img src="${post.image_url}" class="img-fluid mx-auto d-block rounded shadow-sm" style="max-height: 300px; object-fit: contain;" alt="imagen"></div>`
       : "";
     article.innerHTML = `
       <div class="card-body">
@@ -519,8 +529,19 @@ document.addEventListener("DOMContentLoaded", () => {
         </p>
         <p class="note-desc">${post.content}</p>
         ${imgPart}
+      </div>
+      <div class="d-flex justify-content-around border-top pt-2 post-actions">
+        <button class="btn btn-light btn-sm"><i class="fas fa-heart me-1 text-danger"></i>Me gusta</button>
+        <button class="btn btn-light btn-sm"><i class="fas fa-comment-alt me-1 text-secondary"></i>Comentar</button>
+        <button class="btn btn-light btn-sm"><i class="fas fa-bookmark me-1 text-primary"></i>Guardar</button>
+        <button class="btn btn-light btn-sm"><i class="fas fa-share me-1 text-info"></i>Compartir</button>
       </div>`;
     container.insertBefore(article, container.querySelector(".post-toggle").nextSibling);
+    article.querySelectorAll('.post-actions button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+      });
+    });
   }
 
   function addNoteToFeed(note) {
