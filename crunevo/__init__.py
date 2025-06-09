@@ -15,6 +15,7 @@ from crunevo.models.note import (
     Report as _Report,
 )
 from crunevo.models.post import Post as _Post
+from crunevo.models.post_comment import PostComment as _PostComment
 from crunevo.models.product import Product as _Product
 from crunevo.models.forum import Pregunta as _Pregunta, Respuesta as _Respuesta
 from crunevo.models.log import LoginLog as _LoginLog
@@ -30,6 +31,7 @@ Product = _Product
 Pregunta = _Pregunta
 Respuesta = _Respuesta
 Post = _Post
+PostComment = _PostComment
 LoginLog = _LoginLog
 Comment = _Comment
 from crunevo.routes.main_routes import main_bp

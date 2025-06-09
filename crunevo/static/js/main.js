@@ -299,7 +299,7 @@ function initFloatingSidebar() {
 
 function initActionButtons() {
     const allActionButtons = document.querySelectorAll(
-        ".note-actions .action-btn, .post-actions .action-post-btn"
+        ".note-actions .action-btn"
     );
     allActionButtons.forEach((btn) => {
         const action = btn.dataset.action;
@@ -456,34 +456,40 @@ function initFeedForms() {
   function addPostToFeed(post) {
     const container = document.querySelector(".feed-container");
     const article = document.createElement("article");
-    article.className = "note-card post-card card animate-fade";
+    article.className = "post-card card animate-fade mb-3";
     const imgPart = post.image_url
-      ? `<div class="text-center mt-2"><img src="${post.image_url}" class="img-fluid mx-auto d-block rounded shadow-sm" style="max-height: 300px; object-fit: contain;" alt="imagen"></div>`
+      ? `<div class="text-center mt-2"><img src="${post.image_url}" class="img-fluid rounded" style="max-height: 300px; object-fit: contain;" alt="imagen"></div>`
       : "";
     const career = post.user_career || 'Carrera';
     article.innerHTML = `
       <div class="card-body">
-        <p class="note-meta mb-1">
-          <i class="fas fa-user me-1"></i>${post.user_name} — ${career}
-        </p>
-        <p class="note-desc">${post.content}</p>
+        <div class="post-header d-flex align-items-center mb-2">
+          <img src="${post.user_avatar}" class="avatar me-2" alt="avatar">
+          <div>
+            <strong>${post.user_name}</strong><br>
+            <small class="text-muted">${career}</small>
+          </div>
+        </div>
+        <p class="post-content">${post.content}</p>
         ${imgPart}
       </div>
-      <div class="d-flex justify-content-around border-top pt-2 post-actions">
-        <button class="btn btn-light btn-sm"><i class="fas fa-heart me-1 text-danger"></i>Me gusta</button>
-        <button class="btn btn-light btn-sm"><i class="fas fa-comment-alt me-1 text-secondary"></i>Comentar</button>
-        <button class="btn btn-light btn-sm"><i class="fas fa-bookmark me-1 text-primary"></i>Guardar</button>
-        <button class="btn btn-light btn-sm"><i class="fas fa-share me-1 text-info"></i>Compartir</button>
+      <div class="note-actions post-actions card-footer bg-white">
+        <div class="action-row d-flex">
+          <button class="action-btn" data-action="like" data-bs-toggle="tooltip" title="Me gusta"><i class="fas fa-heart me-1"></i>Me gusta</button>
+          <button class="action-btn comment-toggle" data-bs-toggle="tooltip" title="Comentar"><i class="fas fa-comment me-1"></i>Comentar</button>
+          <button class="action-btn" data-action="save" data-bs-toggle="tooltip" title="Guardar"><i class="fas fa-bookmark me-1"></i>Guardar</button>
+          <button class="action-btn" data-action="share" data-bs-toggle="tooltip" title="Compartir"><i class="fas fa-share me-1"></i>Compartir</button>
+        </div>
+      </div>
+      <div class="comment-area mt-2" style="display:none;">
+        <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
       </div>`;
-    container.insertBefore(article, container.querySelector(".post-toggle").nextSibling);
-    article.querySelectorAll('.post-actions button').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('active');
-      });
-    });
+    container.insertBefore(article, container.querySelector(".create-post").nextSibling);
+    initActionButtons();
+    initCommentInputs(article);
   }
 
-  function addNoteToFeed(note) {
+function addNoteToFeed(note) {
     const container = document.querySelector(".feed-container");
     const article = document.createElement("article");
     article.className = "note-card card animate-fade";
@@ -496,9 +502,45 @@ function initFeedForms() {
         <p class="note-desc">${note.description}</p>
         <p class="note-meta mb-1"><i class="fas fa-user me-1"></i>${note.user_name} – ${career}</p>
       </div>`;
-  const marker = container.querySelector("h2.fw-bold");
+  const marker = container.querySelector("h2.section-title.mt-4");
   container.insertBefore(article, marker.nextSibling);
   }
+
+
+  initCommentInputs();
+}
+
+function initCommentInputs(scope = document) {
+  scope.querySelectorAll('.comment-toggle').forEach((btn) => {
+    const area = scope.querySelector(`.comment-area[data-id="${btn.dataset.id}"]`);
+    if (!area) return;
+    const input = area.querySelector('.comment-input');
+    btn.addEventListener('click', () => {
+      area.style.display = area.style.display === 'none' ? 'block' : 'none';
+      if (area.style.display !== 'none') input.focus();
+    });
+    input.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        const formData = new FormData();
+        formData.append('content', text);
+        const resp = await fetch(`/posts/${btn.dataset.id}/comment`, {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+        if (resp.ok) {
+          input.value = '';
+          area.style.display = 'none';
+          showToast('✅ Comentario publicado');
+        } else {
+          showToast('❌ Error al comentar');
+        }
+      }
+    });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -507,5 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initFloatingSidebar();
   initActionButtons();
   initFeedForms();
+  initCommentInputs();
   initTooltips();
 });

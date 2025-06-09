@@ -283,8 +283,37 @@
   opacity: 0.5;
 }
 
-.post-card .note-actions {
-  display: none;
+
+.post-card .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.comment-area {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.comment-input {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.btn-gradient {
+  background: linear-gradient(45deg, #5b7cfa, #4e54c8);
+  border: none;
+  color: #fff;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
 }
 
 .post-card .note-title {
