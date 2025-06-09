@@ -109,22 +109,28 @@
       </div>
 
       <div class="mt-4">
-        <div class="card">
-          <div class="card-body">
-            Créditos actuales: {{ user.credits }}
-            <div class="mt-2">
-              <button class="btn btn-sm btn-primary me-2">Agregar</button>
-              <button class="btn btn-sm btn-secondary">Enviar</button>
+          <div class="card">
+            <div class="card-body">
+              Créditos actuales: {{ user.credits }}
+              <div class="mt-2">
+                <button class="btn btn-sm btn-primary me-2">💰 Ver historial de créditos</button>
+                <button class="btn btn-sm btn-warning">🤝 Donar a otro usuario</button>
+              </div>
             </div>
           </div>
-        </div>
+      </div>
+
+      <div class="card p-3 shadow-sm mt-4">
+        <h5>🏆 Reto de la semana</h5>
+        <p>Sube 3 apuntes de Matemática para ganar +30 créditos</p>
+        <button class="btn btn-success btn-sm">Ver progreso</button>
       </div>
 
       <div class="mt-4">
         <h5>Privacidad</h5>
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="publicProfile" checked>
-          <label class="form-check-label" for="publicProfile">Mostrar mi perfil públicamente</label>
+          <input class="form-check-input" type="checkbox" id="publicProfileEnabled">
+          <label class="form-check-label" for="publicProfileEnabled">Permitir ver mi perfil públicamente (como /perfil/usuario)</label>
         </div>
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" id="privateMsg" {% if user.chat_enabled %}checked{% endif %}>
@@ -154,6 +160,13 @@
                 <button type="submit" class="btn btn-outline-danger">Eliminar</button>
               </form>
             </div>
+          </div>
+          <div class="comments-section border-top p-2">
+            <p><strong>Comentarios:</strong></p>
+            <div class="comment">👍 Muy útil, gracias</div>
+            <form method="POST">
+              <input type="text" class="form-control" placeholder="Escribe un comentario...">
+            </form>
           </div>
         </div>
         {% endfor %}
@@ -192,25 +205,79 @@
           </div>
         </div>
       </div>
+      <div class="my-4">
+        <canvas id="creditHistoryChart" height="200" class="w-100"></canvas>
+      </div>
+      <div class="achievements container my-4">
+        <h4 class="mb-3">Logros desbloqueados</h4>
+        <div class="row g-3">
+          <div class="col-6 col-md-4">
+            <div class="card text-center p-3">
+              <div class="h1">🥇</div>
+              <h6 class="mt-2 mb-0">Primer aporte</h6>
+              <small class="text-muted">Subiste tu primer apunte</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="card text-center p-3">
+              <div class="h1">💡</div>
+              <h6 class="mt-2 mb-0">Consejero</h6>
+              <small class="text-muted">Recibiste 5 likes</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="card text-center p-3">
+              <div class="h1">🔥</div>
+              <h6 class="mt-2 mb-0">Constante</h6>
+              <small class="text-muted">Subiste apuntes 3 días seguidos</small>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="ia-assistant" class="chat-box position-fixed bottom-0 end-0 m-3 p-3 bg-light border rounded">
-      <h5>🤖 Consejo de hoy</h5>
+      <h5>🤖 Consejo del día</h5>
       <p id="ia-message">Cargando…</p>
+      <p id="ia-extra" class="mb-0 text-muted"></p>
     </div>
   </div>
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 fetch('/api/ia/consejo').then(r => r.json()).then(d => {
   const msg = document.getElementById('ia-message');
+  const extra = document.getElementById('ia-extra');
   if(msg) msg.textContent = d.mensaje;
+  if(extra) extra.textContent = d.reto || d.logro || '';
 });
 </script>
 <script>
 document.querySelector('.edit-avatar-btn')?.addEventListener('click', () => {
     document.getElementById('avatarInput').click();
 });
+</script>
+<script>
+const ctx = document.getElementById('creditHistoryChart');
+if (ctx) {
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5', 'Día 6', 'Día 7'],
+      datasets: [{
+        label: 'Créditos',
+        data: [10, 12, 15, 20, 22, 25, 30],
+        borderColor: '#4e73df',
+        tension: 0.3
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+}
 </script>
 <script>
 const hash = window.location.hash;
