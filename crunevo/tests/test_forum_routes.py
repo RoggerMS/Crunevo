@@ -75,5 +75,5 @@ def test_add_response(app, client, user_id):
     }
     resp = client.post(f"/foro/{q_id}/responder", data=data, follow_redirects=True)
     assert b"Respuesta enviada" in resp.data
-    resp = client.get(f"/foro/pregunta/{q_id}")
+    resp = client.get(f"/foro/{q_id}")
     assert b"suficientemente larga" in resp.data

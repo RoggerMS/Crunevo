@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container mt-4">
   <h2>Realiza una nueva pregunta</h2>
-  <form action="/foro/nueva" method="POST">
+  <form action="{{ url_for('forum.nueva_pregunta') }}" method="POST">
     <div class="mb-3">
       <label for="titulo" class="form-label">Título</label>
       <input type="text" class="form-control" name="titulo" required>
