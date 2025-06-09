@@ -24,9 +24,10 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     if current_user.is_authenticated:
-        notes = Note.query.order_by(Note.downloads_count.desc()).limit(10).all()
+        notes = Note.query.order_by(Note.created_at.desc()).limit(10).all()
         posts = Post.query.order_by(Post.timestamp.desc()).limit(10).all()
-        return render_template("feed.html", notes=notes, posts=posts, user=current_user)
+        items = sorted(posts + notes, key=lambda x: x.created_at, reverse=True)
+        return render_template("feed.html", items=items, user=current_user)
     return render_template("index.html")
 
 

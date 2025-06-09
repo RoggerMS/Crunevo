@@ -502,8 +502,8 @@ function addNoteToFeed(note) {
         <p class="note-desc">${note.description}</p>
         <p class="note-meta mb-1"><i class="fas fa-user me-1"></i>${note.user_name} – ${career}</p>
       </div>`;
-  const marker = container.querySelector("h2.section-title.mt-4");
-  container.insertBefore(article, marker.nextSibling);
+  const target = container.querySelector(".create-post").nextSibling;
+  container.insertBefore(article, target);
   }
 
 
