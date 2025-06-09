@@ -15,6 +15,7 @@ from datetime import datetime
 import os
 
 from crunevo.utils.storage import allowed_file, upload_file_to_s3, save_file_local
+from crunevo.utils.cloudinary_upload import upload_image
 
 from crunevo.models import db
 from crunevo.models.note import Note
@@ -121,8 +122,12 @@ def upload_note():
                 flash("El archivo supera el tamaño máximo permitido.", "danger")
                 return render_template("upload_note.html", form_data=request.form)
 
-            file_url = None
-            if S3_BUCKET and S3_BUCKET != "your-s3-bucket-name-placeholder":
+            file_url = upload_image(note_file)
+            if (
+                not file_url
+                and S3_BUCKET
+                and S3_BUCKET != "your-s3-bucket-name-placeholder"
+            ):
                 file_url = upload_file_to_s3(note_file, S3_BUCKET)
 
             if not file_url:
@@ -196,7 +201,9 @@ def quick_note():
     note_file.filename = filename
     upload_folder = current_app.config["NOTE_UPLOAD_FOLDER"]
     os.makedirs(upload_folder, exist_ok=True)
-    file_url = save_file_local(note_file, upload_folder)
+    file_url = upload_image(note_file)
+    if not file_url:
+        file_url = save_file_local(note_file, upload_folder)
 
     if not file_url:
         return jsonify({"error": "Error al guardar"}), 500

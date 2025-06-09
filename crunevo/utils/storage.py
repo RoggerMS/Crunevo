@@ -6,6 +6,14 @@ from flask import current_app, flash, url_for
 from werkzeug.utils import secure_filename
 from botocore.exceptions import NoCredentialsError, ClientError
 import boto3
+import cloudinary
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
 
 # Allowed extensions for note uploads
 # Limit uploads to PDF, DOCX and PNG for security

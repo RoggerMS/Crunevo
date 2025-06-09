@@ -9,12 +9,12 @@ from flask import (
     jsonify,
     session,
 )
-import os
 from flask_login import login_required, current_user
 from crunevo.models import db
 from crunevo.models.note import Note
 from crunevo.models.post import Post
 from crunevo.utils.storage import save_file_local
+from crunevo.utils.cloudinary_upload import upload_image
 from crunevo.utils.ia import fetch_cohere_advice
 from datetime import date
 
@@ -61,9 +61,7 @@ def crear_post():
     image_url = None
     try:
         if image and image.filename:
-            upload_folder = os.path.join(current_app.static_folder, "uploads", "posts")
-            os.makedirs(upload_folder, exist_ok=True)
-            image_url = save_file_local(image, upload_folder)
+            image_url = upload_image(image)
 
         post = Post(content=content, image_url=image_url, user_id=current_user.id)
         db.session.add(post)
