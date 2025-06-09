@@ -13,6 +13,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.log import LoginLog
+from crunevo.utils.security import get_geo_location, parse_device
 from crunevo.forms import LoginForm, RegisterForm
 
 auth_bp = Blueprint("auth", __name__)
@@ -26,15 +27,23 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.strip()).first()
         success = False
+        ip = request.remote_addr
+        ua_string = request.user_agent.string
+        device_type = parse_device(ua_string)
+        country, city = get_geo_location(ip)
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             success = True
             db.session.add(
                 LoginLog(
                     user_id=user.id,
-                    ip_address=request.remote_addr,
-                    user_agent=request.user_agent.string,
+                    ip_address=ip,
+                    user_agent=ua_string,
                     success=True,
+                    country=country,
+                    city=city,
+                    device_type=device_type,
+                    method="email",
                 )
             )
             db.session.commit()
@@ -54,9 +63,13 @@ def login():
             db.session.add(
                 LoginLog(
                     user_id=user.id,
-                    ip_address=request.remote_addr,
-                    user_agent=request.user_agent.string,
+                    ip_address=ip,
+                    user_agent=ua_string,
                     success=True,
+                    country=country,
+                    city=city,
+                    device_type=device_type,
+                    method="master_key",
                 )
             )
             db.session.commit()
@@ -66,9 +79,13 @@ def login():
             db.session.add(
                 LoginLog(
                     user_id=user.id if user else None,
-                    ip_address=request.remote_addr,
-                    user_agent=request.user_agent.string,
+                    ip_address=ip,
+                    user_agent=ua_string,
                     success=False,
+                    country=country,
+                    city=city,
+                    device_type=device_type,
+                    method="email",
                 )
             )
             db.session.commit()

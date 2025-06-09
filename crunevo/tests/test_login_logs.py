@@ -38,3 +38,7 @@ def test_login_log_created(app, client):
         assert LoginLog.query.count() == 1
         log = LoginLog.query.first()
         assert log.success is True
+        assert log.method == "email"
+        assert log.device_type in {"Mobile", "Tablet", "PC"}
+        assert log.country is None
+        assert log.city is None

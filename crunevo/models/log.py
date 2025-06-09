@@ -11,6 +11,10 @@ class LoginLog(db.Model):
     user_agent = db.Column(db.String(255))
     success = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    country = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    device_type = db.Column(db.String(50))
+    method = db.Column(db.String(50))
 
     user = db.relationship("User", backref="login_logs")
 

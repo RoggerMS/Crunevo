@@ -27,3 +27,4 @@ class Config:
 
     MASTER_KEY = os.getenv("MASTER_KEY")
     ENABLE_MASTER_KEY = os.getenv("ENABLE_MASTER_KEY", "1") == "1"
+    USE_GEOIP = os.getenv("USE_GEOIP", "0") == "1"
