@@ -31,8 +31,11 @@ S3_BUCKET = os.environ.get("S3_BUCKET_NAME", "your-s3-bucket-name-placeholder")
 def notes_section():
     try:
         page = request.args.get("page", 1, type=int)
-        search_term = request.args.get("search", "")
+        search_term = request.args.get("search", "").strip()
         faculty_filter = request.args.getlist("faculty")
+        course_filter = request.args.get("course", "").strip()
+        file_types = request.args.getlist("file_type")
+        study_year_filter = request.args.getlist("study_year")
 
         query = Note.query.order_by(Note.upload_date.desc())
 
@@ -47,15 +50,25 @@ def notes_section():
         if faculty_filter:
             query = query.filter(Note.faculty.in_(faculty_filter))
 
+        if course_filter:
+            query = query.filter(Note.course.ilike(f"%{course_filter}%"))
+
+        if file_types:
+            query = query.filter(Note.file_type.in_(file_types))
+
+        if study_year_filter:
+            query = query.join(User).filter(User.study_year.in_(study_year_filter))
+
         pagination = query.paginate(page=page, per_page=10, error_out=False)
-        notes = pagination.items
 
         return render_template(
             "notes_section.html",
-            notes=notes,
-            pagination=pagination,
+            notes=pagination,
             search_term=search_term,
             faculty_filter=faculty_filter,
+            course_filter=course_filter,
+            file_types=file_types,
+            study_year_filter=study_year_filter,
         )
 
     except Exception as e:
@@ -63,10 +76,12 @@ def notes_section():
         flash("Ocurrió un error al cargar los apuntes.", "danger")
         return render_template(
             "notes_section.html",
-            notes=[],
-            pagination=None,
+            notes=None,
             search_term="",
             faculty_filter=[],
+            course_filter="",
+            file_types=[],
+            study_year_filter=[],
         )
 
 
