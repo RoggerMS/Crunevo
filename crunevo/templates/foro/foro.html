@@ -4,14 +4,14 @@
 {% block content %}
 <div class="container mt-4">
   <h2 class="mb-3">Foro Académico</h2>
-  <a href="/foro/nueva" class="btn btn-primary mb-3">Nueva Pregunta</a>
+  <a href="{{ url_for('forum.nueva_pregunta') }}" class="btn btn-primary mb-3">Nueva Pregunta</a>
   {% for pregunta in preguntas %}
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title"><a href="/foro/{{ pregunta.id }}" class="text-decoration-none">{{ pregunta.titulo }}</a></h5>
+        <h5 class="card-title"><a href="{{ url_for('forum.ver_pregunta', pregunta_id=pregunta.id) }}" class="text-decoration-none">{{ pregunta.titulo }}</a></h5>
         <p class="card-text">{{ pregunta.contenido[:120] }}...</p>
         <small class="text-muted">por {{ pregunta.autor.username }} el {{ pregunta.fecha.strftime('%d/%m/%Y') }}</small>
-        <a href="/foro/{{ pregunta.id }}" class="btn btn-sm btn-primary float-end">Ver</a>
+        <a href="{{ url_for('forum.ver_pregunta', pregunta_id=pregunta.id) }}" class="btn btn-sm btn-primary float-end">Ver</a>
       </div>
     </div>
   {% endfor %}
