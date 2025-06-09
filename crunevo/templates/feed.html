@@ -13,7 +13,7 @@
   <div class="sidebar-left d-none d-lg-block"></div>
 
   <div class="feed-container">
-    <h2 class="section-title">📢 Publicaciones recientes</h2>
+    <h2 class="section-title">📰 Últimas novedades</h2>
     <div class="create-post card p-3 mb-3">
       <button id="openNoteModalBtn" class="btn btn-primary w-100 mb-2">📄 Subir Apunte</button>
 
@@ -31,34 +31,59 @@
       </form>
     </div>
 
-    {% for post in posts %}
-    <article class="post-card card shadow-sm rounded border-0 animate-fade mb-3">
+    {% for item in items %}
+    <article class="note-card post-card card shadow-sm rounded border-0 animate-fade mb-3">
       <div class="card-body">
         <div class="post-header d-flex align-items-center mb-2">
-          <img src="{{ post.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
+          <img src="{{ item.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
           <div>
-            <strong>{{ post.uploader.name }}</strong><br>
-            <small class="text-muted">{{ post.uploader.career or 'Carrera' }} · <i class="far fa-clock"></i> {{ post.timestamp.strftime('%d %b %Y') }}</small>
+            <strong>{{ item.uploader.name }}</strong><br>
+            <small class="text-muted">{{ item.uploader.career or 'Carrera' }} ·<i class="far fa-clock"></i> {{ item.created_at.strftime('%d %b %Y') }}</small>
           </div>
         </div>
-        <p class="post-content">{{ post.content }}</p>
-        {% if post.image_url %}
-        <div class="text-center mt-2">
-          <img src="{{ post.image_url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: contain;" alt="imagen">
-        </div>
+        {% if item.__tablename__ == 'posts' %}
+          <p class="post-content">{{ item.content }}</p>
+          {% if item.image_url %}
+          <div class="text-center mt-2">
+            <img src="{{ item.image_url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: contain;" alt="imagen">
+          </div>
+          {% endif %}
+        {% else %}
+          <div class="note-image">
+            {% if item.file_type == 'pdf' %}
+              <embed src="{{ item.file_url }}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;" />
+            {% elif item.file_url and item.file_type in ['jpg', 'jpeg', 'png'] %}
+              <img src="{{ item.file_url }}" class="w-100" style="max-height:180px; object-fit:cover;" alt="{{ item.title }}">
+            {% else %}
+              <div class="text-center py-4">
+                <i class="far fa-file-alt fa-3x text-muted"></i>
+              </div>
+            {% endif %}
+          </div>
+          <h5 class="note-title">{{ item.title }}</h5>
+          <p class="note-meta mb-1 text-muted"><i class="far fa-clock me-1"></i>{{ item.created_at.strftime('%d %b %Y') }}</p>
+          <p class="note-meta mb-1">{{ item.page_count or '?' }} páginas</p>
+          {% if item.faculty %}<span class="badge text-white mb-1" data-facultad="{{ item.faculty }}">{{ item.faculty }}</span>{% endif %}
+          {% if item.course %}<span class="badge bg-secondary mb-1"><i class="fas fa-book-open me-1"></i>{{ item.course }}</span>{% endif %}
+          <p class="note-desc">{{ item.description[:120] }}...</p>
         {% endif %}
       </div>
       <div class="note-actions post-actions card-footer bg-white">
         <div class="action-row d-flex">
-          <button class="action-btn" data-action="like" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Me gusta"><i class="fas fa-heart me-1"></i>Me gusta</button>
-          <button class="action-btn comment-toggle" data-id="{{ post.id }}" data-type="post" data-bs-toggle="tooltip" title="Comentar"><i class="fas fa-comment me-1"></i>Comentar</button>
-          <button class="action-btn" data-action="save" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Guardar"><i class="fas fa-bookmark me-1"></i>Guardar</button>
-          <button class="action-btn" data-action="share" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Compartir"><i class="fas fa-share me-1"></i>Compartir</button>
+          <button class="action-btn" data-action="like" data-id="{{ item.id }}" aria-label="Me gusta"><i class="fas fa-heart me-1"></i>Me gusta</button>
+          <button class="action-btn comment-toggle" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}" aria-label="Comentar"><i class="fas fa-comment me-1"></i>Comentar</button>
+          <button class="action-btn" data-action="save" data-id="{{ item.id }}" aria-label="Guardar"><i class="fas fa-bookmark me-1"></i>Guardar</button>
+          <button class="action-btn" data-action="share" data-id="{{ item.id }}" aria-label="Compartir"><i class="fas fa-share me-1"></i>Compartir</button>
         </div>
+        {% if item.__tablename__ != 'posts' %}
+        <div class="action-row d-flex border-top">
+          <a href="{{ url_for('note.download_note_file', note_id=item.id) }}" class="action-btn" data-action="download" aria-label="Descargar"><i class="fas fa-download me-1"></i>Descargar</a>
+        </div>
+        {% endif %}
       </div>
-      {% if post.comments %}
+      {% if item.comments %}
       <div class="comment-list px-3 py-2">
-        {% for c in post.comments[:2] %}
+        {% for c in item.comments[:2] %}
         <div class="d-flex mb-2">
           <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
           <div>
@@ -70,100 +95,9 @@
         {% endfor %}
       </div>
       {% endif %}
-      <div class="comment-area mt-2 px-3" data-id="{{ post.id }}" data-type="post" style="display:none;">
+      <div class="comment-area mt-2 px-3" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}" style="display:none;">
         <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
       </div>
-    </article>
-    {% endfor %}
-
-    <h2 class="section-title mt-4">📘 Apuntes destacados <a href="{{ url_for('note.notes_section') }}" class="btn btn-link view-all">Ver todos los apuntes</a></h2>
-
-    {% for note in notes %}
-    <article class="note-card card shadow-sm rounded border-0 animate-fade">
-        <div class="note-image">
-            {% if note.file_type == 'pdf' %}
-                <embed
-                    src="{{ note.file_url }}#page=1"
-                    type="application/pdf"
-                    class="w-100"
-                    style="height:180px; object-fit:cover;" />
-            {% elif note.file_url and note.file_type in ['jpg', 'jpeg', 'png'] %}
-                <img
-                    src="{{ note.file_url }}"
-                    class="w-100"
-                    style="max-height:180px; object-fit:cover;"
-                    alt="{{ note.title }}">
-            {% else %}
-                <div class="text-center py-4">
-                    <i class="far fa-file-alt fa-3x text-muted"></i>
-                </div>
-            {% endif %}
-        </div>
-        <div class="card-body">
-            <h5 class="note-title">{{ note.title }}</h5>
-            <a
-                href="{{ url_for('note.note_detail', note_id=note.id) }}"
-                class="btn btn-primary w-100 mt-2 mb-2">
-                📄 Ver Apunte
-            </a>
-            <p class="note-meta mb-1">
-                <i class="fas fa-user me-1"></i>{{ note.uploader.name }} –
-                {{ note.uploader.career or 'Carrera' }}
-            </p>
-            <p class="note-meta mb-1 text-muted"><i class="far fa-clock me-1"></i>{{ note.upload_date.strftime('%d %b %Y') }}</p>
-            <p class="note-meta mb-1">{{ note.page_count or '?' }} páginas</p>
-            {% if note.faculty %}
-            <span class="badge text-white mb-1" data-facultad="{{ note.faculty }}">{{ note.faculty }}</span>
-            {% endif %}
-            {% if note.course %}
-            <span class="badge bg-secondary mb-1">
-                <i class="fas fa-book-open me-1"></i>{{ note.course }}
-            </span>
-            {% endif %}
-            <p class="note-desc">{{ note.description[:120] }}...</p>
-        </div>
-        <div class="note-actions card-footer bg-white">
-            <div class="action-row d-flex">
-                <button class="action-btn" data-action="like" data-id="{{ note.id }}" aria-label="Me gusta">
-                    <i class="fas fa-heart me-1"></i>Me gusta
-                </button>
-                <button class="action-btn comment-toggle" data-action="comment" data-type="note" data-id="{{ note.id }}" aria-label="Comentar">
-                    <i class="fas fa-comment me-1"></i>Comentar
-                </button>
-                <button class="action-btn" data-action="save" data-id="{{ note.id }}" aria-label="Guardar">
-                    <i class="fas fa-bookmark me-1"></i>Guardar
-                </button>
-            </div>
-            <div class="action-row d-flex border-top">
-                <a
-                    href="{{ url_for('note.download_note_file', note_id=note.id) }}"
-                    class="action-btn"
-                    data-action="download"
-                    aria-label="Descargar">
-                    <i class="fas fa-download me-1"></i>Descargar
-                </a>
-                <button class="action-btn" data-action="share" aria-label="Compartir">
-                    <i class="fas fa-share me-1"></i>Compartir
-                </button>
-            </div>
-        </div>
-        {% if note.comments %}
-        <div class="comment-list px-3 py-2">
-            {% for c in note.comments[:2] %}
-            <div class="d-flex mb-2">
-                <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
-                <div>
-                    <strong>{{ c.user.name }}</strong>
-                    <p class="mb-0 text-muted" style="font-size:0.8rem;">{{ c.timestamp.strftime('%d %b %Y') }}</p>
-                    <p class="mb-0">{{ c.content }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <div class="comment-area mt-2 px-3" data-id="{{ note.id }}" data-type="note" style="display:none;">
-            <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
-        </div>
     </article>
 
     {% if loop.index % 3 == 0 %}
@@ -171,9 +105,8 @@
         🎓 ¿Sabías que puedes ganar puntos subiendo apuntes?
     </div>
     {% endif %}
-    {% else %}
-    <p>No hay apuntes disponibles.</p>
     {% endfor %}
+
   </div>
   <div class="sidebar-right d-none d-lg-block"></div>
 </div>
