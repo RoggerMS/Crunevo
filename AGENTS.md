@@ -223,5 +223,17 @@ pytest -q
   - Nueva vista en el panel de administración para revisar registros de acceso.
   - Se añadió cambio de rol para usuarios y botón de suspender productos.
 - Pruebas:
+    ✅ `black .`
+    ✅ `PYTHONPATH=. pytest -q`
+
+### [Feat] Carga de imágenes para productos (2025-06-09)
+
+- Modificados:
+  - `crunevo/routes/admin_routes.py`
+  - `crunevo/templates/admin/add_edit_product.html`
+- Detalles:
+  - Ahora el formulario de productos permite subir una imagen y mostrar vista previa.
+  - Las imágenes se guardan en `static/uploads/products/` y se registra la URL en la base de datos.
+- Pruebas:
   ✅ `black .`
-  ✅ `PYTHONPATH=. pytest -q`
+  ❌ `pytest -q` (faltan dependencias de entorno)

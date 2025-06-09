@@ -12,7 +12,7 @@
     </ul>
   </div>
   {% endif %}
-  <form method="post" class="row g-3">
+  <form method="post" enctype="multipart/form-data" class="row g-3">
     <div class="col-md-6">
       <label for="name" class="form-label">Nombre</label>
       <input id="name" name="name" class="form-control" placeholder="Nombre" value="{{ product.name if product else '' }}" required>
@@ -29,6 +29,15 @@
       <label for="description" class="form-label">Descripción</label>
       <textarea id="description" name="description" class="form-control" placeholder="Descripción" required>{{ product.description if product else '' }}</textarea>
     </div>
+    <div class="col-md-6">
+      <label for="image" class="form-label">Imagen</label>
+      <input id="image" name="image" type="file" accept="image/*" class="form-control">
+      <div class="preview-img mt-2">
+        {% if product and product.image_url %}
+          <img src="{{ product.image_url }}" class="img-thumbnail" style="max-height:180px; object-fit:cover;">
+        {% endif %}
+      </div>
+    </div>
     <div class="col-md-12">
       <div class="form-check">
         <input id="availability" type="checkbox" name="availability" class="form-check-input" {% if product and product.availability %}checked{% endif %}>
@@ -40,4 +49,13 @@
     </div>
   </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initImagePreview('#image', '.preview-img');
+    });
+  </script>
 {% endblock %}
