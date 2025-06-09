@@ -20,8 +20,8 @@
     <div class="preview-note mb-2"></div>
     <input id="upload-tags" name="tags" class="form-control mb-2" placeholder="Etiquetas" value="{{ form_data.tags if form_data else '' }}">
     <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" value="1" id="termsCheck" name="terms" required title="Confirmo que tengo permiso para compartir este material. Este contenido es público o tengo derechos para divulgarlo." {% if form_data and form_data.get('terms') %}checked{% endif %}>
-      <label class="form-check-label" for="termsCheck">✅ Acepto los Términos y Condiciones</label>
+      <input class="form-check-input" type="checkbox" value="1" id="termsCheck" name="terms" required {% if form_data and form_data.get('terms') %}checked{% endif %}>
+      <label class="form-check-label" for="termsCheck" data-bs-toggle="tooltip" data-bs-placement="top" title="Confirmo que tengo permiso para compartir este material. Puede tratarse de contenido público">✅ Acepto los Términos y Condiciones</label>
     </div>
     <button type="submit" class="btn btn-primary w-100">📤 Publicar Apunte</button>
   </form>
@@ -30,29 +30,5 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-<script>
-const uploadForm = document.getElementById('uploadForm');
-const tagify = initTagify('#upload-tags');
-initImagePreview('#noteFile', '.preview-note', '#noteFileLabel');
-if (uploadForm) {
-  uploadForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!uploadForm.checkValidity()) {
-      uploadForm.classList.add('was-validated');
-      return;
-    }
-    const formData = new FormData(uploadForm);
-    try {
-      const resp = await fetch(uploadForm.action, { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-      if (!resp.ok) throw new Error('error');
-      uploadForm.reset();
-      if (tagify) tagify.removeAllTags();
-      showToast('✅ Apunte subido con éxito');
-    } catch (err) {
-      showToast('❌ Error al subir el apunte');
-    }
-  });
-}
-</script>
 {% endblock %}
 
