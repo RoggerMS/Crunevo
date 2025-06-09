@@ -1,9 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
         <a class="navbar-brand" href="{{ url_for('main.index') }}">CRUNEVO</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+            {% if current_user.is_authenticated %}
+            <div class="d-flex align-items-center user-summary gap-2 me-2">
+                <img src="{{ current_user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar" alt="avatar" data-bs-toggle="tooltip" title="{{ current_user.name }}">
+                <div class="d-none d-md-block text-end">
+                    <strong>{{ current_user.name }}</strong><br>
+                    <small class="text-muted">{{ current_user.email }}</small>
+                </div>
+            </div>
+            {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
