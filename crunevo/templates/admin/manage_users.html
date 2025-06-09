@@ -11,7 +11,15 @@
         <strong>{{ user.name }}</strong> <br>
         <small>{{ user.email }}</small>
       </div>
-      <a href="{{ url_for('admin.toggle_user_ban', user_id=user.id) }}" 
+      <form method="post" action="{{ url_for('admin.change_user_role', user_id=user.id) }}" class="d-flex gap-2 mt-2 mt-md-0">
+        <select name="role" class="form-select form-select-sm">
+          {% for role in ['user', 'editor', 'moderator', 'admin'] %}
+          <option value="{{ role }}" {% if user.role==role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm btn-secondary">Actualizar</button>
+      </form>
+      <a href="{{ url_for('admin.toggle_user_ban', user_id=user.id) }}"
          class="btn btn-sm btn-warning mt-2 mt-md-0"
          aria-label="{% if user.is_banned %}Desbanear{% else %}Banear{% endif %} a {{ user.name }}"
          onclick="return confirm('¿Estás seguro de que deseas {% if user.is_banned %}desbanear{% else %}banear{% endif %} a este usuario?');">

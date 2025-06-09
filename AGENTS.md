@@ -202,3 +202,26 @@ pytest -q
 - Pruebas:
   ✅ `pip install -r requirements.txt`
   ❌ `pytest -q` (faltan dependencias de entorno)
+
+### [Feat] Registro de accesos y cambio de roles (2025-06-09)
+
+- Nuevos archivos:
+  - `crunevo/models/log.py`
+  - `crunevo/templates/admin/security_logs.html`
+  - `crunevo/tests/test_login_logs.py`
+  - `migrations/versions/2c17a7ce8387_add_login_log.py`
+- Modificados:
+  - `crunevo/routes/auth_routes.py`
+  - `crunevo/routes/admin_routes.py`
+  - `crunevo/templates/admin/manage_users.html`
+  - `crunevo/templates/admin/manage_store.html`
+  - `crunevo/templates/admin/components/sidebar_admin.html`
+  - `crunevo/tests/test_admin.py`
+- Detalles:
+  - Se creó el modelo `LoginLog` y migración asociada.
+  - Los intentos de inicio de sesión ahora se registran con IP y agente.
+  - Nueva vista en el panel de administración para revisar registros de acceso.
+  - Se añadió cambio de rol para usuarios y botón de suspender productos.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
