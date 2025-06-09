@@ -161,6 +161,7 @@ def quick_note():
     title = request.form.get("title", "").strip()
     description = request.form.get("description", "").strip()
     categoria = request.form.get("categoria", "").strip()
+    tags = request.form.get("tags", "").strip()
     note_file = request.files.get("file")
 
     if not title or not note_file:
@@ -186,6 +187,7 @@ def quick_note():
         user_id=current_user.id,
         course=categoria,
         faculty=categoria,
+        tags=tags,
         upload_date=datetime.utcnow(),
     )
 

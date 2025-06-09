@@ -26,6 +26,7 @@
     <div class="container-fluid p-0 main-container">
         {% block content %}{% endblock %}
     </div>
+    {% include 'components/toast.html' %}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
