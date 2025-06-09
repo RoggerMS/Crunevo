@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Usuario{% endblock %}
+
+{% block content %}
+<div class="summary-panel container my-4">
+  <h2 class="mb-3">Tu rendimiento</h2>
+  <div class="row stats-grid g-3">
+    <div class="col-6 col-md-3">
+      <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+        💸 Créditos: <strong>{{ stats.credits }}</strong>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+        📚 Apuntes: <strong>{{ stats.notes }}</strong>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+        👍 Likes: <strong>{{ stats.likes }}</strong>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+        🎁 Donaciones: <strong>S/{{ stats.donations }}</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container notes-section">
+  <h3 class="mb-3">Tus Apuntes</h3>
+  {% if notes %}
+    {% for note in notes %}
+    <div class="note-card card mb-3 shadow-sm">
+      <div class="card-body">
+        <h4 class="h5">{{ note.title }}</h4>
+        <p>Curso: {{ note.course or 'N/A' }} | Créditos: +10</p>
+        <div class="actions d-flex gap-2">
+          <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-outline-primary">Ver</a>
+          <a href="{{ url_for('note.upload_note') }}" class="btn btn-outline-warning">Editar</a>
+          <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" onsubmit="return confirm('¿Eliminar?');">
+            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state text-center py-5">
+      <img src="https://example.com/empty.svg" alt="No hay apuntes" class="img-fluid mb-3"/>
+      <h3>No hay apuntes aún</h3>
+      <p>Sube tu primer apunte y empieza a ganar créditos.</p>
+      <a href="{{ url_for('note.upload_note') }}" class="btn btn-primary btn-lg">📤 Subir ahora</a>
+    </div>
+  {% endif %}
+</div>
+
+<div id="ia-assistant" class="chat-box position-fixed bottom-0 end-0 m-3 p-3 bg-light border rounded">
+  <h5>🤖 Consejo de hoy</h5>
+  <p id="ia-message">Cargando…</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+fetch('/api/ia/consejo').then(r => r.json()).then(d => {
+  document.getElementById('ia-message').textContent = d.mensaje;
+});
+</script>
+{% endblock %}
