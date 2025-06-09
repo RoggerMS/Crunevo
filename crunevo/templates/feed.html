@@ -32,7 +32,7 @@
     </div>
 
     {% for post in posts %}
-    <article class="post-card card animate-fade mb-3">
+    <article class="post-card card shadow-sm rounded border-0 animate-fade mb-3">
       <div class="card-body">
         <div class="post-header d-flex align-items-center mb-2">
           <img src="{{ post.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
@@ -51,12 +51,26 @@
       <div class="note-actions post-actions card-footer bg-white">
         <div class="action-row d-flex">
           <button class="action-btn" data-action="like" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Me gusta"><i class="fas fa-heart me-1"></i>Me gusta</button>
-          <button class="action-btn comment-toggle" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Comentar"><i class="fas fa-comment me-1"></i>Comentar</button>
+          <button class="action-btn comment-toggle" data-id="{{ post.id }}" data-type="post" data-bs-toggle="tooltip" title="Comentar"><i class="fas fa-comment me-1"></i>Comentar</button>
           <button class="action-btn" data-action="save" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Guardar"><i class="fas fa-bookmark me-1"></i>Guardar</button>
           <button class="action-btn" data-action="share" data-id="{{ post.id }}" data-bs-toggle="tooltip" title="Compartir"><i class="fas fa-share me-1"></i>Compartir</button>
         </div>
       </div>
-      <div class="comment-area mt-2" data-id="{{ post.id }}" style="display:none;">
+      {% if post.comments %}
+      <div class="comment-list px-3 py-2">
+        {% for c in post.comments[:2] %}
+        <div class="d-flex mb-2">
+          <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
+          <div>
+            <strong>{{ c.user.name }}</strong>
+            <p class="mb-0 text-muted" style="font-size:0.8rem;">{{ c.timestamp.strftime('%d %b %Y') }}</p>
+            <p class="mb-0">{{ c.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="comment-area mt-2 px-3" data-id="{{ post.id }}" data-type="post" style="display:none;">
         <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
       </div>
     </article>
@@ -65,7 +79,7 @@
     <h2 class="section-title mt-4">📘 Apuntes destacados <a href="{{ url_for('note.notes_section') }}" class="btn btn-link view-all">Ver todos los apuntes</a></h2>
 
     {% for note in notes %}
-    <article class="note-card card animate-fade">
+    <article class="note-card card shadow-sm rounded border-0 animate-fade">
         <div class="note-image">
             {% if note.file_type == 'pdf' %}
                 <embed
@@ -96,6 +110,7 @@
                 <i class="fas fa-user me-1"></i>{{ note.uploader.name }} –
                 {{ note.uploader.career or 'Carrera' }}
             </p>
+            <p class="note-meta mb-1 text-muted"><i class="far fa-clock me-1"></i>{{ note.upload_date.strftime('%d %b %Y') }}</p>
             <p class="note-meta mb-1">{{ note.page_count or '?' }} páginas</p>
             {% if note.faculty %}
             <span class="badge text-white mb-1" data-facultad="{{ note.faculty }}">{{ note.faculty }}</span>
@@ -112,7 +127,7 @@
                 <button class="action-btn" data-action="like" data-id="{{ note.id }}" aria-label="Me gusta">
                     <i class="fas fa-heart me-1"></i>Me gusta
                 </button>
-                <button class="action-btn" data-action="comment" data-id="{{ note.id }}" aria-label="Comentar">
+                <button class="action-btn comment-toggle" data-action="comment" data-type="note" data-id="{{ note.id }}" aria-label="Comentar">
                     <i class="fas fa-comment me-1"></i>Comentar
                 </button>
                 <button class="action-btn" data-action="save" data-id="{{ note.id }}" aria-label="Guardar">
@@ -131,6 +146,23 @@
                     <i class="fas fa-share me-1"></i>Compartir
                 </button>
             </div>
+        </div>
+        {% if note.comments %}
+        <div class="comment-list px-3 py-2">
+            {% for c in note.comments[:2] %}
+            <div class="d-flex mb-2">
+                <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
+                <div>
+                    <strong>{{ c.user.name }}</strong>
+                    <p class="mb-0 text-muted" style="font-size:0.8rem;">{{ c.timestamp.strftime('%d %b %Y') }}</p>
+                    <p class="mb-0">{{ c.content }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="comment-area mt-2 px-3" data-id="{{ note.id }}" data-type="note" style="display:none;">
+            <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
         </div>
     </article>
 

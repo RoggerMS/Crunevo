@@ -526,11 +526,21 @@ function initCommentInputs(scope = document) {
         if (!text) return;
         const formData = new FormData();
         formData.append('content', text);
-        const resp = await fetch(`/posts/${btn.dataset.id}/comment`, {
-          method: 'POST',
-          body: formData,
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
+        let resp;
+        if (btn.dataset.type === 'note') {
+          formData.append('note_id', btn.dataset.id);
+          resp = await fetch('/comments/add', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          });
+        } else {
+          resp = await fetch(`/posts/${btn.dataset.id}/comment`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          });
+        }
         if (resp.ok) {
           input.value = '';
           area.style.display = 'none';

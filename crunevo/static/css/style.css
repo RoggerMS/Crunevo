@@ -49,12 +49,33 @@ body {
 }
 
 /* Estilos para el menú offcanvas en móviles */
+.offcanvas {
+    height: 100vh;
+    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.85);
+}
+.offcanvas-body {
+    overflow-y: auto;
+}
+.offcanvas-header .btn-close {
+    transition: transform 0.3s ease;
+}
+.offcanvas-header .btn-close:hover {
+    transform: rotate(90deg);
+}
 .offcanvas .nav-link {
     font-size: 1.2rem;
     padding: 0.75rem 1rem;
 }
 .offcanvas .nav-link i {
     width: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .offcanvas {
+        background-color: rgba(33, 37, 41, 0.85);
+        color: #f8f9fa;
+    }
 }
 
 #floatingSidebar {
