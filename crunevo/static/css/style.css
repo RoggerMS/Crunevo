@@ -48,33 +48,62 @@ body {
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
-/* Estilos para el menú offcanvas en móviles */
+/* Estilos renovados para el menú offcanvas */
 .offcanvas {
-    height: 100vh;
-    backdrop-filter: blur(4px);
-    background-color: rgba(255, 255, 255, 0.85);
+    background: #ffffff;
+    color: #1a1a1a;
+    border-right: 1px solid #ddd;
+    padding-top: 1rem;
 }
-.offcanvas-body {
-    overflow-y: auto;
+
+.offcanvas-header {
+    border-bottom: 1px solid #e5e5e5;
 }
-.offcanvas-header .btn-close {
-    transition: transform 0.3s ease;
-}
-.offcanvas-header .btn-close:hover {
-    transform: rotate(90deg);
-}
+
 .offcanvas .nav-link {
-    font-size: 1.2rem;
-    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s;
+}
+.offcanvas .nav-link:hover {
+    background-color: #f8f9fa;
 }
 .offcanvas .nav-link i {
-    width: 1.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.offcanvas .user-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.offcanvas .user-info img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
     .offcanvas {
-        background-color: rgba(33, 37, 41, 0.85);
-        color: #f8f9fa;
+        background: #1f1f1f;
+        color: #f1f1f1;
+    }
+
+    .offcanvas .nav-link {
+        color: #ddd;
+        border-bottom: 1px solid #333;
+    }
+
+    .offcanvas .nav-link:hover {
+        background-color: #2a2a2a;
     }
 }
 
