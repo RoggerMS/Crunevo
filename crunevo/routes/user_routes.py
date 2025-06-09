@@ -11,16 +11,57 @@ user_bp = Blueprint("user", __name__, url_prefix="/user")
 @login_required
 def profile():
     """Display the profile of the logged in user."""
-    # Obtener los apuntes subidos y el historial de descargas
+    # Obtener apuntes subidos y registros relacionados
     uploaded_notes = current_user.notes
     download_history = current_user.downloads
 
-    # Calcular estadísticas del usuario
+    # Calcular estadísticas clave
+    notes_uploaded = len(uploaded_notes)
+    downloads_total = sum(note.downloads_count or 0 for note in uploaded_notes)
+    likes_received = sum(note.likes_count or 0 for note in uploaded_notes)
+    responses_count = len(current_user.respuestas)
+    points = current_user.points or 0
+
     user_stats = {
-        "notes_uploaded": len(uploaded_notes),
-        "notes_downloaded": len(download_history),
-        "likes_received": sum(note.likes_count for note in uploaded_notes),
+        "notes_uploaded": notes_uploaded,
+        "downloads_total": downloads_total,
+        "likes_received": likes_received,
+        "responses_count": responses_count,
+        "points": points,
     }
+
+    # Construir feed de actividad reciente
+    events = []
+    for note in uploaded_notes:
+        events.append(
+            {
+                "timestamp": note.upload_date,
+                "message": f'\ud83d\udce4 Subiste el apunte "{note.title}"',
+            }
+        )
+        if note.downloads_count:
+            events.append(
+                {
+                    "timestamp": note.upload_date,
+                    "message": f'\u2b07\ufe0f Tu apunte "{note.title}" fue descargado {note.downloads_count} veces',
+                }
+            )
+    for r in current_user.respuestas:
+        events.append(
+            {
+                "timestamp": r.fecha,
+                "message": f'\ud83d\udcac Respondiste a la pregunta "{r.pregunta.titulo}"',
+            }
+        )
+    for p in getattr(current_user, "posts", []):
+        events.append(
+            {
+                "timestamp": p.timestamp,
+                "message": "\ud83d\udce3 Publicaste una actualizaci\u00f3n",
+            }
+        )
+
+    events.sort(key=lambda e: e["timestamp"], reverse=True)
 
     # Determinar nivel del usuario basado en créditos
     user_level = "Novato"  # Placeholder
@@ -34,8 +75,7 @@ def profile():
         user=current_user,
         user_stats=user_stats,
         user_level=user_level,
-        uploaded_notes=uploaded_notes,
-        download_history=download_history,
+        events=events,
     )
 
 
