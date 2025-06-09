@@ -18,6 +18,7 @@ from crunevo.models.post import Post as _Post
 from crunevo.models.product import Product as _Product
 from crunevo.models.forum import Pregunta as _Pregunta, Respuesta as _Respuesta
 from crunevo.models.log import LoginLog as _LoginLog
+from crunevo.models.comment import Comment as _Comment
 
 # Expose models without underscores for ease of use across the package
 User = _User
@@ -30,6 +31,7 @@ Pregunta = _Pregunta
 Respuesta = _Respuesta
 Post = _Post
 LoginLog = _LoginLog
+Comment = _Comment
 from crunevo.routes.main_routes import main_bp
 from crunevo.routes.auth_routes import auth_bp
 from crunevo.routes.store_routes import store_bp
@@ -37,6 +39,7 @@ from crunevo.routes.note_routes import note_bp
 from crunevo.routes.forum_routes import forum_bp
 from crunevo.routes.user_routes import user_bp
 from crunevo.routes.admin_routes import admin_bp
+from crunevo.routes.comments_routes import comment_bp
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
@@ -90,6 +93,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(store_bp)
     app.register_blueprint(note_bp)
+    app.register_blueprint(comment_bp)
     app.register_blueprint(forum_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)

@@ -3,10 +3,44 @@
 {% block title %}Acerca de - CRUNEVO{% endblock %}
 
 {% block content %}
-<div class="py-5 text-center">
-    <h1 class="mb-4">Sobre CRUNEVO</h1>
-    <p class="lead">CRUNEVO es una plataforma colaborativa para compartir apuntes y recursos universitarios.
-       Los usuarios pueden subir su material, ganar créditos y canjearlos por recompensas.</p>
-    <p>Este proyecto es de código abierto y se encuentra en constante mejora.</p>
+<div class="container py-5">
+  <div
+    class="card shadow-lg rounded-3 bg-light p-4 animate-fade"
+    style="background: url('{{ url_for('static', filename='images/about_bg.svg') }}') right bottom/150px no-repeat;"
+  >
+    <h1 class="text-center mb-4">
+      <i class="fas fa-brain me-2"></i>¿Qué es CRUNEVO?
+    </h1>
+    <p class="lead text-center">
+      Plataforma universitaria para compartir apuntes y potenciar el aprendizaje.
+    </p>
+    <hr>
+    <h2 class="h4">
+      <i class="fas fa-chart-line me-2"></i>Misión y visión
+    </h2>
+    <p>
+      Democratizar el conocimiento y fomentar la excelencia académica mediante
+      colaboración libre.
+    </p>
+    <h2 class="h4 mt-3">
+      <i class="fas fa-unlock-alt me-2"></i>Valores
+    </h2>
+    <ul>
+      <li>Educación libre</li>
+      <li>Colaboración</li>
+      <li>Meritocracia</li>
+    </ul>
+    <h2 class="h4 mt-3">
+      <i class="fas fa-users me-2"></i>Comunidad
+    </h2>
+    <p>Somos estudiantes ayudando a estudiantes.</p>
+    <h2 class="h4 mt-3">
+      <i class="fas fa-cogs me-2"></i>Tecnología
+    </h2>
+    <p>Flask, PostgreSQL, Cohere y más.</p>
+    <div class="mt-4 text-center">
+      <em class="fs-5">"El conocimiento compartido construye el futuro."</em>
+    </div>
+  </div>
 </div>
 {% endblock %}
