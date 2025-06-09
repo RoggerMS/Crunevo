@@ -310,43 +310,95 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const noteInput = document.querySelector(".input-wrapper input.form-control");
-    if (noteInput) {
-        const placeholders = [
-            "¿Qué estás aprendiendo hoy?",
-            "Comparte tus apuntes aquí",
-            "Sube algo útil para otros",
-        ];
-        let index = 0;
-        setInterval(() => {
-            index = (index + 1) % placeholders.length;
-            noteInput.setAttribute("placeholder", placeholders[index]);
-        }, 4000);
-    }
-});
+  document.querySelectorAll(".toggle-tabs .btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.mode;
+      document
+        .getElementById("mode-apunte")
+        .classList.toggle("d-none", mode !== "apunte");
+      document
+        .getElementById("mode-post")
+        .classList.toggle("d-none", mode !== "post");
+      document
+        .querySelectorAll(".toggle-tabs .btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.getElementById("toggleMode");
-  const uploadOptions = document.getElementById("uploadOptions");
-  const input = document.getElementById("noteInput");
-  const publishBtn = document.getElementById("publishBtn");
+  const imageInput = document.querySelector('input[name="image"]');
+  if (imageInput) {
+    imageInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        document.querySelector(
+          ".preview-img"
+        ).innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   const form = document.getElementById("postForm");
-
-  let mode = 'apunte';
-
-  toggleBtn.addEventListener("click", () => {
-    mode = mode === 'apunte' ? 'social' : 'apunte';
-    toggleBtn.textContent = mode === 'apunte' ? '📘' : '🖼️';
-    uploadOptions.classList.toggle("d-none", mode === 'apunte');
-    input.placeholder =
-      mode === 'apunte' ? "¿Qué estás aprendiendo hoy?" : "Escribe algo educativo...";
-  });
-
-  publishBtn.addEventListener("click", () => {
-    if (mode === 'apunte') {
-      window.location.href = "/subir";
-    } else if (form) {
-      form.submit();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const activeMode = document.querySelector(".toggle-tabs .btn.active").dataset
+      .mode;
+    const url = activeMode === "apunte" ? "/quick_note" : "/crear_post";
+    const formData = new FormData(form);
+    try {
+      const resp = await fetch(url, {
+        method: "POST",
+        body: formData,
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      if (!resp.ok) throw new Error("error");
+      const data = await resp.json();
+      if (activeMode === "post") {
+        addPostToFeed(data.post);
+      } else {
+        addNoteToFeed(data.note);
+      }
+      form.reset();
+      document.querySelector(".preview-img").innerHTML = "";
+    } catch (err) {
+      alert("Ocurrió un error al publicar");
     }
   });
+
+  function addPostToFeed(post) {
+    const container = document.querySelector(".feed-container");
+    const article = document.createElement("article");
+    article.className = "note-card post-card card animate-fade";
+    const imgPart = post.image_url
+      ? `<div class="mt-2"><img src="${post.image_url}" class="img-fluid rounded" alt="imagen"></div>`
+      : "";
+    article.innerHTML = `
+      <div class="card-body">
+        <p class="note-meta mb-1">
+          <i class="fas fa-user me-1"></i>${post.user_name} — ${post.user_career}
+        </p>
+        <p class="note-desc">${post.content}</p>
+        ${imgPart}
+      </div>`;
+    container.insertBefore(article, container.querySelector(".post-toggle").nextSibling);
+  }
+
+  function addNoteToFeed(note) {
+    const container = document.querySelector(".feed-container");
+    const article = document.createElement("article");
+    article.className = "note-card card animate-fade";
+    const preview = `<embed src="${note.file_url}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;" />`;
+    article.innerHTML = `
+      <div class="note-image">${preview}</div>
+      <div class="card-body">
+        <h5 class="note-title">${note.title}</h5>
+        <p class="note-desc">${note.description}</p>
+        <p class="note-meta mb-1"><i class="fas fa-user me-1"></i>${note.user_name} – ${note.user_career}</p>
+      </div>`;
+    const marker = container.querySelector("h2.fw-bold");
+    container.insertBefore(article, marker.nextSibling);
+  }
 });

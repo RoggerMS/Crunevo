@@ -7,6 +7,7 @@ from flask import (
     flash,
     current_app,
     send_from_directory,
+    jsonify,
 )
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
@@ -151,6 +152,64 @@ def upload_note():
             flash("Solo se permiten archivos PDF, DOCX o PNG.", "danger")
 
     return render_template("upload_note.html")
+
+
+@note_bp.route("/quick_note", methods=["POST"])
+@login_required
+def quick_note():
+    """Handle quick note uploads from the feed via AJAX."""
+    title = request.form.get("title", "").strip()
+    description = request.form.get("description", "").strip()
+    categoria = request.form.get("categoria", "").strip()
+    note_file = request.files.get("file")
+
+    if not title or not note_file:
+        return jsonify({"error": "Faltan datos"}), 400
+
+    filename = secure_filename(note_file.filename)
+    if not filename.lower().endswith(".pdf"):
+        return jsonify({"error": "Formato no permitido"}), 400
+
+    note_file.filename = filename
+    upload_folder = current_app.config["NOTE_UPLOAD_FOLDER"]
+    os.makedirs(upload_folder, exist_ok=True)
+    file_url = save_file_local(note_file, upload_folder)
+
+    if not file_url:
+        return jsonify({"error": "Error al guardar"}), 500
+
+    new_note = Note(
+        title=title,
+        description=description,
+        file_url=file_url,
+        file_type="pdf",
+        user_id=current_user.id,
+        course=categoria,
+        faculty=categoria,
+        upload_date=datetime.utcnow(),
+    )
+
+    db.session.add(new_note)
+    db.session.commit()
+
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify(
+            {
+                "message": "ok",
+                "note": {
+                    "id": new_note.id,
+                    "title": new_note.title,
+                    "description": new_note.description,
+                    "file_url": new_note.file_url,
+                    "file_type": new_note.file_type,
+                    "user_name": current_user.name,
+                    "user_career": current_user.career,
+                },
+            }
+        )
+
+    flash("Apunte subido.", "success")
+    return redirect(url_for("main.index"))
 
 
 @note_bp.route("/notes/<int:note_id>/download")
