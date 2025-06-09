@@ -55,14 +55,22 @@ def crear_post():
         return redirect(url_for("main.index"))
 
     image_url = None
-    if image and image.filename:
-        upload_folder = os.path.join(current_app.static_folder, "uploads", "posts")
-        os.makedirs(upload_folder, exist_ok=True)
-        image_url = save_file_local(image, upload_folder)
+    try:
+        if image and image.filename:
+            upload_folder = os.path.join(current_app.static_folder, "uploads", "posts")
+            os.makedirs(upload_folder, exist_ok=True)
+            image_url = save_file_local(image, upload_folder)
 
-    post = Post(content=content, image_url=image_url, user_id=current_user.id)
-    db.session.add(post)
-    db.session.commit()
+        post = Post(content=content, image_url=image_url, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error(f"Error al crear post: {e}", exc_info=True)
+        db.session.rollback()
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return jsonify({"error": "Error al guardar"}), 500
+        flash("Ocurrió un error al guardar la publicación.", "danger")
+        return redirect(url_for("main.index"))
 
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(
@@ -72,7 +80,7 @@ def crear_post():
                     "content": post.content,
                     "image_url": post.image_url,
                     "user_name": current_user.name,
-                    "user_career": current_user.career,
+                    "user_career": current_user.career or "",
                 },
             }
         )

@@ -10,7 +10,7 @@
     {% if note.file_type == 'pdf' %}
       <iframe src="{{ note.file_url }}" width="100%" height="600" class="border"></iframe>
     {% elif note.file_url and note.file_type in ['jpg', 'jpeg', 'png'] %}
-      <img src="{{ note.file_url }}" class="img-fluid" alt="{{ note.title }}">
+      <img src="{{ note.file_url }}" class="img-fluid mx-auto d-block" alt="{{ note.title }}">
     {% else %}
       <a href="{{ note.file_url }}" target="_blank">Descargar archivo</a>
     {% endif %}
