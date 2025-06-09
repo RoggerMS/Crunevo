@@ -12,6 +12,8 @@ class Product(db.Model):
     image_url = db.Column(db.String(512))
     type = db.Column(db.String(50))  # 'utiles', 'ropa', 'snacks'
     availability = db.Column(db.Boolean, default=True)
+    stock = db.Column(db.Integer, default=0)
+    featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow

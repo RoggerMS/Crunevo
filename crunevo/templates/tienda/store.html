@@ -37,10 +37,13 @@
     {% if productos %}
       {% for producto in productos %}
       <div class="col-6 col-md-4 mb-3">
-        <div class="card h-100">
+        <div class="card h-100 {% if producto.featured %}border-primary{% endif %}">
           <img src="{{ producto.image_url or url_for('static', filename='images/product_placeholder.png') }}" class="card-img-top" alt="{{ producto.name }}">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ producto.name }}</h5>
+            <h5 class="card-title">
+              {{ producto.name }}
+              {% if producto.featured %}<span class="text-warning">★</span>{% endif %}
+            </h5>
             <p class="card-text flex-grow-1">{{ producto.description[:100] }}...</p>
             <strong>S/. {{ producto.price }}</strong>
             <a href="{{ url_for('store.producto', id=producto.id) }}" class="btn btn-sm btn-primary mt-2">Ver más</a>

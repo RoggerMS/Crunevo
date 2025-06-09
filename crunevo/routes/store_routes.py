@@ -38,7 +38,7 @@ def tienda():
     )
 
 
-@store_bp.route("/<int:id>")
+@store_bp.route("/producto/<int:id>")
 def producto(id):
     producto = Product.query.get_or_404(id)
     return render_template("tienda/producto.html", producto=producto)

@@ -7,6 +7,8 @@ from flask import (
     flash,
     current_app,
 )
+import os
+from crunevo.utils.storage import save_file_local
 from functools import wraps
 from flask_login import login_required, current_user
 from crunevo.models import db
@@ -186,8 +188,19 @@ def add_product():
         description = request.form.get("description")
         price = request.form.get("price")
         type = request.form.get("type")
+        stock = request.form.get("stock", type=int)
         availability = request.form.get("availability") == "on"
+        featured = request.form.get("featured") == "on"
+        image = request.files.get("image")
         image_url = "/static/images/product_placeholder.png"
+        if image and image.filename:
+            upload_folder = os.path.join(
+                current_app.static_folder, "uploads", "products"
+            )
+            os.makedirs(upload_folder, exist_ok=True)
+            saved = save_file_local(image, upload_folder)
+            if saved:
+                image_url = saved
 
         if not all([name, price, type]):
             flash("Nombre, precio y tipo son requeridos.", "danger")
@@ -201,6 +214,8 @@ def add_product():
             price=price,
             type=type,
             availability=availability,
+            stock=stock or 0,
+            featured=featured,
             image_url=image_url,
         )
         db.session.add(new_product)
@@ -220,7 +235,18 @@ def edit_product(product_id):
         product.description = request.form.get("description", product.description)
         product.price = request.form.get("price", product.price)
         product.type = request.form.get("type", product.type)
+        product.stock = request.form.get("stock", product.stock, type=int)
         product.availability = request.form.get("availability") == "on"
+        product.featured = request.form.get("featured") == "on"
+        image = request.files.get("image")
+        if image and image.filename:
+            upload_folder = os.path.join(
+                current_app.static_folder, "uploads", "products"
+            )
+            os.makedirs(upload_folder, exist_ok=True)
+            saved = save_file_local(image, upload_folder)
+            if saved:
+                product.image_url = saved
 
         if commit_changes():
             flash("Producto actualizado exitosamente.", "success")
