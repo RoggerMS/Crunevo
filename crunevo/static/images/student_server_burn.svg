@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="none"/>
+  <g id="books" stroke="#333" stroke-width="2">
+    <rect x="40" y="60" width="50" height="12" fill="#5bc0de" transform="rotate(-20 40 60)"/>
+    <rect x="150" y="55" width="50" height="12" fill="#d9534f" transform="rotate(15 150 55)"/>
+    <polygon points="70,40 110,30 100,50" fill="#5cb85c" transform="rotate(-25 90 40)"/>
+  </g>
+  <g id="student" stroke="#333" stroke-width="2">
+    <!-- hat falling -->
+    <polygon points="120,20 160,30 158,45 118,35" fill="#333" transform="rotate(-20 140 30)"/>
+    <line x1="139" y1="32" x2="170" y2="42" stroke="#333" stroke-width="2"/>
+    <!-- head with swirling eyes -->
+    <circle cx="120" cy="110" r="35" fill="#ffe0bd"/>
+    <path d="M108 100 q5 -5 10 0 t10 0" stroke="#333" fill="none"/>
+    <path d="M132 100 q5 -5 10 0 t10 0" stroke="#333" fill="none"/>
+    <ellipse cx="120" cy="120" rx="12" ry="8" fill="#e74c3c" stroke="#333"/>
+    <!-- arms in the air -->
+    <path d="M85 135 q-10 -20 -25 -25" fill="none"/>
+    <path d="M155 135 q10 -20 25 -25" fill="none"/>
+  </g>
+  <g id="laptop" stroke="#333" stroke-width="2">
+    <rect x="90" y="150" width="60" height="40" rx="5" fill="#6c757d"/>
+    <rect x="95" y="155" width="50" height="30" fill="#343a40"/>
+    <text x="120" y="175" font-size="14" fill="#fff" text-anchor="middle">500</text>
+    <line x1="92" y1="155" x2="148" y2="185" stroke="#343a40"/>
+  </g>
+  <g id="smoke" stroke="#666" stroke-width="2">
+    <path d="M120 130 q-5 5 0 10 q5 5 0 10" fill="none"/>
+    <path d="M130 125 q-4 4 0 8 q4 4 0 8" fill="none"/>
+  </g>
+  <ellipse cx="120" cy="205" rx="65" ry="8" fill="#999" opacity="0.3"/>
+</svg>
