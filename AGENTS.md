@@ -225,3 +225,17 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
+
+### [Feat] Página de error 500 animada (2025-06-10)
+- Nuevos archivos:
+  - `crunevo/templates/500.html`
+  - `crunevo/static/js/background_particles.js`
+  - `crunevo/static/css/custom_error.css`
+  - `crunevo/static/images/student_boom.svg`
+- Detalles:
+  - Se rediseñó la página de error 500 con animaciones y estilo oscuro.
+  - Botones de recarga, regreso e ícono de soporte.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
+

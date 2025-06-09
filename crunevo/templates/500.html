@@ -1,14 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}Error Interno del Servidor{% endblock %}
+{% block title %}¡CRUNEVO colapsó! 🤯{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom_error.css') }}">
+{% endblock %}
 
 {% block content %}
-<div class="text-center" style="padding: 4rem 0;">
-    <h1>Error 500</h1>
-    <h2>Error Interno del Servidor</h2>
-    <p>Lo sentimos, algo salió mal en nuestros servidores. Ya estamos trabajando para solucionarlo.</p>
-    <p>Puedes intentar <a href="{{ request.url }}">recargar la página</a> o volver al inicio.</p>
-    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Volver al Inicio</a>
+<div class="error-container d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 85vh; padding: 2rem;">
+    <div class="animated-bg"></div>
+    
+    <img src="{{ url_for('static', filename='images/student_boom.svg') }}" alt="Explosión de estudiante" class="mb-4" style="max-width: 220px; z-index: 1;">
+    
+    <h1 class="display-4 fw-bold">¡Boom! CRUNEVO se fue de juerga académica 🧠🔥</h1>
+    <p class="lead text-muted">Nuestro sistema colapsó con tanto conocimiento. Estamos trabajando para reanimarlo.</p>
+
+    <div class="d-flex flex-wrap gap-3 mt-4 justify-content-center z-1">
+        <button onclick="location.reload()" class="btn btn-lg btn-outline-primary">
+            🔄 Recargar página
+        </button>
+        <a href="{{ url_for('main.index') }}" class="btn btn-lg btn-primary">
+            🏠 Volver al inicio
+        </a>
+        <a href="https://wa.me/51XXXXXXXX" class="btn btn-lg btn-outline-secondary" target="_blank">
+            🛠️ Contactar soporte
+        </a>
+    </div>
+
+    <small class="mt-4 text-muted">Error 500 - CRUNEVO Server Overload 🤖</small>
 </div>
 {% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/background_particles.js') }}"></script>
+{% endblock %}
