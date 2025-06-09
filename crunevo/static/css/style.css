@@ -117,11 +117,53 @@ body {
 
 
     .note-image embed,
-    .note-image img {
+.note-image img {
         width: 100vw !important;
         height: auto !important;
         object-fit: cover;
         display: block;
         border-radius: 0 !important;
+    }
+}
+
+/* ---------- About Page Styles ---------- */
+#about-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.about-card {
+    width: 100%;
+    max-width: 850px;
+}
+
+@media (min-width: 992px) {
+    .about-card {
+        background: url('../images/about_bg.svg') right bottom/150px no-repeat;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-radius: 0.75rem;
+        padding: 2rem;
+        margin: 2rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .about-card {
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 1.5rem;
+        margin: 1rem;
+        background-color: #fff;
+    }
+    #about-page .about-card h1 i,
+    #about-page .about-card h2 i {
+        font-size: 1rem;
+    }
+    #about-page .about-card {
+        font-size: 1rem;
+        line-height: 1.5;
     }
 }
