@@ -22,6 +22,12 @@ body {
 .navbar {
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #333;
 }
 
 .nav-link:hover,
@@ -46,6 +52,29 @@ body {
 .btn:focus {
     opacity: 0.9;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.user-summary strong {
+    font-size: 0.9rem;
+}
+
+.user-summary small {
+    font-size: 0.75rem;
+}
+
+/* Avatares genéricos */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-sm {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Estilos renovados para el menú offcanvas */
@@ -94,6 +123,15 @@ body {
 @media (prefers-color-scheme: dark) {
     .offcanvas {
         background: #1f1f1f;
+        color: #f1f1f1;
+    }
+
+    .navbar {
+        background-color: #222;
+        color: #f1f1f1;
+    }
+
+    .navbar a {
         color: #f1f1f1;
     }
 

@@ -32,10 +32,10 @@
     </div>
 
     {% for item in items %}
-    <article class="note-card post-card card shadow-sm rounded border-0 animate-fade mb-3">
+    <article class="card shadow-sm rounded border-0 animate-fade mb-3 {{ 'post-card' if item.__tablename__ == 'posts' else 'note-card' }}">
       <div class="card-body">
-        <div class="post-header d-flex align-items-center mb-2">
-          <img src="{{ item.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
+        <div class="post-header d-flex align-items-center gap-2 mb-2">
+          <img src="{{ item.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar" alt="avatar">
           <div>
             <strong>{{ item.uploader.name }}</strong><br>
             <small class="text-muted">{{ item.uploader.career or 'Carrera' }} ·<i class="far fa-clock"></i> {{ item.created_at.strftime('%d %b %Y') }}</small>
@@ -84,8 +84,8 @@
       {% if item.comments %}
       <div class="comment-list px-3 py-2">
         {% for c in item.comments[:2] %}
-        <div class="d-flex mb-2">
-          <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
+        <div class="d-flex gap-2 mb-2">
+          <img src="{{ c.user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar" alt="avatar">
           <div>
             <strong>{{ c.user.name }}</strong>
             <p class="mb-0 text-muted" style="font-size:0.8rem;">{{ c.timestamp.strftime('%d %b %Y') }}</p>
@@ -95,7 +95,7 @@
         {% endfor %}
       </div>
       {% endif %}
-      <div class="comment-area mt-2 px-3" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}" style="display:none;">
+      <div class="comment-area mt-2 px-3" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}">
         <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
       </div>
     </article>

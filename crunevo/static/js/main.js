@@ -510,14 +510,22 @@ function addNoteToFeed(note) {
   initCommentInputs();
 }
 
+function slideToggle(el) {
+  if (el.style.maxHeight && el.style.maxHeight !== '0px') {
+    el.style.maxHeight = '0';
+  } else {
+    el.style.maxHeight = el.scrollHeight + 'px';
+  }
+}
+
 function initCommentInputs(scope = document) {
   scope.querySelectorAll('.comment-toggle').forEach((btn) => {
     const area = scope.querySelector(`.comment-area[data-id="${btn.dataset.id}"]`);
     if (!area) return;
     const input = area.querySelector('.comment-input');
     btn.addEventListener('click', () => {
-      area.style.display = area.style.display === 'none' ? 'block' : 'none';
-      if (area.style.display !== 'none') input.focus();
+      slideToggle(area);
+      if (area.style.maxHeight !== '0px') input.focus();
     });
     input.addEventListener('keydown', async (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -543,7 +551,7 @@ function initCommentInputs(scope = document) {
         }
         if (resp.ok) {
           input.value = '';
-          area.style.display = 'none';
+          area.style.maxHeight = '0';
           showToast('✅ Comentario publicado');
         } else {
           showToast('❌ Error al comentar');
