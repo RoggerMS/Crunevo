@@ -188,3 +188,17 @@ pytest -q
 - Eliminado `db.create_all()` y `DATABASE_DIR`.
 - PostgreSQL gestionado vía `SQLALCHEMY_DATABASE_URI` en Railway.
 - Se mantiene Flask-Migrate como gestor de cambios estructurales.
+
+
+### [Enhancement] Tooltip en aceptación de Términos (2025-06-09)
+- Modificados:
+  - `crunevo/templates/feed.html`
+  - `crunevo/templates/upload_note.html`
+  - `crunevo/static/js/main.js`
+- Detalles:
+  - Se añadió atributo `data-bs-toggle="tooltip"` con mensaje informativo.
+  - Se centralizó la inicialización del formulario de subida en `main.js`.
+  - Ahora se inicializan tooltips globalmente al cargar la página.
+- Pruebas:
+  ✅ `pip install -r requirements.txt`
+  ❌ `pytest -q` (faltan dependencias de entorno)

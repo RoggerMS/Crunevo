@@ -321,6 +321,12 @@ function initActionButtons() {
     });
 }
 
+function initTooltips() {
+  document
+    .querySelectorAll('[data-bs-toggle="tooltip"]')
+    .forEach((el) => new bootstrap.Tooltip(el));
+}
+
 function initTagify(selector) {
   const el = typeof selector === "string" ? document.querySelector(selector) : selector;
   if (!el) return null;
@@ -368,6 +374,35 @@ function initFeedForms() {
 
   const tagify = initTagify(tagInput);
   initImagePreview("#uploadImage", ".preview-img", "#fileLabelText");
+
+  const uploadForm = document.getElementById("uploadForm");
+  const uploadTagInput = document.getElementById("upload-tags");
+  const uploadTagify = initTagify(uploadTagInput);
+  initImagePreview("#noteFile", ".preview-note", "#noteFileLabel");
+
+  if (uploadForm) {
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!uploadForm.checkValidity()) {
+        uploadForm.classList.add("was-validated");
+        return;
+      }
+      const formData = new FormData(uploadForm);
+      try {
+        const resp = await fetch(uploadForm.action, {
+          method: "POST",
+          body: formData,
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        });
+        if (!resp.ok) throw new Error("error");
+        uploadForm.reset();
+        if (uploadTagify) uploadTagify.removeAllTags();
+        showToast("✅ Apunte subido con éxito");
+      } catch (err) {
+        showToast("❌ Error al subir el apunte");
+      }
+    });
+  }
 
   const postForm = document.getElementById("postForm");
   if (postForm) {
@@ -472,4 +507,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initFloatingSidebar();
   initActionButtons();
   initFeedForms();
+  initTooltips();
 });
