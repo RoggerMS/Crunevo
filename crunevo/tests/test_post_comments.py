@@ -30,7 +30,7 @@ def user(app):
         u.set_password("secret")
         db.session.add(u)
         db.session.commit()
-        return u
+        return u.id
 
 
 def login(client, email, password):
@@ -41,7 +41,7 @@ def login(client, email, password):
 
 def test_comment_post(client, user, app):
     with app.app_context():
-        p = Post(content="hola", user_id=user.id)
+        p = Post(content="hola", user_id=user)
         db.session.add(p)
         db.session.commit()
         post_id = p.id

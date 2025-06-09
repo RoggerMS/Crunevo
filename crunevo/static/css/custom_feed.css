@@ -23,6 +23,22 @@
     flex-direction: column;
 }
 
+.feed-container input.form-control,
+.feed-container textarea.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: inset 0 0 0 1px #ccc;
+}
+.feed-container textarea.form-control {
+    min-height: 80px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    resize: vertical;
+}
+.feed-container textarea.form-control:focus {
+    box-shadow: 0 0 0 2px rgba(91, 124, 250, 0.5);
+    transform: translateY(-2px);
+}
+
 .note-card {
     border-radius: 0;
     box-shadow: var(--card-shadow);
@@ -256,6 +272,10 @@
   .note-card + .note-card {
     border-top-color: #3a3b3c;
   }
+  .comment-list {
+    background: #2c2c2c;
+    border-top-color: #3a3b3c;
+  }
 }
 
 .input-wrapper input.form-control {
@@ -306,6 +326,16 @@
 .comment-input {
   font-size: 0.9rem;
   margin-top: 0.5rem;
+}
+.comment-list {
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+.comment-list .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .btn-gradient {
   background: linear-gradient(45deg, #5b7cfa, #4e54c8);
