@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% block title %}Mi Perfil{% endblock %}
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs" id="profileTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab">Perfil</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="notes-tab" data-bs-toggle="tab" href="#notes" role="tab">Mis Apuntes</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="stats-tab" data-bs-toggle="tab" href="#stats" role="tab">Rendimiento</a>
+  </li>
+</ul>
+<div class="tab-content pt-3">
+  <div class="tab-pane fade show active" id="profile" role="tabpanel">
+    <div class="container-profile my-4">
+      <div class="profile-header">
+        <div class="position-relative">
+          <img src="{{ user.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="profile-avatar" id="profileAvatarImage" alt="Foto de perfil">
+          <button class="btn btn-sm btn-light position-absolute bottom-0 end-0 edit-avatar-btn"><i class="fas fa-camera"></i></button>
+          <input type="file" id="avatarInput" accept="image/*" class="d-none">
+        </div>
+        <div>
+          <h2 class="fw-bold mb-0">{{ user.name }}</h2>
+          <p class="text-muted mb-1">{{ user.email }}</p>
+          {% if user.role == 'admin' %}
+            <span class="badge bg-secondary">⚙️ Administrador</span>
+          {% else %}
+            <span class="badge bg-primary">🎓 Estudiante</span>
+          {% endif %}
+          <p class="mt-2">📘 {{ user.career }} — {{ user.faculty }}</p>
+        </div>
+      </div>
+
+      <div class="profile-stats row text-center mt-4 g-3">
+        <div class="col-6 col-md-4">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div class="h4">{{ user_stats.notes_uploaded }}</div>
+              <small>Apuntes subidos</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div class="h4">{{ user_stats.downloads_total }}</div>
+              <small>Descargas totales</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div class="h4">{{ user_stats.likes_received }}</div>
+              <small>Likes recibidos</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div class="h4">{{ user_stats.responses_count }}</div>
+              <small>Respuestas foro</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div class="h4">{{ user_stats.points }}</div>
+              <small>Puntos</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress mt-3">
+        <div class="progress-bar" role="progressbar" style="width: {{ user_stats.points or 0 }}%;" aria-valuenow="{{ user_stats.points or 0 }}" aria-valuemin="0" aria-valuemax="1000">
+          {{ user_stats.points or 0 }} pts
+        </div>
+      </div>
+
+      <div class="profile-activity mt-4">
+        <h4>Actividad reciente</h4>
+        <ul class="list-group">
+          {% for event in events %}
+            <li class="list-group-item">{{ event.message }}</li>
+          {% else %}
+            <li class="list-group-item text-muted">Sin actividad reciente.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="profile-actions mt-4 d-flex flex-wrap gap-2">
+        <a href="{{ url_for('user.edit_profile') }}" class="btn btn-outline-primary flex-fill">✍️ Editar perfil</a>
+        <a href="{{ url_for('note.upload_note') }}" class="btn btn-outline-success flex-fill">📤 Subir apunte</a>
+        <a href="{{ url_for('store.tienda') }}" class="btn btn-outline-info flex-fill">🛒 Mis productos</a>
+        {% if user.chat_enabled %}
+        <a href="{{ url_for('chat.chat') }}" class="btn btn-outline-secondary flex-fill">💬 Mensajes</a>
+        {% endif %}
+        {% if user.role == 'admin' %}
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-danger flex-fill">⚙️ Panel admin</a>
+        {% endif %}
+      </div>
+
+      <div class="mt-4">
+        <div class="card">
+          <div class="card-body">
+            Créditos actuales: {{ user.credits }}
+            <div class="mt-2">
+              <button class="btn btn-sm btn-primary me-2">Agregar</button>
+              <button class="btn btn-sm btn-secondary">Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5>Privacidad</h5>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="publicProfile" checked>
+          <label class="form-check-label" for="publicProfile">Mostrar mi perfil públicamente</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="privateMsg" {% if user.chat_enabled %}checked{% endif %}>
+          <label class="form-check-label" for="privateMsg">Activar mensajes privados</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="emailNotify" checked>
+          <label class="form-check-label" for="emailNotify">Recibir notificaciones por correo</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="notes" role="tabpanel">
+    <div class="container notes-section">
+      <h3 class="mb-3">Tus Apuntes</h3>
+      <a href="#stats" class="btn btn-outline-secondary mb-3">📊 Ver rendimiento</a>
+      {% if notes %}
+        {% for note in notes %}
+        <div class="note-card card mb-3 shadow-sm">
+          <div class="card-body">
+            <h4 class="h5">{{ note.title }}</h4>
+            <p>Curso: {{ note.course or 'N/A' }} | Créditos: +10</p>
+            <div class="actions d-flex gap-2">
+              <a href="{{ url_for('note.note_detail', note_id=note.id) }}" class="btn btn-outline-primary">Ver</a>
+              <a href="{{ url_for('note.upload_note') }}" class="btn btn-outline-warning">Editar</a>
+              <form method="post" action="{{ url_for('admin.delete_note', note_id=note.id) }}" onsubmit="return confirm('¿Eliminar?');">
+                <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state text-center py-5">
+          <img src="https://example.com/empty.svg" alt="No hay apuntes" class="img-fluid mb-3"/>
+          <h3>No hay apuntes aún</h3>
+          <p>Sube tu primer apunte y empieza a ganar créditos.</p>
+          <a href="{{ url_for('note.upload_note') }}" class="btn btn-primary btn-lg">📤 Subir ahora</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="tab-pane fade" id="stats" role="tabpanel">
+    <div class="summary-panel container my-4">
+      <h2 class="mb-3">Tu rendimiento</h2>
+      <div class="row stats-grid g-3">
+        <div class="col-6 col-md-3">
+          <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+            💸 Créditos: <strong>{{ stats.credits }}</strong>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+            📚 Apuntes: <strong>{{ stats.notes }}</strong>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+            👍 Likes: <strong>{{ stats.likes }}</strong>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-lg rounded-2xl bg-gradient p-3">
+            🎁 Donaciones: <strong>S/{{ stats.donations }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ia-assistant" class="chat-box position-fixed bottom-0 end-0 m-3 p-3 bg-light border rounded">
+      <h5>🤖 Consejo de hoy</h5>
+      <p id="ia-message">Cargando…</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+fetch('/api/ia/consejo').then(r => r.json()).then(d => {
+  const msg = document.getElementById('ia-message');
+  if(msg) msg.textContent = d.mensaje;
+});
+</script>
+<script>
+document.querySelector('.edit-avatar-btn')?.addEventListener('click', () => {
+    document.getElementById('avatarInput').click();
+});
+</script>
+<script>
+const hash = window.location.hash;
+if (hash) {
+  const trigger = document.querySelector(`a[href="${hash}"]`);
+  if (trigger) new bootstrap.Tab(trigger).show();
+}
+</script>
+{% endblock %}

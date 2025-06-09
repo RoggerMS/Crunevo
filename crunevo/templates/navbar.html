@@ -20,7 +20,6 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('forum.foro') }}"><i class="fas fa-comments me-2"></i>Foro</a></li>
                     {% if current_user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('user.my_notes') }}"><i class="fas fa-folder-open me-2"></i>Mis Apuntes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.dashboard') }}"><i class="fas fa-chart-line me-2"></i>Rendimiento</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('note.upload_note') }}"><i class="fas fa-upload me-2"></i>Subir</a></li>
                         {% if current_user.role == 'admin' %}
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-tools me-2"></i>Panel Admin</a></li>
