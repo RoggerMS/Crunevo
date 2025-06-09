@@ -310,21 +310,136 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".toggle-tabs .btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const mode = btn.dataset.mode;
-      document
-        .getElementById("mode-apunte")
-        .classList.toggle("d-none", mode !== "apunte");
-      document
-        .getElementById("mode-post")
-        .classList.toggle("d-none", mode !== "post");
-      document
-        .querySelectorAll(".toggle-tabs .btn")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+  const openNoteBtn = document.getElementById("openNoteModalBtn");
+  const noteModalEl = document.getElementById("uploadNoteModal");
+  const noteForm = document.getElementById("noteForm");
+  const tagInput = document.getElementById("note-tags");
+  const tagSuggestions = [
+    "álgebra",
+    "álgebra lineal",
+    "derivadas",
+    "integrales",
+    "ecuaciones diferenciales",
+    "geometría analítica",
+    "trigonometría",
+    "límites",
+    "matrices",
+    "probabilidad",
+    "estadística",
+    "combinatoria",
+    "números complejos",
+    "fórmulas matemáticas",
+    "lógica matemática",
+    "física clásica",
+    "cinemática",
+    "leyes de Newton",
+    "ondas",
+    "termodinámica",
+    "química orgánica",
+    "química inorgánica",
+    "tabla periódica",
+    "reacciones químicas",
+    "enlaces químicos",
+    "biología celular",
+    "genética",
+    "anatomía",
+    "evolución",
+    "microbiología",
+    "historia del Perú",
+    "historia universal",
+    "revolución francesa",
+    "independencia de América",
+    "filosofía moderna",
+    "ética",
+    "ciudadanía",
+    "derechos humanos",
+    "arte precolombino",
+    "historia del arte",
+    "psicología",
+    "sociología",
+    "antropología",
+    "redacción",
+    "ortografía",
+    "tipos de texto",
+    "análisis literario",
+    "figuras literarias",
+    "comprensión lectora",
+    "técnicas de exposición",
+    "ensayos",
+    "argumentación",
+    "citas APA",
+    "referencias bibliográficas",
+    "programación",
+    "pseudocódigo",
+    "Python",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "redes",
+    "algoritmos",
+    "base de datos",
+    "ciberseguridad",
+    "sistemas operativos",
+    "informática educativa",
+    "Excel",
+    "resumen",
+    "apuntes",
+    "separata",
+    "práctica resuelta",
+    "solución paso a paso",
+    "clase grabada",
+    "guía de estudio",
+    "tips de examen",
+    "examen anterior",
+    "ciclo regular",
+    "sustitutorio",
+    "exoneración",
+    "educación inicial",
+    "educación secundaria",
+    "matemáticas y física",
+    "ingeniería industrial",
+    "derecho",
+    "medicina humana",
+    "enfermería",
+    "contabilidad",
+    "administración",
+    "psicología",
+    "arquitectura",
+    "agronomía",
+    "UNMSM",
+    "La Cantuta",
+    "San Marcos",
+    "UNI",
+    "CEPRE",
+    "EBA",
+    "CEBA",
+    "simulacro",
+    "preuniversitario",
+    "resumen gráfico",
+    "infografía",
+    "cuadro comparativo",
+    "mapa mental",
+    "ficha técnica",
+    "esquema",
+    "línea de tiempo",
+    "guía de laboratorio",
+    "rúbrica",
+    "portafolio",
+  ];
+
+  let noteModal;
+  if (openNoteBtn && noteModalEl) {
+    noteModal = new bootstrap.Modal(noteModalEl);
+    openNoteBtn.addEventListener("click", () => noteModal.show());
+  }
+
+  let tagify;
+  if (tagInput) {
+    tagify = new Tagify(tagInput, {
+      whitelist: tagSuggestions,
+      dropdown: { maxItems: 20, enabled: 0, closeOnSelect: false },
     });
-  });
+  }
 
   const imageInput = document.querySelector('input[name="image"]');
   if (imageInput) {
@@ -341,32 +456,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const form = document.getElementById("postForm");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const activeMode = document.querySelector(".toggle-tabs .btn.active").dataset
-      .mode;
-    const url = activeMode === "apunte" ? "/quick_note" : "/crear_post";
-    const formData = new FormData(form);
-    try {
-      const resp = await fetch(url, {
-        method: "POST",
-        body: formData,
-        headers: { "X-Requested-With": "XMLHttpRequest" },
-      });
-      if (!resp.ok) throw new Error("error");
-      const data = await resp.json();
-      if (activeMode === "post") {
+  const postForm = document.getElementById("postForm");
+  if (postForm) {
+    postForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(postForm);
+      try {
+        const resp = await fetch("/crear_post", {
+          method: "POST",
+          body: formData,
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        });
+        if (!resp.ok) throw new Error("error");
+        const data = await resp.json();
         addPostToFeed(data.post);
-      } else {
-        addNoteToFeed(data.note);
+        postForm.reset();
+        document.querySelector(".preview-img").innerHTML = "";
+      } catch (err) {
+        alert("Ocurrió un error al publicar");
       }
-      form.reset();
-      document.querySelector(".preview-img").innerHTML = "";
-    } catch (err) {
-      alert("Ocurrió un error al publicar");
-    }
-  });
+    });
+  }
+
+  if (noteForm) {
+    noteForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!noteForm.checkValidity()) {
+        noteForm.classList.add("was-validated");
+        return;
+      }
+      const formData = new FormData(noteForm);
+      try {
+        const resp = await fetch("/quick_note", {
+          method: "POST",
+          body: formData,
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        });
+        if (!resp.ok) throw new Error("error");
+        const data = await resp.json();
+        addNoteToFeed(data.note);
+        noteForm.reset();
+        if (tagify) tagify.removeAllTags();
+        if (noteModal) noteModal.hide();
+        showToast("✅ Apunte subido con éxito");
+      } catch (err) {
+        alert("Ocurrió un error al publicar");
+      }
+    });
+  }
 
   function addPostToFeed(post) {
     const container = document.querySelector(".feed-container");
