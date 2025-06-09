@@ -29,6 +29,14 @@ body {
     text-decoration: underline;
 }
 
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(0.7);
+}
+
 .auth-container {
     max-width: 500px;
     margin: 0 auto;

@@ -29,6 +29,15 @@
       </form>
     </div>
 
+    <form method="get" class="feed-filter-form d-flex gap-2 mb-3">
+      <input type="text" name="course" value="{{ course_filter }}" class="form-control form-control-sm" placeholder="Filtrar curso">
+      <select name="order" class="form-select form-select-sm">
+        <option value="recent" {% if order=='recent' %}selected{% endif %}>Recientes</option>
+        <option value="popular" {% if order=='popular' %}selected{% endif %}>Populares</option>
+      </select>
+      <button type="submit" class="btn btn-outline-secondary btn-sm">Aplicar</button>
+    </form>
+
     {% for post in posts %}
     <article class="note-card post-card card animate-fade">
       <div class="card-body">
@@ -78,7 +87,7 @@
             <h5 class="note-title">{{ note.title }}</h5>
             <a
                 href="{{ url_for('note.note_detail', note_id=note.id) }}"
-                class="btn btn-primary w-100 mt-2 mb-2">
+                class="btn btn-primary btn-view-note w-100 mt-2 mb-2">
                 📄 Ver Apunte
             </a>
             <p class="note-meta mb-1">
@@ -96,30 +105,26 @@
             {% endif %}
             <p class="note-desc">{{ note.description[:120] }}...</p>
         </div>
-        <div class="note-actions card-footer bg-white">
-            <div class="action-row d-flex">
-                <button class="action-btn" data-action="like" data-id="{{ note.id }}" aria-label="Me gusta">
-                    <i class="fas fa-heart me-1"></i>Me gusta
-                </button>
-                <button class="action-btn" data-action="comment" data-id="{{ note.id }}" aria-label="Comentar">
-                    <i class="fas fa-comment me-1"></i>Comentar
-                </button>
-                <button class="action-btn" data-action="save" data-id="{{ note.id }}" aria-label="Guardar">
-                    <i class="fas fa-bookmark me-1"></i>Guardar
-                </button>
-            </div>
-            <div class="action-row d-flex border-top">
-                <a
-                    href="{{ url_for('note.download_note_file', note_id=note.id) }}"
-                    class="action-btn"
-                    data-action="download"
-                    aria-label="Descargar">
-                    <i class="fas fa-download me-1"></i>Descargar
-                </a>
-                <button class="action-btn" data-action="share" aria-label="Compartir">
-                    <i class="fas fa-share me-1"></i>Compartir
-                </button>
-            </div>
+        <div class="note-actions card-footer bg-white d-flex flex-wrap">
+            <button class="action-btn" data-action="like" data-id="{{ note.id }}" aria-label="Me gusta">
+                <i class="fas fa-heart me-1"></i>Me gusta
+            </button>
+            <button class="action-btn" data-action="comment" data-id="{{ note.id }}" aria-label="Comentar">
+                <i class="fas fa-comment me-1"></i>Comentar
+            </button>
+            <button class="action-btn" data-action="save" data-id="{{ note.id }}" aria-label="Guardar">
+                <i class="fas fa-bookmark me-1"></i>Guardar
+            </button>
+            <a
+                href="{{ url_for('note.download_note_file', note_id=note.id) }}"
+                class="action-btn"
+                data-action="download"
+                aria-label="Descargar">
+                <i class="fas fa-download me-1"></i>Descargar
+            </a>
+            <button class="action-btn" data-action="share" aria-label="Compartir">
+                <i class="fas fa-share me-1"></i>Compartir
+            </button>
         </div>
     </article>
 
@@ -131,6 +136,9 @@
     {% else %}
     <p>No hay apuntes disponibles.</p>
     {% endfor %}
+    {% if next_page %}
+    <a href="{{ url_for('main.index', page=next_page, order=order, course=course_filter) }}" class="btn btn-outline-primary w-100 my-3">Cargar más</a>
+    {% endif %}
   </div>
   <div class="sidebar-right d-none d-lg-block"></div>
 </div>

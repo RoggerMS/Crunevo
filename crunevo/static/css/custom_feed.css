@@ -10,6 +10,12 @@
     letter-spacing: 0.2px;
 }
 
+.btn-view-note {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    border-radius: 0.5rem;
+    background-image: linear-gradient(#2b8cf7, #1877f2);
+}
+
 .feed-container .btn-primary:active {
     transform: scale(0.98);
 }
@@ -23,6 +29,11 @@
     flex-direction: column;
 }
 
+.feed-filter-form input,
+.feed-filter-form select {
+    max-width: 150px;
+}
+
 .note-card {
     border-radius: 0;
     box-shadow: var(--card-shadow);
@@ -31,6 +42,7 @@
     border: none;
     color: #050505;
     transition: transform 0.2s ease-in-out;
+    margin-bottom: 1rem;
 }
 
 .note-card:hover {
@@ -52,6 +64,13 @@
     }
 }
 
+.note-image {
+    min-height: 180px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .note-image img,
 .note-image embed {
     width: 100%;
@@ -75,6 +94,10 @@
     font-size: 1rem;
     color: #444;
     margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .note-meta {
@@ -113,8 +136,8 @@
     flex: 1;
     border: none;
     background: transparent;
-    padding: 0.75rem 0;
-    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
     color: #050505;
     display: flex;
     align-items: center;
@@ -123,7 +146,7 @@
 }
 
 .action-btn i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .action-btn.active {
@@ -145,6 +168,11 @@
         padding: 0;
         margin: 0;
         max-width: none;
+    }
+    #openNoteModalBtn {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
     }
     .note-card {
         width: 100%;
