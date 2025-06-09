@@ -1,27 +1,25 @@
 // Lógica para el menú offcanvas y su integración con el botón atrás
-document.addEventListener("DOMContentLoaded", () => {
+function initOffcanvasMenu() {
     const offcanvasEl = document.getElementById("mobileMenu");
-    if (offcanvasEl) {
-        const offcanvas = new bootstrap.Offcanvas(offcanvasEl);
-        offcanvasEl.addEventListener("shown.bs.offcanvas", () => {
-            history.pushState({ offcanvas: true }, "");
-        });
-        offcanvasEl.addEventListener("hidden.bs.offcanvas", () => {
-            if (history.state && history.state.offcanvas) {
-                history.back();
-            }
-        });
-
-        window.addEventListener("popstate", (evt) => {
-            if (evt.state && evt.state.offcanvas) {
-                offcanvas.hide();
-            }
-        });
-    }
-});
+    if (!offcanvasEl) return;
+    const offcanvas = new bootstrap.Offcanvas(offcanvasEl);
+    offcanvasEl.addEventListener("shown.bs.offcanvas", () => {
+        history.pushState({ offcanvas: true }, "");
+    });
+    offcanvasEl.addEventListener("hidden.bs.offcanvas", () => {
+        if (history.state && history.state.offcanvas) {
+            history.back();
+        }
+    });
+    window.addEventListener("popstate", (evt) => {
+        if (evt.state && evt.state.offcanvas) {
+            offcanvas.hide();
+        }
+    });
+}
 
 // Lógica para el Modal de Búsqueda Global
-document.addEventListener("DOMContentLoaded", () => {
+function initGlobalSearch() {
     const openSearchBtn = document.getElementById("openGlobalSearchBtn");
     const closeSearchBtn = document.getElementById("closeGlobalSearchBtn");
     const globalSearchModal = document.getElementById("globalSearchModal");
@@ -283,10 +281,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
+}
 
 
-document.addEventListener("DOMContentLoaded", () => {
+function initFloatingSidebar() {
     const toggleBtn = document.getElementById("toggleFloatingSidebar");
     const content = document.getElementById("floatingSidebarContent");
 
@@ -297,140 +295,70 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleBtn.setAttribute("aria-expanded", expanded);
         });
     }
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".note-actions .action-btn").forEach((btn) => {
+function initActionButtons() {
+    const allActionButtons = document.querySelectorAll(
+        ".note-actions .action-btn, .post-actions .action-post-btn"
+    );
+    allActionButtons.forEach((btn) => {
+        const action = btn.dataset.action;
+        const id = btn.dataset.id;
+        const storageKey = id ? `action-${action}-${id}` : null;
+        if (storageKey && localStorage.getItem(storageKey) === "1") {
+            btn.classList.add("active");
+        }
         btn.addEventListener("click", () => {
             btn.classList.toggle("active");
-            const action = btn.dataset.action;
-            console.log(`Action: ${action}`);
+            if (storageKey) {
+                if (btn.classList.contains("active")) {
+                    localStorage.setItem(storageKey, "1");
+                } else {
+                    localStorage.removeItem(storageKey);
+                }
+            }
         });
     });
-    document.querySelectorAll('.post-actions button').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-        });
-    });
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function initTagify(selector) {
+  const el = typeof selector === "string" ? document.querySelector(selector) : selector;
+  if (!el) return null;
+  const suggestions = window.TAG_SUGGESTIONS || [];
+  return new Tagify(el, {
+    whitelist: suggestions,
+    dropdown: { maxItems: 20, enabled: 0, closeOnSelect: false },
+  });
+}
+
+function initImagePreview(fileSelector, previewSelector, labelSelector) {
+  const fileInput = document.querySelector(fileSelector);
+  const preview = document.querySelector(previewSelector);
+  const label = labelSelector ? document.querySelector(labelSelector) : null;
+  if (!fileInput) return;
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (label) label.textContent = `📎 ${file?.name || "Seleccionar archivo"}`;
+    if (!file) {
+      if (preview) preview.innerHTML = "";
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    if (file.type === "application/pdf") {
+      preview.innerHTML = `<embed src="${url}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;">`;
+    } else if (file.type.startsWith("image/")) {
+      preview.innerHTML = `<img src="${url}" class="img-fluid mx-auto d-block rounded" style="max-height:180px; object-fit:cover;">`;
+    } else {
+      preview.innerHTML = `<div class="text-center mt-2">${file.name}</div>`;
+    }
+  });
+}
+
+function initFeedForms() {
   const openNoteBtn = document.getElementById("openNoteModalBtn");
   const noteModalEl = document.getElementById("uploadNoteModal");
   const noteForm = document.getElementById("noteForm");
   const tagInput = document.getElementById("note-tags");
-  const tagSuggestions = [
-    "álgebra",
-    "álgebra lineal",
-    "derivadas",
-    "integrales",
-    "ecuaciones diferenciales",
-    "geometría analítica",
-    "trigonometría",
-    "límites",
-    "matrices",
-    "probabilidad",
-    "estadística",
-    "combinatoria",
-    "números complejos",
-    "fórmulas matemáticas",
-    "lógica matemática",
-    "física clásica",
-    "cinemática",
-    "leyes de Newton",
-    "ondas",
-    "termodinámica",
-    "química orgánica",
-    "química inorgánica",
-    "tabla periódica",
-    "reacciones químicas",
-    "enlaces químicos",
-    "biología celular",
-    "genética",
-    "anatomía",
-    "evolución",
-    "microbiología",
-    "historia del Perú",
-    "historia universal",
-    "revolución francesa",
-    "independencia de América",
-    "filosofía moderna",
-    "ética",
-    "ciudadanía",
-    "derechos humanos",
-    "arte precolombino",
-    "historia del arte",
-    "psicología",
-    "sociología",
-    "antropología",
-    "redacción",
-    "ortografía",
-    "tipos de texto",
-    "análisis literario",
-    "figuras literarias",
-    "comprensión lectora",
-    "técnicas de exposición",
-    "ensayos",
-    "argumentación",
-    "citas APA",
-    "referencias bibliográficas",
-    "programación",
-    "pseudocódigo",
-    "Python",
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "redes",
-    "algoritmos",
-    "base de datos",
-    "ciberseguridad",
-    "sistemas operativos",
-    "informática educativa",
-    "Excel",
-    "resumen",
-    "apuntes",
-    "separata",
-    "práctica resuelta",
-    "solución paso a paso",
-    "clase grabada",
-    "guía de estudio",
-    "tips de examen",
-    "examen anterior",
-    "ciclo regular",
-    "sustitutorio",
-    "exoneración",
-    "educación inicial",
-    "educación secundaria",
-    "matemáticas y física",
-    "ingeniería industrial",
-    "derecho",
-    "medicina humana",
-    "enfermería",
-    "contabilidad",
-    "administración",
-    "psicología",
-    "arquitectura",
-    "agronomía",
-    "UNMSM",
-    "La Cantuta",
-    "San Marcos",
-    "UNI",
-    "CEPRE",
-    "EBA",
-    "CEBA",
-    "simulacro",
-    "preuniversitario",
-    "resumen gráfico",
-    "infografía",
-    "cuadro comparativo",
-    "mapa mental",
-    "ficha técnica",
-    "esquema",
-    "línea de tiempo",
-    "guía de laboratorio",
-    "rúbrica",
-    "portafolio",
-  ];
 
   let noteModal;
   if (openNoteBtn && noteModalEl) {
@@ -438,33 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
     openNoteBtn.addEventListener("click", () => noteModal.show());
   }
 
-  let tagify;
-  if (tagInput) {
-    tagify = new Tagify(tagInput, {
-      whitelist: tagSuggestions,
-      dropdown: { maxItems: 20, enabled: 0, closeOnSelect: false },
-    });
-  }
-
-  const imageInput = document.getElementById("uploadImage");
-  if (imageInput) {
-    imageInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      const label = document.getElementById("fileLabelText");
-      label.textContent = `📎 ${file?.name || "Seleccionar imagen"}`;
-      if (!file) {
-        document.querySelector(".preview-img").innerHTML = "";
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        document.querySelector(
-          ".preview-img"
-        ).innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+  const tagify = initTagify(tagInput);
+  initImagePreview("#uploadImage", ".preview-img", "#fileLabelText");
 
   const postForm = document.getElementById("postForm");
   if (postForm) {
@@ -483,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         postForm.reset();
         document.querySelector(".preview-img").innerHTML = "";
       } catch (err) {
-        alert("Ocurrió un error al publicar");
+        showToast("❌ Error al publicar");
       }
     });
   }
@@ -510,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (noteModal) noteModal.hide();
         showToast("✅ Apunte subido con éxito");
       } catch (err) {
-        alert("Ocurrió un error al publicar");
+        showToast("❌ Error al publicar");
       }
     });
   }
@@ -522,10 +425,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const imgPart = post.image_url
       ? `<div class="text-center mt-2"><img src="${post.image_url}" class="img-fluid mx-auto d-block rounded shadow-sm" style="max-height: 300px; object-fit: contain;" alt="imagen"></div>`
       : "";
+    const career = post.user_career || 'Carrera';
     article.innerHTML = `
       <div class="card-body">
         <p class="note-meta mb-1">
-          <i class="fas fa-user me-1"></i>${post.user_name} — ${post.user_career}
+          <i class="fas fa-user me-1"></i>${post.user_name} — ${career}
         </p>
         <p class="note-desc">${post.content}</p>
         ${imgPart}
@@ -549,14 +453,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const article = document.createElement("article");
     article.className = "note-card card animate-fade";
     const preview = `<embed src="${note.file_url}#page=1" type="application/pdf" class="w-100" style="height:180px; object-fit:cover;" />`;
+    const career = note.user_career || 'Carrera';
     article.innerHTML = `
       <div class="note-image">${preview}</div>
       <div class="card-body">
         <h5 class="note-title">${note.title}</h5>
         <p class="note-desc">${note.description}</p>
-        <p class="note-meta mb-1"><i class="fas fa-user me-1"></i>${note.user_name} – ${note.user_career}</p>
+        <p class="note-meta mb-1"><i class="fas fa-user me-1"></i>${note.user_name} – ${career}</p>
       </div>`;
-    const marker = container.querySelector("h2.fw-bold");
-    container.insertBefore(article, marker.nextSibling);
+  const marker = container.querySelector("h2.fw-bold");
+  container.insertBefore(article, marker.nextSibling);
   }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initOffcanvasMenu();
+  initGlobalSearch();
+  initFloatingSidebar();
+  initActionButtons();
+  initFeedForms();
 });

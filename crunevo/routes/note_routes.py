@@ -198,8 +198,13 @@ def quick_note():
         upload_date=datetime.utcnow(),
     )
 
-    db.session.add(new_note)
-    db.session.commit()
+    try:
+        db.session.add(new_note)
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error(f"Error al guardar apunte: {e}", exc_info=True)
+        db.session.rollback()
+        return jsonify({"error": "Error al guardar"}), 500
 
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify(
@@ -212,7 +217,7 @@ def quick_note():
                     "file_url": new_note.file_url,
                     "file_type": new_note.file_type,
                     "user_name": current_user.name,
-                    "user_career": current_user.career,
+                    "user_career": current_user.career or "",
                 },
             }
         )

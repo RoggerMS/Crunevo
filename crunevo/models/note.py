@@ -38,8 +38,23 @@ class Note(db.Model):
     @property
     def page_count(self):
         """Return the number of pages for PDF notes if available."""
-        # Placeholder for future implementation
-        return None
+        if self.file_type != "pdf" or not self.file_url:
+            return None
+        try:
+            import os
+            import fitz  # PyMuPDF
+            from flask import current_app
+
+            if self.file_url.startswith(current_app.static_url_path):
+                rel = self.file_url.replace(current_app.static_url_path + "/", "")
+                path = os.path.join(current_app.static_folder, rel)
+            else:
+                path = self.file_url
+
+            with fitz.open(path) as doc:
+                return doc.page_count
+        except Exception:
+            return None
 
     def __repr__(self):
         return f"<Note {self.title}>"
