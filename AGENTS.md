@@ -239,3 +239,16 @@ pytest -q
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
 
+### [Enhancement] Rediseñar página 500 con humor geek (2025-06-10)
+- Modificados:
+  - `crunevo/templates/500.html`
+  - `crunevo/static/css/custom_error.css`
+- Nuevos archivos:
+  - `crunevo/static/images/student_overload.svg`
+- Detalles:
+  - Nuevo mensaje divertido, botones con iconos y fondo negro permanente.
+  - Partículas blancas semitransparentes para mejor contraste.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
+
