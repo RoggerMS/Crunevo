@@ -1,4 +1,4 @@
-<div id="floatingSidebar" class="position-fixed d-lg-none" style="bottom: 20px; right: 20px; z-index: 1050;">
+<div id="floatingSidebar" class="position-fixed d-none d-lg-block" style="bottom: 20px; right: 20px; z-index: 1050;">
     <button id="toggleFloatingSidebar" class="btn btn-dark rounded-circle shadow" title="Men\u00fa r\u00e1pido" aria-expanded="false" aria-label="Toggle menu">
         <i class="fas fa-bars"></i>
     </button>
@@ -11,5 +11,6 @@
         {% if current_user.is_authenticated %}
             <a href="{{ url_for('user.profile') }}" title="Perfil">👤</a>
         {% endif %}
+        <a href="{{ url_for('main.about') }}" title="Acerca de CRUNEVO">📖</a>
     </div>
 </div>

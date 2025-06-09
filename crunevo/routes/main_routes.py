@@ -24,9 +24,30 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     if current_user.is_authenticated:
-        notes = Note.query.order_by(Note.downloads_count.desc()).limit(10).all()
+        page = request.args.get("page", 1, type=int)
+        order = request.args.get("order", "recent")
+        course_filter = request.args.get("course", "").strip()
+
+        notes_query = Note.query
+        if course_filter:
+            notes_query = notes_query.filter(Note.course.ilike(f"%{course_filter}%"))
+        if order == "popular":
+            notes_query = notes_query.order_by(Note.downloads_count.desc())
+        else:
+            notes_query = notes_query.order_by(Note.upload_date.desc())
+
+        pagination = notes_query.paginate(page=page, per_page=10, error_out=False)
+        notes = pagination.items
         posts = Post.query.order_by(Post.timestamp.desc()).limit(10).all()
-        return render_template("feed.html", notes=notes, posts=posts, user=current_user)
+        return render_template(
+            "feed.html",
+            notes=notes,
+            posts=posts,
+            user=current_user,
+            order=order,
+            course_filter=course_filter,
+            next_page=pagination.next_num if pagination.has_next else None,
+        )
     return render_template("index.html")
 
 

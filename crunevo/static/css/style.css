@@ -29,6 +29,14 @@ body {
     text-decoration: underline;
 }
 
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(0.7);
+}
+
 .auth-container {
     max-width: 500px;
     margin: 0 auto;
@@ -73,7 +81,7 @@ body {
     transform: scale(1.1);
 }
 
-@media (min-width: 992px) {
+@media (max-width: 991.98px) {
     #floatingSidebar {
         display: none !important;
     }
@@ -151,7 +159,7 @@ body {
 
 @media (max-width: 991.98px) {
     .about-card {
-        background: none !important;
+        background-image: none !important;
         box-shadow: none !important;
         border: none !important;
         padding: 1.5rem;
