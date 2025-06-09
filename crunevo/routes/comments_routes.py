@@ -1,9 +1,11 @@
-from flask import Blueprint, request, redirect, url_for, flash
+from flask import Blueprint, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 
 from crunevo.models import db
 from crunevo.models.comment import Comment
 from crunevo.models.note import Note
+from crunevo.models.post import Post
+from crunevo.models.post_comment import PostComment
 from crunevo.models.user import User
 
 comment_bp = Blueprint("comments", __name__)
@@ -56,3 +58,19 @@ def like_comment(id: int):
             user.credits = (user.credits or 0) + 2
     db.session.commit()
     return redirect(url_for("note.note_detail", note_id=comment.note_id))
+
+
+@comment_bp.route("/posts/<int:post_id>/comment", methods=["POST"])
+@login_required
+def comment_post(post_id: int):
+    content = request.form.get("content", "").strip()
+    if not content:
+        return jsonify({"error": "empty"}), 400
+    post = Post.query.get_or_404(post_id)
+    new_comment = PostComment(content=content, post_id=post.id, user_id=current_user.id)
+    db.session.add(new_comment)
+    db.session.commit()
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify({"message": "ok"})
+    flash("Comentario publicado.", "success")
+    return redirect(url_for("main.index"))
