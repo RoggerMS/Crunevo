@@ -22,6 +22,12 @@ class Config:
     )
     Path(NOTE_UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
 
+    PRODUCT_UPLOAD_FOLDER = os.getenv(
+        "PRODUCT_UPLOAD_FOLDER",
+        str(Path(__file__).resolve().parent / "static" / "uploads" / "products"),
+    )
+    Path(PRODUCT_UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
+
     MAX_NOTE_FILE_SIZE_MB = int(os.getenv("MAX_NOTE_FILE_SIZE_MB", "20"))
     MAX_CONTENT_LENGTH = 20 * 1024 * 1024
 

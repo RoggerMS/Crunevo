@@ -7,6 +7,7 @@ from flask import (
     flash,
     current_app,
 )
+from crunevo.utils.storage import save_file_local
 from functools import wraps
 from flask_login import login_required, current_user
 from crunevo.models import db
@@ -187,7 +188,16 @@ def add_product():
         price = request.form.get("price")
         type = request.form.get("type")
         availability = request.form.get("availability") == "on"
-        image_url = "/static/images/product_placeholder.png"
+        stock = request.form.get("stock", type=int, default=0)
+        featured = request.form.get("featured") == "on"
+
+        image = request.files.get("image")
+        image_url = None
+        if image and image.filename:
+            upload_folder = current_app.config["PRODUCT_UPLOAD_FOLDER"]
+            image_url = save_file_local(image, upload_folder)
+        if not image_url:
+            image_url = "/static/images/product_placeholder.png"
 
         if not all([name, price, type]):
             flash("Nombre, precio y tipo son requeridos.", "danger")
@@ -201,6 +211,8 @@ def add_product():
             price=price,
             type=type,
             availability=availability,
+            stock=stock,
+            featured=featured,
             image_url=image_url,
         )
         db.session.add(new_product)
@@ -221,6 +233,15 @@ def edit_product(product_id):
         product.price = request.form.get("price", product.price)
         product.type = request.form.get("type", product.type)
         product.availability = request.form.get("availability") == "on"
+        product.stock = request.form.get("stock", type=int, default=product.stock)
+        product.featured = request.form.get("featured") == "on"
+
+        image = request.files.get("image")
+        if image and image.filename:
+            upload_folder = current_app.config["PRODUCT_UPLOAD_FOLDER"]
+            image_url = save_file_local(image, upload_folder)
+            if image_url:
+                product.image_url = image_url
 
         if commit_changes():
             flash("Producto actualizado exitosamente.", "success")

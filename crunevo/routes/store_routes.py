@@ -51,6 +51,19 @@ def carrito():
     return render_template("tienda/carrito.html", carrito=carrito)
 
 
+@store_bp.route("/carrito/agregar/<int:producto_id>")
+@login_required
+def add_to_cart(producto_id):
+    producto = Product.query.get_or_404(producto_id)
+    carrito = session.get("carrito", [])
+    carrito.append(
+        {"id": producto.id, "nombre": producto.name, "precio": float(producto.price)}
+    )
+    session["carrito"] = carrito
+    flash("Producto añadido al carrito.", "success")
+    return redirect(request.referrer or url_for("store.tienda"))
+
+
 @store_bp.route("/carrito/eliminar/<int:producto_id>")
 @login_required
 def remove_from_cart(producto_id):
