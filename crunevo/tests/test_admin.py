@@ -61,7 +61,7 @@ def normal_user(app):
         u.set_password("secret")
         db.session.add(u)
         db.session.commit()
-        return u
+        return u.id
 
 
 def login(client, email, password):
@@ -103,3 +103,16 @@ def test_editor_permissions(app, client, editor_user):
     assert resp_store.status_code == 200
     resp_notes = client.get("/admin/notes")
     assert resp_notes.status_code == 302
+
+
+def test_change_user_role(app, client, admin_user, normal_user):
+    login(client, "admin@example.com", "secret")
+    resp = client.post(
+        f"/admin/users/{normal_user}/role",
+        data={"role": "moderator"},
+        follow_redirects=True,
+    )
+    assert resp.status_code == 200
+    with app.app_context():
+        user = User.query.get(normal_user)
+        assert user.role == "moderator"

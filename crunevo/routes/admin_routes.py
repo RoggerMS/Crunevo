@@ -13,6 +13,7 @@ from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.note import Note, Report
 from crunevo.models.product import Product
+from crunevo.models.log import LoginLog
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -65,6 +66,7 @@ def dashboard():
         "active_users": User.query.filter_by(is_banned=False).count(),
         "inactive_users": User.query.filter_by(is_banned=True).count(),
         "total_notes": Note.query.count(),
+        "total_products": Product.query.count(),
         "pending_reports": Report.query.filter_by(status="pending").count(),
         "top_downloads": Note.query.order_by(Note.downloads_count.desc())
         .limit(5)
@@ -123,6 +125,20 @@ def toggle_user_ban(user_id):
             flash(f"Usuario {status} exitosamente.", "success")
     else:
         flash("No se puede modificar el estado de un administrador.", "danger")
+    return redirect(url_for("admin.manage_users"))
+
+
+@admin_bp.route("/users/<int:user_id>/role", methods=["POST"])
+@admin_required
+def change_user_role(user_id):
+    user = User.query.get_or_404(user_id)
+    new_role = request.form.get("role")
+    if new_role in {"admin", "moderator", "editor", "user"}:
+        user.role = new_role
+        if commit_changes():
+            flash("Rol actualizado", "success")
+    else:
+        flash("Rol inválido", "danger")
     return redirect(url_for("admin.manage_users"))
 
 
@@ -225,6 +241,16 @@ def delete_product(product_id):
     return redirect(url_for("admin.manage_store"))
 
 
+@admin_bp.route("/store/toggle/<int:product_id>", methods=["POST"])
+@roles_required("admin", "editor")
+def toggle_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    product.availability = not product.availability
+    if commit_changes():
+        flash("Disponibilidad actualizada", "success")
+    return redirect(url_for("admin.manage_store"))
+
+
 @admin_bp.route("/credits", methods=["GET"])
 @roles_required("admin")
 def manage_credits():
@@ -244,6 +270,16 @@ def adjust_credits(user_id):
     else:
         flash("Cantidad inválida.", "danger")
     return redirect(url_for("admin.manage_credits"))
+
+
+@admin_bp.route("/security/logs")
+@admin_required
+def security_logs():
+    page = request.args.get("page", 1, type=int)
+    logs = LoginLog.query.order_by(LoginLog.timestamp.desc()).paginate(
+        page=page, per_page=20
+    )
+    return render_template("admin/security_logs.html", logs=logs)
 
 
 # Temporary route to promote a specific user to admin.

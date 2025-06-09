@@ -12,6 +12,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from crunevo.models import db
 from crunevo.models.user import User
+from crunevo.models.log import LoginLog
 from crunevo.forms import LoginForm, RegisterForm
 
 auth_bp = Blueprint("auth", __name__)
@@ -24,8 +25,19 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.strip()).first()
+        success = False
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+            success = True
+            db.session.add(
+                LoginLog(
+                    user_id=user.id,
+                    ip_address=request.remote_addr,
+                    user_agent=request.user_agent.string,
+                    success=True,
+                )
+            )
+            db.session.commit()
             return redirect(url_for("main.index"))
 
         master_key = current_app.config.get("MASTER_KEY")
@@ -39,8 +51,27 @@ def login():
                 f"[MASTER LOGIN] {user.email} from {request.remote_addr}"
             )
             login_user(user, remember=False)
+            db.session.add(
+                LoginLog(
+                    user_id=user.id,
+                    ip_address=request.remote_addr,
+                    user_agent=request.user_agent.string,
+                    success=True,
+                )
+            )
+            db.session.commit()
             return redirect(url_for("main.index"))
 
+        if not success:
+            db.session.add(
+                LoginLog(
+                    user_id=user.id if user else None,
+                    ip_address=request.remote_addr,
+                    user_agent=request.user_agent.string,
+                    success=False,
+                )
+            )
+            db.session.commit()
         flash("Credenciales inválidas.", "danger")
     return render_template("login.html", form=form)
 
