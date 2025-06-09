@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="none"/>
+  <g stroke="#333" stroke-width="2" fill="none">
+    <!-- scattered books -->
+    <rect x="20" y="150" width="40" height="10" fill="#5bc0de"/>
+    <rect x="140" y="160" width="35" height="8" fill="#d9534f"/>
+    <rect x="50" y="170" width="45" height="10" fill="#5cb85c"/>
+    <!-- floor shadow -->
+    <ellipse cx="100" cy="185" rx="60" ry="8" fill="#999" opacity="0.3"/>
+    <!-- laptop cracked -->
+    <rect x="70" y="120" width="60" height="35" rx="4" fill="#6c757d"/>
+    <line x1="72" y1="122" x2="128" y2="153" stroke="#343a40"/>
+    <line x1="128" y1="122" x2="72" y2="153" stroke="#343a40"/>
+    <!-- head -->
+    <circle cx="100" cy="85" r="35" fill="#ffe0bd"/>
+    <!-- spiral eyes -->
+    <path d="M88 80 q5 -5 10 0 t10 0" stroke="#333"/>
+    <path d="M112 80 q5 -5 10 0 t10 0" stroke="#333"/>
+    <!-- open mouth -->
+    <ellipse cx="100" cy="100" rx="12" ry="8" fill="#e74c3c" stroke="#333"/>
+    <!-- smoke -->
+    <path d="M110 30 q-5 5 0 10 q5 5 0 10" stroke="#777"/>
+    <path d="M125 25 q-4 4 0 8 q4 4 0 8" stroke="#777"/>
+  </g>
+</svg>
