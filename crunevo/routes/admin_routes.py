@@ -7,7 +7,7 @@ from flask import (
     flash,
     current_app,
 )
-from crunevo.utils.storage import save_file_local
+from crunevo.utils.cloudinary_upload import upload_image
 from functools import wraps
 from flask_login import login_required, current_user
 from crunevo.models import db
@@ -194,8 +194,7 @@ def add_product():
         image = request.files.get("image")
         image_url = None
         if image and image.filename:
-            upload_folder = current_app.config["PRODUCT_UPLOAD_FOLDER"]
-            image_url = save_file_local(image, upload_folder)
+            image_url = upload_image(image)
         if not image_url:
             image_url = "/static/images/product_placeholder.png"
 
@@ -238,8 +237,7 @@ def edit_product(product_id):
 
         image = request.files.get("image")
         if image and image.filename:
-            upload_folder = current_app.config["PRODUCT_UPLOAD_FOLDER"]
-            image_url = save_file_local(image, upload_folder)
+            image_url = upload_image(image)
             if image_url:
                 product.image_url = image_url
 
