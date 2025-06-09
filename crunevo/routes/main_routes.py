@@ -6,6 +6,7 @@ from flask import (
     request,
     flash,
     current_app,
+    jsonify,
 )
 import os
 from flask_login import login_required, current_user
@@ -45,7 +46,8 @@ def about():
 @main_bp.route("/crear_post", methods=["POST"])
 @login_required
 def crear_post():
-    content = request.form.get("content", "").strip()
+    content = request.form.get("content") or request.form.get("text_post") or ""
+    content = content.strip()
     image = request.files.get("image")
 
     if not content and (not image or not image.filename):
@@ -61,5 +63,19 @@ def crear_post():
     post = Post(content=content, image_url=image_url, user_id=current_user.id)
     db.session.add(post)
     db.session.commit()
+
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify(
+            {
+                "message": "ok",
+                "post": {
+                    "content": post.content,
+                    "image_url": post.image_url,
+                    "user_name": current_user.name,
+                    "user_career": current_user.career,
+                },
+            }
+        )
+
     flash("Publicación creada.", "success")
     return redirect(url_for("main.index"))
