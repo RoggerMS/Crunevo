@@ -78,19 +78,23 @@ def upload_note():
     if request.method == "POST":
         user_id = current_user.id
 
-        title = request.form.get("title")
-        faculty = request.form.get("faculty")
-        course = request.form.get("course")
-        description = request.form.get("description")
-        tags = request.form.get("tags")
-        note_file = request.files.get("note_file")
+        title = request.form.get("title", "").strip()
+        description = request.form.get("description", "").strip()
+        course = request.form.get("course") or request.form.get("categoria")
+        faculty = request.form.get("faculty") or course
+        tags = request.form.get("tags", "").strip()
+        note_file = request.files.get("note_file") or request.files.get("file")
         filename = secure_filename(note_file.filename) if note_file else ""
         terms_accepted = request.form.get("terms")
 
-        if not all([title, faculty, course, note_file, terms_accepted]):
+        if not all([title, note_file, terms_accepted]):
             flash(
                 "Completa todos los campos requeridos y acepta los términos.", "danger"
             )
+            return render_template("upload_note.html", form_data=request.form)
+
+        if not tags:
+            flash("Añade al menos una etiqueta.", "danger")
             return render_template("upload_note.html", form_data=request.form)
 
         if note_file and allowed_file(filename):
@@ -132,6 +136,9 @@ def upload_note():
 
                     db.session.add(new_note)
                     db.session.commit()
+
+                    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                        return jsonify({"message": "ok"})
 
                     flash("Apunte subido exitosamente.", "success")
                     return redirect(url_for("note.notes_section"))
