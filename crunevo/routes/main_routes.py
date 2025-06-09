@@ -7,6 +7,7 @@ from flask import (
     flash,
     current_app,
     jsonify,
+    session,
 )
 import os
 from flask_login import login_required, current_user
@@ -14,6 +15,8 @@ from crunevo.models import db
 from crunevo.models.note import Note
 from crunevo.models.post import Post
 from crunevo.utils.storage import save_file_local
+from crunevo.utils.ia import fetch_cohere_advice
+from datetime import date
 
 main_bp = Blueprint("main", __name__)
 
@@ -87,3 +90,20 @@ def crear_post():
 
     flash("Publicación creada.", "success")
     return redirect(url_for("main.index"))
+
+
+@main_bp.route("/api/ia/consejo")
+@login_required
+def ia_consejo():
+    today = date.today().isoformat()
+    last = session.get("ia_date")
+    count = session.get("ia_count", 0)
+    if last != today:
+        session["ia_date"] = today
+        count = 0
+    if count >= 3:
+        return jsonify({"mensaje": "Límite diario alcanzado. Consigue CRUNEVO+"})
+
+    session["ia_count"] = count + 1
+    mensaje = fetch_cohere_advice()
+    return jsonify({"mensaje": mensaje})
