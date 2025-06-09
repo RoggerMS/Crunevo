@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from crunevo.models import db
 import logging
+from crunevo.utils.activity_feed import build_user_activity
 
 # Crear el blueprint para las rutas de usuario
 user_bp = Blueprint("user", __name__, url_prefix="/user")
@@ -11,16 +13,26 @@ user_bp = Blueprint("user", __name__, url_prefix="/user")
 @login_required
 def profile():
     """Display the profile of the logged in user."""
-    # Obtener los apuntes subidos y el historial de descargas
+    # Obtener apuntes subidos y registros relacionados
     uploaded_notes = current_user.notes
-    download_history = current_user.downloads
 
-    # Calcular estadísticas del usuario
+    # Calcular estadísticas clave
+    notes_uploaded = len(uploaded_notes)
+    downloads_total = sum(note.downloads_count or 0 for note in uploaded_notes)
+    likes_received = sum(note.likes_count or 0 for note in uploaded_notes)
+    responses_count = len(current_user.respuestas)
+    points = current_user.points or 0
+
     user_stats = {
-        "notes_uploaded": len(uploaded_notes),
-        "notes_downloaded": len(download_history),
-        "likes_received": sum(note.likes_count for note in uploaded_notes),
+        "notes_uploaded": notes_uploaded,
+        "downloads_total": downloads_total,
+        "likes_received": likes_received,
+        "responses_count": responses_count,
+        "points": points,
     }
+
+    # Construir feed de actividad reciente
+    events = build_user_activity(current_user)
 
     # Determinar nivel del usuario basado en créditos
     user_level = "Novato"  # Placeholder
@@ -34,8 +46,7 @@ def profile():
         user=current_user,
         user_stats=user_stats,
         user_level=user_level,
-        uploaded_notes=uploaded_notes,
-        download_history=download_history,
+        events=events,
     )
 
 
