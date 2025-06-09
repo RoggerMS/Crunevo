@@ -15,7 +15,7 @@
 .particle {
   position: absolute;
   top: -2rem;
-  color: #888;
+  color: #ffffff99;
   animation: fall 8s linear infinite;
   opacity: 0.7;
 }
@@ -24,7 +24,7 @@
     transform: translateY(120vh) rotate(360deg);
   }
 }
-@media (prefers-color-scheme: dark) {
-  .particle { color: #bbb; }
-  body { background-color: #121212; color: #eaeaea; }
+body {
+  background-color: #000;
+  color: #f8f9fa;
 }

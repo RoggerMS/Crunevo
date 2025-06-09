@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="none"/>
+  <g stroke="#333" stroke-width="2">
+    <!-- books on head -->
+    <rect x="60" y="20" width="80" height="20" fill="#d9534f"/>
+    <rect x="65" y="10" width="70" height="15" fill="#5bc0de"/>
+    <!-- head -->
+    <circle cx="100" cy="90" r="40" fill="#ffe0bd"/>
+    <!-- body/laptop -->
+    <rect x="70" y="130" width="60" height="40" rx="5" fill="#6c757d"/>
+    <rect x="75" y="135" width="50" height="30" fill="#343a40"/>
+    <!-- eyes crossed -->
+    <line x1="85" y1="80" x2="95" y2="90" stroke="#333" stroke-width="3"/>
+    <line x1="95" y1="80" x2="85" y2="90" stroke="#333" stroke-width="3"/>
+    <line x1="115" y1="80" x2="125" y2="90" stroke="#333" stroke-width="3"/>
+    <line x1="125" y1="80" x2="115" y2="90" stroke="#333" stroke-width="3"/>
+    <!-- mouth -->
+    <path d="M90 105 q10 10 20 0" stroke="#333" stroke-width="3" fill="none"/>
+  </g>
+  <!-- smoke -->
+  <g stroke="#666" stroke-width="2">
+    <path d="M100 5 q-5 5 0 10 q5 5 0 10" fill="none"/>
+    <path d="M120 8 q-4 4 0 8 q4 4 0 8" fill="none"/>
+  </g>
+</svg>
