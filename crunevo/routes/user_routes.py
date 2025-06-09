@@ -41,12 +41,25 @@ def profile():
     elif current_user.credits > 100:
         user_level = "Ayudante"
 
+    notes = Note.query.filter_by(user_id=current_user.id).all()
+    likes_total = sum(n.likes_count or 0 for n in notes)
+    downloads_total_notes = sum(n.downloads_count or 0 for n in notes)
+    stats = {
+        "credits": current_user.credits or 0,
+        "notes": len(notes),
+        "likes": likes_total,
+        "donations": current_user.points or 0,
+        "downloads": downloads_total_notes,
+    }
+
     return render_template(
-        "perfil.html",
+        "user/profile.html",
         user=current_user,
         user_stats=user_stats,
         user_level=user_level,
         events=events,
+        notes=notes,
+        stats=stats,
     )
 
 
@@ -81,23 +94,5 @@ def edit_profile():
 @user_bp.route("/notes")
 @login_required
 def my_notes():
-    """Display notes uploaded by the current user."""
-    uploaded_notes = current_user.notes
-    return render_template("my_notes.html", notes=uploaded_notes)
-
-
-@user_bp.route("/dashboard")
-@login_required
-def dashboard():
-    """Show user stats and uploaded notes."""
-    notes = Note.query.filter_by(user_id=current_user.id).all()
-    likes_total = sum(n.likes_count or 0 for n in notes)
-    downloads_total = sum(n.downloads_count or 0 for n in notes)
-    stats = {
-        "credits": current_user.credits or 0,
-        "notes": len(notes),
-        "likes": likes_total,
-        "donations": current_user.points or 0,
-        "downloads": downloads_total,
-    }
-    return render_template("user/dashboard.html", notes=notes, stats=stats)
+    """Redirect to the notes tab within the profile."""
+    return redirect(url_for("user.profile") + "#notes")
