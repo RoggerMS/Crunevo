@@ -3,6 +3,24 @@
     --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* Offcanvas menu ajustes */
+.offcanvas {
+  height: 100vh;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+}
+.offcanvas.show .btn-close {
+  transition: transform 0.3s;
+  transform: rotate(90deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .offcanvas {
+    backdrop-filter: blur(6px);
+    background-color: rgba(30, 30, 30, 0.9);
+  }
+}
+
 .feed-container .btn-primary {
     background-color: #1877f2;
     border-color: #1877f2;
@@ -322,6 +340,9 @@
 .comment-area {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }
 .comment-input {
   font-size: 0.9rem;

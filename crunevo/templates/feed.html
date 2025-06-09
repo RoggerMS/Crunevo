@@ -32,7 +32,7 @@
     </div>
 
     {% for item in items %}
-    <article class="note-card post-card card shadow-sm rounded border-0 animate-fade mb-3">
+    <article class="card shadow-sm rounded border-0 animate-fade mb-3 {{ 'post-card' if item.__tablename__ == 'posts' else 'note-card' }}">
       <div class="card-body">
         <div class="post-header d-flex align-items-center mb-2">
           <img src="{{ item.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar me-2" alt="avatar">
@@ -95,7 +95,7 @@
         {% endfor %}
       </div>
       {% endif %}
-      <div class="comment-area mt-2 px-3" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}" style="display:none;">
+      <div class="comment-area mt-2 px-3" data-id="{{ item.id }}" data-type="{{ 'post' if item.__tablename__ == 'posts' else 'note' }}">
         <input type="text" class="form-control comment-input" placeholder="Escribe un comentario..." />
       </div>
     </article>
