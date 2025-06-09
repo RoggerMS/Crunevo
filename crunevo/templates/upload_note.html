@@ -2,196 +2,170 @@
 
 {% block title %}Subir Apunte - Plataforma Apuntes Cantuta{% endblock %}
 
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom_feed.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+{% endblock %}
+
 {% block content %}
-<div class="upload-container">
-    <h2>Comparte un Nuevo Apunte</h2>
-    <p>Ayuda a la comunidad subiendo material de estudio útil.</p>
-
-<form action="{{ url_for('note.upload_note') }}" method="POST" enctype="multipart/form-data" class="upload-form">
-        <div class="form-group">
-            <label for="title">Título del Apunte</label>
-            <input type="text" id="title" name="title" required placeholder="Ej: Resumen Semana 5 - Cálculo II">
-        </div>
-
-        <div class="form-row">
-            <div class="form-group form-group-half">
-                <label for="faculty">Facultad</label>
-                <select id="faculty" name="faculty" required>
-                    <option value="">Selecciona la facultad</option>
-                    <!-- Opciones se llenarán dinámicamente o se predefinirán -->
-                    <option value="Ciencias">Ciencias</option>
-                    <option value="Humanidades">Humanidades</option>
-                    <option value="Ingenieria">Ingeniería</option>
-                    <option value="Educacion">Educación</option>
-                    <option value="Agropecuaria y Nutrición">Agropecuaria y Nutrición</option>
-                    <option value="Tecnología">Tecnología</option>
-                    <option value="Ciencias Empresariales">Ciencias Empresariales</option>
-                </select>
-            </div>
-            <div class="form-group form-group-half">
-                <label for="career">Carrera</label>
-                <input type="text" id="career" name="career" placeholder="Ej: Física Pura (Opcional)">
-                 <!-- Podría ser un select dependiente de la facultad -->
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="course">Curso</label>
-            <input type="text" id="course" name="course" required placeholder="Ej: Ecuaciones Diferenciales">
-            <!-- Considerar autocompletado/sugerencias con JS -->
-        </div>
-
-        <div class="form-group">
-            <label for="description">Descripción Breve</label>
-            <textarea id="description" name="description" rows="4" placeholder="Describe el contenido del apunte, temas que cubre, etc."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="tags">Tags (palabras clave)</label>
-            <input type="text" id="tags" name="tags" placeholder="Separados por comas: parcial, resuelto, termodinámica">
-            <!-- Mejorar con un input de tags tipo Notion/StackOverflow con JS -->
-        </div>
-
-        <div class="form-group">
-            <label for="note_file">Archivo del Apunte (PDF, DOCX, PNG - Máx 20MB)</label>
-            <input type="file" id="note_file" name="note_file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" required>
-            <!-- Añadir indicador de progreso de subida y vista previa con JS -->
-            <div id="file-preview" class="file-preview mt-2"></div>
-        </div>
-
-        <div class="form-group form-check">
-            <input type="checkbox" id="terms" name="terms" required>
-            <label for="terms">Confirmo que este contenido es original o tengo permiso para compartirlo, y no infringe las normas de la comunidad.</label>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block">Subir Apunte</button>
-    </form>
+<div class="card shadow-sm p-4" style="max-width: 600px; margin: 2rem auto;">
+  <h2 class="mb-3">Subir Apunte</h2>
+  <form id="uploadForm" action="{{ url_for('note.upload_note') }}" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="text" name="title" class="form-control mb-2" placeholder="Título del apunte" required value="{{ form_data.title if form_data else '' }}">
+    <textarea name="description" class="form-control mb-2" rows="3" placeholder="Descripción o resumen opcional">{{ form_data.description if form_data else '' }}</textarea>
+    <input type="text" name="course" class="form-control mb-2" placeholder="Curso o categoría" value="{{ form_data.course if form_data else '' }}">
+    <input type="file" name="note_file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" class="form-control mb-2" required>
+    <input id="upload-tags" name="tags" class="form-control mb-2" placeholder="Etiquetas" value="{{ form_data.tags if form_data else '' }}">
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" value="1" id="termsCheck" name="terms" required title="Confirmo que tengo permiso para compartir este material. No infringe derechos de autor. Puede ser público, educativo u original." {% if form_data and form_data.get('terms') %}checked{% endif %}>
+      <label class="form-check-label" for="termsCheck">✅ Acepto los Términos y Condiciones</label>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">📤 Publicar Apunte</button>
+  </form>
 </div>
-
-<style>
-.upload-container {
-    max-width: 700px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.upload-container h2 {
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-.upload-container p {
-    text-align: center;
-    color: #6c757d;
-    margin-bottom: 2rem;
-}
-
-.upload-form .form-group {
-    margin-bottom: 1.5rem;
-}
-
-.upload-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.upload-form input[type="text"],
-.upload-form input[type="email"],
-.upload-form input[type="password"],
-.upload-form select,
-.upload-form textarea,
-.upload-form input[type="file"] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-.upload-form textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.upload-form input[type="file"] {
-    padding: 0.5rem; /* Ajuste para input file */
-}
-
-.form-row {
-    display: flex;
-    gap: 1rem;
-}
-
-.form-group-half {
-    flex: 1;
-}
-
-.upload-form .form-check {
-    display: flex;
-    align-items: flex-start; /* Alinear al inicio por si el texto es largo */
-    margin-bottom: 1.5rem;
-}
-
-.upload-form .form-check input[type="checkbox"] {
-    width: auto;
-    margin-right: 0.75rem;
-    margin-top: 0.2rem; /* Alinear mejor con la primera línea de texto */
-}
-
-.upload-form .form-check label {
-    margin-bottom: 0;
-    font-weight: normal;
-    font-size: 0.9rem;
-    color: #495057;
-}
-
-.file-preview {
-    /* Estilos para la vista previa del archivo (JS) */
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-@media (max-width: 576px) {
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    .form-group-half {
-       margin-bottom: 1.5rem; /* Añadir espacio cuando están en columna */
-    }
-    .form-group-half:last-child {
-       margin-bottom: 0; /* Quitar margen extra al último */
-    }
-}
-
-</style>
-
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const fileInput = document.getElementById('note_file');
-    const filePreview = document.getElementById('file-preview');
-
-    if (fileInput && filePreview) {
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                filePreview.textContent = `Archivo: ${file.name} - ${(file.size / 1024 / 1024).toFixed(2)} MB - ${file.type || 'tipo desconocido'}`;
-                // Aquí se podría añadir lógica para mostrar miniatura si es imagen
-            } else {
-                filePreview.textContent = '';
-            }
-        });
-    }
+  const uploadForm = document.getElementById('uploadForm');
+  const tagInput = document.getElementById('upload-tags');
+  const tagSuggestions = [
+    "álgebra",
+    "álgebra lineal",
+    "derivadas",
+    "integrales",
+    "ecuaciones diferenciales",
+    "geometría analítica",
+    "trigonometría",
+    "límites",
+    "matrices",
+    "probabilidad",
+    "estadística",
+    "combinatoria",
+    "números complejos",
+    "fórmulas matemáticas",
+    "lógica matemática",
+    "física clásica",
+    "cinemática",
+    "leyes de Newton",
+    "ondas",
+    "termodinámica",
+    "química orgánica",
+    "química inorgánica",
+    "tabla periódica",
+    "reacciones químicas",
+    "enlaces químicos",
+    "biología celular",
+    "genética",
+    "anatomía",
+    "evolución",
+    "microbiología",
+    "historia del Perú",
+    "historia universal",
+    "revolución francesa",
+    "independencia de América",
+    "filosofía moderna",
+    "ética",
+    "ciudadanía",
+    "derechos humanos",
+    "arte precolombino",
+    "historia del arte",
+    "psicología",
+    "sociología",
+    "antropología",
+    "redacción",
+    "ortografía",
+    "tipos de texto",
+    "análisis literario",
+    "figuras literarias",
+    "comprensión lectora",
+    "técnicas de exposición",
+    "ensayos",
+    "argumentación",
+    "citas APA",
+    "referencias bibliográficas",
+    "programación",
+    "pseudocódigo",
+    "Python",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "redes",
+    "algoritmos",
+    "base de datos",
+    "ciberseguridad",
+    "sistemas operativos",
+    "informática educativa",
+    "Excel",
+    "resumen",
+    "apuntes",
+    "separata",
+    "práctica resuelta",
+    "solución paso a paso",
+    "clase grabada",
+    "guía de estudio",
+    "tips de examen",
+    "examen anterior",
+    "ciclo regular",
+    "sustitutorio",
+    "exoneración",
+    "educación inicial",
+    "educación secundaria",
+    "matemáticas y física",
+    "ingeniería industrial",
+    "derecho",
+    "medicina humana",
+    "enfermería",
+    "contabilidad",
+    "administración",
+    "psicología",
+    "arquitectura",
+    "agronomía",
+    "UNMSM",
+    "La Cantuta",
+    "San Marcos",
+    "UNI",
+    "CEPRE",
+    "EBA",
+    "CEBA",
+    "simulacro",
+    "preuniversitario",
+    "resumen gráfico",
+    "infografía",
+    "cuadro comparativo",
+    "mapa mental",
+    "ficha técnica",
+    "esquema",
+    "línea de tiempo",
+    "guía de laboratorio",
+    "rúbrica",
+    "portafolio",
+  ];
+  let tagify;
+  if (tagInput) {
+    tagify = new Tagify(tagInput, { whitelist: tagSuggestions, dropdown: { maxItems: 20, enabled: 0, closeOnSelect: false } });
+  }
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!uploadForm.checkValidity()) {
+        uploadForm.classList.add('was-validated');
+        return;
+      }
+      const formData = new FormData(uploadForm);
+      try {
+        const resp = await fetch(uploadForm.action, { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        if (!resp.ok) throw new Error('error');
+        uploadForm.reset();
+        if (tagify) tagify.removeAllTags();
+        showToast('✅ Apunte subido con éxito');
+      } catch (err) {
+        alert('Ocurrió un error al subir el apunte');
+      }
+    });
+  }
 });
 </script>
 {% endblock %}
