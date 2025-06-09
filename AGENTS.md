@@ -252,3 +252,13 @@ pytest -q
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
 
+
+### [Feat] Ilustraci\u00f3n humor\u00edstica de Error 500 (2025-06-10)
+- Nuevos archivos:
+  - `crunevo/static/images/student_server_burn.svg`
+- Detalles:
+  - Estudiante agotado con gorro ca\u00eddo, libros volando y laptop con mensaje 500.
+  - Dise\u00f1o caricaturesco compatible con la p\u00e1gina de error.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
