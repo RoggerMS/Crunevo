@@ -10,7 +10,17 @@
       <h2>{{ producto.name }}</h2>
       <p>{{ producto.description }}</p>
       <h4>S/. {{ producto.price }}</h4>
-      <p>{% if producto.availability %}Disponible{% else %}Agotado{% endif %}</p>
+      <p>
+        {% if producto.availability %}
+          Disponible
+          {% if producto.stock <= 5 and producto.stock > 0 %}
+            <span class="text-warning">(Pocos en stock)</span>
+          {% endif %}
+        {% else %}
+          Agotado
+        {% endif %}
+      </p>
+      <p>Stock: {{ producto.stock }}</p>
       <button class="btn btn-success" {% if not producto.availability %}disabled{% endif %}>Añadir al carrito</button>
     </div>
   </div>

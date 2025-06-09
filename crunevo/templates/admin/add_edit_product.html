@@ -25,6 +25,10 @@
       <label for="type" class="form-label">Tipo</label>
       <input id="type" name="type" class="form-control" placeholder="Tipo" value="{{ product.type if product else '' }}" required>
     </div>
+    <div class="col-md-6">
+      <label for="stock" class="form-label">Stock</label>
+      <input id="stock" name="stock" type="number" min="0" class="form-control" placeholder="Cantidad" value="{{ product.stock if product else 0 }}">
+    </div>
     <div class="col-md-12">
       <label for="description" class="form-label">Descripción</label>
       <textarea id="description" name="description" class="form-control" placeholder="Descripción" required>{{ product.description if product else '' }}</textarea>
@@ -42,6 +46,10 @@
       <div class="form-check">
         <input id="availability" type="checkbox" name="availability" class="form-check-input" {% if product and product.availability %}checked{% endif %}>
         <label for="availability" class="form-check-label">Disponible</label>
+      </div>
+      <div class="form-check mt-2">
+        <input id="featured" type="checkbox" name="featured" class="form-check-input" {% if product and product.featured %}checked{% endif %}>
+        <label for="featured" class="form-check-label">Destacado</label>
       </div>
     </div>
     <div class="col-md-12">

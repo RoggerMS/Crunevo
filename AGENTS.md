@@ -237,3 +237,14 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ❌ `pytest -q` (faltan dependencias de entorno)
+
+### [Feat] Vista de producto detallada y destacados (2025-06-09)
+
+- Nuevos campos `stock` y `featured` en el modelo `Product`.
+- Migración `d0da1c95a374_add_stock_and_featured_to_product.py`.
+- Se añadió ruta `/tienda/producto/<id>` con plantilla actualizada.
+- Listado de la tienda muestra estrella en productos destacados.
+- El panel admin permite indicar stock y marcar como destacado.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`

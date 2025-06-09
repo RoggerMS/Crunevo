@@ -188,7 +188,9 @@ def add_product():
         description = request.form.get("description")
         price = request.form.get("price")
         type = request.form.get("type")
+        stock = request.form.get("stock", type=int)
         availability = request.form.get("availability") == "on"
+        featured = request.form.get("featured") == "on"
         image = request.files.get("image")
         image_url = "/static/images/product_placeholder.png"
         if image and image.filename:
@@ -212,6 +214,8 @@ def add_product():
             price=price,
             type=type,
             availability=availability,
+            stock=stock or 0,
+            featured=featured,
             image_url=image_url,
         )
         db.session.add(new_product)
@@ -231,7 +235,9 @@ def edit_product(product_id):
         product.description = request.form.get("description", product.description)
         product.price = request.form.get("price", product.price)
         product.type = request.form.get("type", product.type)
+        product.stock = request.form.get("stock", product.stock, type=int)
         product.availability = request.form.get("availability") == "on"
+        product.featured = request.form.get("featured") == "on"
         image = request.files.get("image")
         if image and image.filename:
             upload_folder = os.path.join(
