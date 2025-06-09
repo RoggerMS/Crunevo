@@ -73,7 +73,7 @@ body {
     transform: scale(1.1);
 }
 
-@media (max-width: 991px) {
+@media (min-width: 992px) {
     #floatingSidebar {
         display: none !important;
     }

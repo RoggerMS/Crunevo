@@ -25,7 +25,6 @@
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-tools me-2"></i>Panel Admin</a></li>
                         {% endif %}
                     {% endif %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}"><i class="fas fa-info-circle me-2"></i>Acerca de</a></li>
                     <hr>
                     {% if current_user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}"><i class="fas fa-user-circle me-2"></i>Perfil</a></li>
