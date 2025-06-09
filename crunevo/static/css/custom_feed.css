@@ -38,15 +38,15 @@
 }
 
 .animate-fade {
-    animation: fadeUp 0.5s ease both;
+    animation: fadeInUp 0.5s ease-out;
 }
 
-@keyframes fadeUp {
-    from {
+@keyframes fadeInUp {
+    0% {
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
@@ -133,6 +133,11 @@
 
 .action-btn:hover {
     background-color: #f0f2f5;
+}
+
+.post-actions button.active {
+    background-color: #e9ecef;
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 768px) {
@@ -292,10 +297,6 @@
   font-size: 0.95rem;
 }
 
-.toggle-tabs .btn.active {
-  font-weight: bold;
-  border-bottom: 2px solid #0d6efd;
-}
 
 .preview-img img {
   max-width: 100%;
