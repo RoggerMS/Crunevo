@@ -9,7 +9,8 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
-    {% if request.endpoint != 'main.index' %}
+    {% set is_desktop = request.user_agent.platform in ['linux', 'windows', 'macos'] %}
+    {% if not is_desktop and request.endpoint != 'main.index' %}
         {% include 'components/sidebar_icons.html' %}
     {% endif %}
     {% include 'navbar.html' %}
