@@ -38,13 +38,21 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
 
    Exporta `SQLALCHEMY_DATABASE_URI` con la cadena de conexión de PostgreSQL.
 
-3. **Run the application**
+3. **Configura FLASK_APP (opcional)**
+
+   Si vas a utilizar la CLI de Flask ejecuta:
+
+   ```bash
+   export FLASK_APP=crunevo/app.py
+   ```
+
+4. **Run the application**
 
    ```bash
    python run.py
    ```
 
-4. **Run tests (optional)**
+5. **Run tests (optional)**
 
    ```bash
    PYTHONPATH=. pytest -q crunevo/tests
