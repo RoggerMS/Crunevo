@@ -25,14 +25,15 @@
       {% endif %}
     {% endwith %}
 
+    {% set is_feed = current_user.is_authenticated and request.endpoint == 'main.index' %}
     <div class="container-fluid p-0 main-container d-flex">
-        {% if request.endpoint != 'main.index' %}
+        {% if is_feed %}
             {% include 'components/sidebar_left.html' %}
         {% endif %}
-        <div class="feed-container w-100 {% if request.endpoint == 'main.index' %}full-width{% endif %}">
+        <div class="feed-container w-100 {% if not is_feed %}full-width{% endif %}">
             {% block content %}{% endblock %}
         </div>
-        {% if request.endpoint != 'main.index' %}
+        {% if is_feed %}
             {% include 'components/sidebar_right.html' %}
         {% endif %}
     </div>

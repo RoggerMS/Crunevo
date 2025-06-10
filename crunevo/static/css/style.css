@@ -198,12 +198,6 @@ body {
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    .feed-container {
-        background: #1a1a1a;
-        color: #f1f1f1;
-    }
-}
 
 @media (min-width: 992px) {
     #floatingSidebar {
