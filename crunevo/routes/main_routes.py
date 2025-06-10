@@ -16,7 +16,7 @@ from crunevo.models.post import Post
 from crunevo.utils.storage import save_file_local
 from crunevo.utils.cloudinary_upload import upload_image
 from crunevo.utils.ia import fetch_cohere_advice
-from datetime import date
+from datetime import date, datetime
 
 main_bp = Blueprint("main", __name__)
 
@@ -27,7 +27,12 @@ def index():
         notes = Note.query.order_by(Note.created_at.desc()).limit(10).all()
         posts = Post.query.order_by(Post.timestamp.desc()).limit(10).all()
         items = sorted(posts + notes, key=lambda x: x.created_at, reverse=True)
-        return render_template("feed.html", items=items, user=current_user)
+        return render_template(
+            "feed.html",
+            items=items,
+            user=current_user,
+            now=datetime.utcnow(),
+        )
     return render_template("index.html")
 
 
