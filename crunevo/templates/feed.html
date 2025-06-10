@@ -14,7 +14,7 @@
 
   <div class="feed-container">
     <h2 class="section-title">📰 Últimas novedades</h2>
-    <div class="create-post card p-3 mb-3">
+    <div class="create-post card p-3 mb-3 position-relative">
       <button id="openNoteModalBtn" class="btn btn-primary w-100 mb-2">📄 Subir Apunte</button>
 
       <form id="postForm" enctype="multipart/form-data">
@@ -30,10 +30,16 @@
         <button type="submit" class="btn btn-primary btn-gradient w-100">📤 Publicar</button>
       </form>
     </div>
+    <button class="btn btn-primary position-fixed bottom-0 end-0 m-3 rounded-circle shadow d-md-none" id="floatUploadBtn">
+      <i class="fas fa-upload"></i>
+    </button>
 
     {% for item in items %}
     <article class="card shadow-sm rounded border-0 animate-fade mb-3 {{ 'post-card' if item.__tablename__ == 'posts' else 'note-card' }}">
       <div class="card-body">
+        {% if (item.created_at.date() == now().date()) %}
+        <span class="badge bg-success float-end">🆕 Nuevo</span>
+        {% endif %}
         <div class="post-header d-flex align-items-center gap-2 mb-2">
           <img src="{{ item.uploader.profile_picture_url or url_for('static', filename='images/default_avatar.png') }}" class="avatar" alt="avatar">
           <div>
@@ -65,7 +71,10 @@
           <p class="note-meta mb-1">{{ item.page_count or '?' }} páginas</p>
           {% if item.faculty %}<span class="badge text-white mb-1" data-facultad="{{ item.faculty }}">{{ item.faculty }}</span>{% endif %}
           {% if item.course %}<span class="badge bg-secondary mb-1"><i class="fas fa-book-open me-1"></i>{{ item.course }}</span>{% endif %}
-          <p class="note-desc">{{ item.description[:120] }}...</p>
+          <p class="note-desc{% if item.description and item.description|length > 300 %} collapsed{% endif %}">{{ item.description }}</p>
+          {% if item.description and item.description|length > 300 %}
+          <button class="btn btn-link show-more-btn p-0">Mostrar más</button>
+          {% endif %}
         {% endif %}
       </div>
       <div class="note-actions post-actions card-footer bg-white">
@@ -106,6 +115,11 @@
     </div>
     {% endif %}
     {% endfor %}
+
+    <div class="note-card p-3 text-center bg-light">
+      🤖 <strong>Sugerencia:</strong> Explora apuntes populares de tu facultad
+      <a href="{{ url_for('note.notes_section') }}" class="btn btn-sm btn-outline-primary mt-2">Ver ahora</a>
+    </div>
 
   </div>
   <div class="sidebar-right d-none d-lg-block"></div>

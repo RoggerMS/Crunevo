@@ -83,18 +83,13 @@
 }
 
 .animate-fade {
-    animation: fadeInUp 0.5s ease-out;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.animate-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .note-image img,
@@ -122,6 +117,16 @@
     font-size: 1rem;
     color: #444;
     margin-bottom: 1rem;
+}
+.note-desc.collapsed {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.show-more-btn {
+    font-size: 0.9rem;
+    color: #1877f2;
 }
 
 .note-meta {
@@ -377,8 +382,21 @@
   border: none;
   color: #fff;
 }
-.btn-gradient:hover {
+.btn-gradient:hover,
+.btn-gradient:focus,
+#openNoteModalBtn:hover,
+#openNoteModalBtn:focus,
+.action-btn[data-action="download"]:hover,
+.action-btn[data-action="download"]:focus {
+  transform: scale(1.02);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   opacity: 0.9;
+}
+
+.btn-gradient:active,
+#openNoteModalBtn:active,
+.action-btn[data-action="download"]:active {
+  transform: scale(0.98);
 }
 
 .post-card .note-title {
