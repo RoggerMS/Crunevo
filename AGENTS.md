@@ -266,6 +266,19 @@ pytest -q
   - Se renovó la estructura del menú y se añadió información completa del usuario.
   - Contraste mejorado para modo oscuro y tamaño de encabezado reducido.
 - Pruebas:
+ ✅ `black .`
+ ✅ `PYTHONPATH=. pytest -q`
+
+### [Fix] Ajustar navegación de escritorio y visibilidad de sidebars (2025-06-10)
+- Modificados:
+  - `crunevo/templates/base.html`
+  - `crunevo/templates/navbar.html`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Las sidebars izquierda y derecha solo se muestran en el feed cuando el usuario está autenticado.
+  - Se añadió un menú horizontal fijo para escritorio con enlaces principales.
+  - Se eliminó el modo oscuro automático de `.feed-container`.
+- Pruebas:
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
 
