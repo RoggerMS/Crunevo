@@ -166,6 +166,7 @@ body {
     font-size: 1.5rem;
     text-decoration: none;
     transition: transform 0.2s;
+    color: #000;
 }
 
 #floatingSidebarContent a:hover {
