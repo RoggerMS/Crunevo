@@ -9,7 +9,9 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
-    {% include 'components/sidebar_icons.html' %}
+    {% if request.endpoint != 'main.index' %}
+        {% include 'components/sidebar_icons.html' %}
+    {% endif %}
     {% include 'navbar.html' %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -23,8 +25,16 @@
       {% endif %}
     {% endwith %}
 
-    <div class="container-fluid p-0 main-container">
-        {% block content %}{% endblock %}
+    <div class="container-fluid p-0 main-container d-flex">
+        {% if request.endpoint != 'main.index' %}
+            <div class="sidebar-left d-none d-lg-block"></div>
+        {% endif %}
+        <div class="feed-container w-100">
+            {% block content %}{% endblock %}
+        </div>
+        {% if request.endpoint != 'main.index' %}
+            <div class="sidebar-right d-none d-lg-block"></div>
+        {% endif %}
     </div>
     {% include 'components/toast.html' %}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
