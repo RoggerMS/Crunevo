@@ -282,3 +282,12 @@ pytest -q
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
 
+
+### [Docs] Instrucciones para FLASK_APP (2025-06-11)
+- Modificados:
+  - `README.md`
+- Detalles:
+  - Se añadieron instrucciones para exportar `FLASK_APP` al usar la CLI de Flask.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q crunevo/tests`
