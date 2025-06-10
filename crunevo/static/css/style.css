@@ -30,6 +30,16 @@ body {
     color: #333;
 }
 
+/* Asegura contraste adecuado en texto e íconos */
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-brand {
+    color: #212529;
+}
+
+.navbar-light .navbar-nav .nav-link i {
+    color: inherit;
+}
+
 .nav-link:hover,
 .nav-link:focus {
     text-decoration: underline;
