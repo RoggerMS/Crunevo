@@ -9,9 +9,10 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
-    {% set is_desktop = request.user_agent.platform in ['linux', 'windows', 'macos'] %}
-    {% if not is_desktop and request.endpoint != 'main.index' %}
+    {% if request.endpoint != 'main.index' %}
+    <div class="d-lg-none">
         {% include 'components/sidebar_icons.html' %}
+    </div>
     {% endif %}
     {% include 'navbar.html' %}
 
@@ -27,16 +28,24 @@
     {% endwith %}
 
     {% set is_feed = current_user.is_authenticated and request.endpoint == 'main.index' %}
-    <div class="container-fluid p-0 {% if is_feed and not is_desktop %}main-container d-flex{% endif %}">
-        {% if is_feed and not is_desktop %}
-            {% include 'components/sidebar_left.html' %}
-        {% endif %}
-        <div class="feed-container w-100 {% if not is_feed %}full-width{% endif %}">
-            {% block content %}{% endblock %}
+    <div class="container-fluid p-0">
+        <div class="main-container d-flex">
+            {% if is_feed %}
+            <div class="d-lg-none">
+                {% include 'components/sidebar_left.html' %}
+            </div>
+            {% endif %}
+
+            <div class="feed-container w-100 {% if not is_feed %}full-width{% endif %}">
+                {% block content %}{% endblock %}
+            </div>
+
+            {% if is_feed %}
+            <div class="d-lg-none">
+                {% include 'components/sidebar_right.html' %}
+            </div>
+            {% endif %}
         </div>
-        {% if is_feed and not is_desktop %}
-            {% include 'components/sidebar_right.html' %}
-        {% endif %}
     </div>
     {% include 'components/toast.html' %}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
