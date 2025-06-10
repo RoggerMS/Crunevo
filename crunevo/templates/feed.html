@@ -37,7 +37,7 @@
     {% for item in items %}
     <article class="card shadow-sm rounded border-0 animate-fade mb-3 {{ 'post-card' if item.__tablename__ == 'posts' else 'note-card' }}">
       <div class="card-body">
-        {% if (item.created_at.date() == now().date()) %}
+        {% if (item.created_at.date() == now.date()) %}
         <span class="badge bg-success float-end">🆕 Nuevo</span>
         {% endif %}
         <div class="post-header d-flex align-items-center gap-2 mb-2">
