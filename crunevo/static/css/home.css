@@ -40,3 +40,9 @@
 .cta {
     background-color: #f8f9fa;
 }
+
+/* Oculta sidebars del feed en la landing */
+.sidebar-left,
+.sidebar-right {
+    display: none !important;
+}
