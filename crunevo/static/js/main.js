@@ -362,14 +362,16 @@ function initImagePreview(fileSelector, previewSelector, labelSelector) {
 
 function initFeedForms() {
   const openNoteBtn = document.getElementById("openNoteModalBtn");
+  const floatUploadBtn = document.getElementById("floatUploadBtn");
   const noteModalEl = document.getElementById("uploadNoteModal");
   const noteForm = document.getElementById("noteForm");
   const tagInput = document.getElementById("note-tags");
 
   let noteModal;
-  if (openNoteBtn && noteModalEl) {
+  if ((openNoteBtn || floatUploadBtn) && noteModalEl) {
     noteModal = new bootstrap.Modal(noteModalEl);
-    openNoteBtn.addEventListener("click", () => noteModal.show());
+    if (openNoteBtn) openNoteBtn.addEventListener("click", () => noteModal.show());
+    if (floatUploadBtn) floatUploadBtn.addEventListener("click", () => noteModal.show());
   }
 
   const tagify = initTagify(tagInput);
@@ -487,6 +489,7 @@ function initFeedForms() {
     container.insertBefore(article, container.querySelector(".create-post").nextSibling);
     initActionButtons();
     initCommentInputs(article);
+    observeFadeIn(article);
   }
 
 function addNoteToFeed(note) {
@@ -504,6 +507,8 @@ function addNoteToFeed(note) {
       </div>`;
   const target = container.querySelector(".create-post").nextSibling;
   container.insertBefore(article, target);
+  observeFadeIn(article);
+  initDescriptionToggle(article);
   }
 
 
@@ -516,6 +521,30 @@ function slideToggle(el) {
   } else {
     el.style.maxHeight = el.scrollHeight + 'px';
   }
+}
+
+function observeFadeIn(element) {
+  if (!window.intersectionObserver) {
+    window.intersectionObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+  }
+  window.intersectionObserver.observe(element);
+}
+
+function initDescriptionToggle(scope = document) {
+  scope.querySelectorAll('.show-more-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const desc = btn.previousElementSibling;
+      desc.classList.toggle('collapsed');
+      btn.textContent = desc.classList.contains('collapsed') ? 'Mostrar más' : 'Mostrar menos';
+    });
+  });
 }
 
 function initCommentInputs(scope = document) {
@@ -568,5 +597,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initActionButtons();
   initFeedForms();
   initCommentInputs();
+  initDescriptionToggle();
+  document.querySelectorAll('.animate-fade').forEach(observeFadeIn);
   initTooltips();
 });

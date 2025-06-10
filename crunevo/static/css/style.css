@@ -91,7 +91,7 @@ body {
 
 .offcanvas .nav-link {
     font-size: 1.1rem;
-    padding: 0.75rem 1.25rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid #f0f0f0;
     color: #333;
     display: flex;
@@ -103,8 +103,9 @@ body {
     background-color: #f8f9fa;
 }
 .offcanvas .nav-link i {
-    width: 20px;
+    width: 24px;
     text-align: center;
+    font-size: 1.25rem;
 }
 
 .offcanvas .user-info {
