@@ -46,3 +46,21 @@
 .sidebar-right {
     display: none !important;
 }
+/* Ajusta el contenedor principal en la landing */
+.feed-container.full-width {
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .feature-card {
+      background-color: #1f1f1f;
+      color: #f1f1f1;
+  }
+
+  .cta {
+      background-color: #121212;
+      color: #ccc;
+  }
+}

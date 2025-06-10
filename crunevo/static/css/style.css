@@ -173,6 +173,26 @@ body {
     transform: scale(1.1);
 }
 
+.feed-container {
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+@media (min-width: 992px) {
+    .feed-container:not(.full-width) {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .feed-container {
+        background: #1a1a1a;
+        color: #f1f1f1;
+    }
+}
+
 @media (min-width: 992px) {
     #floatingSidebar {
         display: none !important;

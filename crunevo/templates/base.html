@@ -25,8 +25,16 @@
       {% endif %}
     {% endwith %}
 
-    <div class="container-fluid p-0 main-container">
-        {% block content %}{% endblock %}
+    <div class="container-fluid p-0 main-container d-flex">
+        {% if request.endpoint != 'main.index' %}
+            {% include 'components/sidebar_left.html' %}
+        {% endif %}
+        <div class="feed-container w-100 {% if request.endpoint == 'main.index' %}full-width{% endif %}">
+            {% block content %}{% endblock %}
+        </div>
+        {% if request.endpoint != 'main.index' %}
+            {% include 'components/sidebar_right.html' %}
+        {% endif %}
     </div>
     {% include 'components/toast.html' %}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
