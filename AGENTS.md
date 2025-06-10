@@ -126,9 +126,7 @@ pytest -q
   - Títulos de 1.4rem y descripciones justificadas.
 - Pruebas:
   ✅ `pip install -r requirements.txt`
-  ✅ `PYTHONPATH=. pytest -q`
-
-### [Fix] Eliminar espacio gris lateral en móviles (2025-06-08)
+ ✅ `PYTHONPATH=. pytest -q`
 
 - Modificados:
   - `crunevo/templates/base.html`
@@ -224,9 +222,6 @@ pytest -q
   - Se añadió cambio de rol para usuarios y botón de suspender productos.
 - Pruebas:
   ✅ `black .`
-  ✅ `PYTHONPATH=. pytest -q`
-
-### [Feat] Página de error 500 animada (2025-06-10)
 - Nuevos archivos:
   - `crunevo/templates/500.html`
   - `crunevo/static/js/background_particles.js`
@@ -262,3 +257,15 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q`
+
+### [Fix] Reparar menú móvil offcanvas (2025-06-10)
+- Modificados:
+  - `crunevo/templates/navbar.html`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Se renovó la estructura del menú y se añadió información completa del usuario.
+  - Contraste mejorado para modo oscuro y tamaño de encabezado reducido.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
+
