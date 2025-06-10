@@ -48,7 +48,7 @@
 }
 
 /* Ajusta el contenedor principal en la landing */
-.feed-container {
+.feed-container.full-width {
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;

@@ -10,6 +10,7 @@
 
 {% block content %}
 
+<section class="feed-posts">
   <h2 class="section-title">📰 Últimas novedades</h2>
   <div class="create-post card p-3 mb-3 position-relative">
       <button id="openNoteModalBtn" class="btn btn-primary w-100 mb-2">📄 Subir Apunte</button>
@@ -118,7 +119,7 @@
       <a href="{{ url_for('note.notes_section') }}" class="btn btn-sm btn-outline-primary mt-2">Ver ahora</a>
     </div>
 
-    </div>
+</section>
 
 <!-- Modal de subida de apunte -->
 <div class="modal fade" id="uploadNoteModal" tabindex="-1" aria-hidden="true">

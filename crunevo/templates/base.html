@@ -29,7 +29,7 @@
         {% if request.endpoint != 'main.index' %}
             <div class="sidebar-left d-none d-lg-block"></div>
         {% endif %}
-        <div class="feed-container w-100">
+        <div class="feed-container w-100 {% if request.endpoint == 'main.index' %}full-width{% endif %}">
             {% block content %}{% endblock %}
         </div>
         {% if request.endpoint != 'main.index' %}
