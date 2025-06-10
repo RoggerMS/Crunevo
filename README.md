@@ -15,8 +15,23 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
 
 1. **Install dependencies**
 
+   For local development install everything:
+
    ```bash
    pip install -r requirements.txt
+   ```
+
+   For production or Railway use only the core packages:
+
+   ```bash
+   pip install -r requirements/requirements-core.txt
+   ```
+
+   Optional features such as Cloudinary uploads and PDF previews
+   require the extra packages:
+
+   ```bash
+   pip install -r requirements/requirements-extras.txt
    ```
 
 2. **Configure la base de datos**
@@ -34,10 +49,10 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
    ```bash
    PYTHONPATH=. pytest -q crunevo/tests
    ```
-   Make sure the requirements are installed first:
+   Make sure the development requirements are installed first:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements/requirements-dev.txt
    ```
 
 ## Deployment on Render

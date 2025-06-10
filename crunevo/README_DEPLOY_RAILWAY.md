@@ -3,7 +3,7 @@
 ## 1. Requisitos
 - Python 3.x
 - Gunicorn
-- `requirements.txt` en la raíz
+- `requirements/requirements-core.txt` para instalar solo lo esencial
 
 ## 2. Configuración en Railway
 
@@ -18,4 +18,10 @@ gunicorn -b 0.0.0.0:$PORT run:app
 
 ## 3. Notas
 Railway gestionará la base de datos PostgreSQL de forma automática.
+
+Instala las dependencias con:
+
+```bash
+pip install -r requirements/requirements-core.txt
+```
 
