@@ -150,7 +150,7 @@ def upload_note():
                         upload_date=datetime.utcnow(),
                     )
 
-                    user = User.query.get(user_id)
+                    user = db.session.get(User, user_id)
                     if user:
                         user.credits = (user.credits or 0) + 10
 
