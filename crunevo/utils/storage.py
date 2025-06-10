@@ -4,16 +4,25 @@ import os
 from typing import Optional
 from flask import current_app, flash, url_for
 from werkzeug.utils import secure_filename
-from botocore.exceptions import NoCredentialsError, ClientError
-import boto3
-import cloudinary
 
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
-    secure=True,
-)
+try:
+    from botocore.exceptions import NoCredentialsError, ClientError
+    import boto3
+except ImportError:  # pragma: no cover - optional dependency
+    boto3 = None
+    NoCredentialsError = ClientError = Exception
+
+try:
+    import cloudinary
+
+    cloudinary.config(
+        cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+        api_key=os.getenv("CLOUDINARY_API_KEY"),
+        api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+        secure=True,
+    )
+except ImportError:  # pragma: no cover - optional dependency
+    cloudinary = None
 
 # Allowed extensions for note uploads
 # Limit uploads to PDF, DOCX and PNG for security
@@ -46,6 +55,11 @@ def upload_file_to_s3(
     Optional[str]
         Public URL for the uploaded file or ``None`` if an error occurred.
     """
+    if not boto3:
+        flash("Carga a S3 no disponible.", "warning")
+        current_app.logger.warning("boto3 no instalado; se omitió subida a S3")
+        return None
+
     region = region or os.environ.get("AWS_REGION", "us-east-1")
     s3_client = boto3.client("s3", region_name=region)
     filename = secure_filename(file.filename)
