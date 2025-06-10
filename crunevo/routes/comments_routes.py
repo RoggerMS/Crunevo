@@ -53,7 +53,7 @@ def like_comment(id: int):
 
     comment.likes = (comment.likes or 0) + 1
     if comment.likes == 5:
-        user = User.query.get(comment.user_id)
+        user = db.session.get(User, comment.user_id)
         if user:
             user.credits = (user.credits or 0) + 2
     db.session.commit()
