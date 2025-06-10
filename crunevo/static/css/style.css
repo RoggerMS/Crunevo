@@ -173,6 +173,18 @@ body {
     transform: scale(1.1);
 }
 
+@media (min-width: 768px) {
+    .sidebar-left {
+        background-color: #1f1f2e;
+        color: #ffffff;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+    .sidebar-left a {
+        color: #ffffff;
+    }
+}
+
 .feed-container {
     flex-grow: 1;
     max-width: 100%;
