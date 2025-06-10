@@ -7,3 +7,7 @@ __pycache__/
 *.log
 
 .pytest_cache/
+.env
+schema_crunevo.sql
+.env
+.env
