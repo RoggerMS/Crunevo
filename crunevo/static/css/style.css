@@ -4,7 +4,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f0f2f5;
     margin: 0;
-    padding: 70px 20px 20px;
+    padding: 60px 20px 20px;
     color: #2c2c2c;
 }
 
@@ -131,47 +131,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .offcanvas {
-        background: #1f1f1f;
-        color: #f1f1f1;
-    }
 
-    .navbar {
-        background-color: #222;
-        color: #f1f1f1;
-    }
-
-    .navbar a {
-        color: #f1f1f1;
-    }
-
-    .offcanvas .nav-link {
-        color: #ddd;
-        border-bottom: 1px solid #333;
-    }
-
-    .offcanvas .nav-link:hover {
-        background-color: #2a2a2a;
-    }
-}
-
-#floatingSidebar {
-    bottom: 20px;
-    right: 20px;
-    transition: all 0.3s ease;
-}
-
-#floatingSidebarContent a {
-    font-size: 1.5rem;
-    text-decoration: none;
-    transition: transform 0.2s;
-    color: #000;
-}
-
-#floatingSidebarContent a:hover {
-    transform: scale(1.1);
-}
 
 @media (min-width: 768px) {
     .sidebar-left {
@@ -204,11 +164,6 @@ body {
 }
 
 
-@media (min-width: 992px) {
-    #floatingSidebar {
-        display: none !important;
-    }
-}
 
 @media (max-width: 768px) {
     body, html {
@@ -316,26 +271,6 @@ body {
   font-size: 1.1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .offcanvas {
-    background-color: #121212;
-    color: #f1f1f1;
-  }
-
-  .offcanvas .nav-link {
-    color: #f1f1f1 !important;
-    border-bottom: 1px solid #333;
-  }
-
-  .offcanvas .nav-link:hover {
-    background-color: #2a2a2a;
-  }
-
-  .offcanvas .user-info strong,
-  .offcanvas .user-info p {
-    color: #f1f1f1 !important;
-  }
-}
 
 .offcanvas-header {
   padding: 0.75rem 1rem;
