@@ -9,11 +9,6 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
-    {% if request.endpoint != 'main.index' %}
-    <div class="d-lg-none">
-        {% include 'components/sidebar_icons.html' %}
-    </div>
-    {% endif %}
     {% include 'navbar.html' %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}

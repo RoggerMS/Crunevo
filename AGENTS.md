@@ -321,3 +321,33 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ❌ `pytest -q` (faltan dependencias de entorno)
+
+### [Fix] Simplificar navegación y eliminar menú flotante (2025-06-11)
+
+- Eliminado:
+  - `crunevo/templates/components/sidebar_icons.html`
+- Modificados:
+  - `crunevo/templates/base.html`
+  - `crunevo/templates/navbar.html`
+  - `crunevo/static/css/style.css`
+  - `crunevo/static/js/main.js`
+- Detalles:
+  - Menú offcanvas ahora solo visible en móviles.
+  - Se quitó el sidebar flotante y el modo oscuro automático.
+  - Padding superior reducido para que el navbar fijo no empuje el contenido.
+- Pruebas:
+  ✅ `black .`
+  ❌ `pytest -q` (faltan dependencias de entorno)
+
+### [Fix] Rediseñar navbar para estilo claro y compacto (2025-06-11)
+
+- Modificados:
+  - `crunevo/templates/navbar.html`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Nuevo navbar con enlaces centrados y opciones de usuario a la derecha.
+  - Offcanvas sigue solo en móviles.
+  - Se removieron estilos duplicados y se redujo el padding.
+- Pruebas:
+  ✅ `black .`
+  ❌ `pytest -q` (faltan dependencias de entorno)

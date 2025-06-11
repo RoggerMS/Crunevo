@@ -284,18 +284,6 @@ function initGlobalSearch() {
 }
 
 
-function initFloatingSidebar() {
-    const toggleBtn = document.getElementById("toggleFloatingSidebar");
-    const content = document.getElementById("floatingSidebarContent");
-
-    if (toggleBtn && content) {
-        toggleBtn.addEventListener("click", () => {
-            content.classList.toggle("d-none");
-            const expanded = !content.classList.contains("d-none");
-            toggleBtn.setAttribute("aria-expanded", expanded);
-        });
-    }
-}
 
 function initActionButtons() {
     const allActionButtons = document.querySelectorAll(
@@ -593,7 +581,6 @@ function initCommentInputs(scope = document) {
 document.addEventListener("DOMContentLoaded", () => {
   initOffcanvasMenu();
   initGlobalSearch();
-  initFloatingSidebar();
   initActionButtons();
   initFeedForms();
   initCommentInputs();
