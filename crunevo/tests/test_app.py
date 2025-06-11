@@ -2,7 +2,7 @@ import os
 import pytest
 
 from crunevo.app import create_app
-from crunevo.models import db
+from crunevo.extensions import db
 
 
 @pytest.fixture

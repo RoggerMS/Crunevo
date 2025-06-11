@@ -10,7 +10,7 @@ def app(tmp_path):
     application.config["TESTING"] = True
     application.config["WTF_CSRF_ENABLED"] = False
     with application.app_context():
-        from crunevo.models import db
+        from crunevo.extensions import db
 
         db.create_all()
     return application

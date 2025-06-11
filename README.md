@@ -13,7 +13,14 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
 
 ## Quick start
 
-1. **Install dependencies**
+1. **Create a virtual environment**
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+2. **Install dependencies**
 
    For local development install everything:
 
@@ -34,11 +41,11 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
    pip install -r requirements/requirements-extras.txt
    ```
 
-2. **Configure la base de datos**
+3. **Configure la base de datos**
 
    Exporta `SQLALCHEMY_DATABASE_URI` con la cadena de conexión de PostgreSQL.
 
-3. **Configura FLASK_APP (opcional)**
+4. **Configura FLASK_APP (opcional)**
 
    Si vas a utilizar la CLI de Flask ejecuta:
 
@@ -46,13 +53,28 @@ Define `SQLALCHEMY_DATABASE_URI` directly with your PostgreSQL URL.
    export FLASK_APP=crunevo/app.py
    ```
 
-4. **Run the application**
+  Para mayor comodidad el repositorio incluye un archivo `.flaskenv` que
+  define `FLASK_APP=run.py`, por lo que podrás iniciar el servidor con
+  `flask run` sin necesidad de exportar variables cada vez.
+
+   Los modelos utilizan `from crunevo.extensions import db` para evitar
+   errores de importación al ejecutar `flask run`.
+
+5. **Run the application**
+
+   Ejecuta la aplicación con:
+
+   ```bash
+   flask run
+   ```
+
+   O bien puedes usar:
 
    ```bash
    python run.py
    ```
 
-5. **Run tests (optional)**
+6. **Run tests (optional)**
 
    ```bash
    PYTHONPATH=. pytest -q crunevo/tests

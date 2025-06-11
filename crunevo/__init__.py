@@ -4,8 +4,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import crunevo.config as config_module
-from flask_login import LoginManager
-from crunevo.models import db
+from crunevo.extensions import db, login_manager
 from flask_migrate import Migrate
 from crunevo.models.user import User as _User
 from crunevo.models.note import (
@@ -43,7 +42,6 @@ from crunevo.routes.user_routes import user_bp
 from crunevo.routes.admin_routes import admin_bp
 from crunevo.routes.comments_routes import comment_bp
 
-login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.login_message = "Debes iniciar sesi\u00f3n para subir apuntes."
 migrate = Migrate()
