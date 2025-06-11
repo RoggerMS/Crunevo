@@ -106,4 +106,6 @@ def create_app():
     def not_found_error(error):
         return render_template("404.html"), 404
 
+    app.logger.info("Crunevo application initialized")
+
     return app
