@@ -2,7 +2,7 @@ import os
 import pytest
 from flask import url_for
 from crunevo.app import create_app
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.user import User
 
 

@@ -1,6 +1,6 @@
 # models/forum.py
 from datetime import datetime
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.user import User
 
 

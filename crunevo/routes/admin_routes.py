@@ -10,7 +10,7 @@ from flask import (
 from crunevo.utils.cloudinary_upload import upload_image
 from functools import wraps
 from flask_login import login_required, current_user
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.note import Note, Report
 from crunevo.models.product import Product
