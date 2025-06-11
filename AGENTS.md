@@ -338,3 +338,16 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ❌ `pytest -q` (faltan dependencias de entorno)
+
+### [Fix] Rediseñar navbar para estilo claro y compacto (2025-06-11)
+
+- Modificados:
+  - `crunevo/templates/navbar.html`
+  - `crunevo/static/css/style.css`
+- Detalles:
+  - Nuevo navbar con enlaces centrados y opciones de usuario a la derecha.
+  - Offcanvas sigue solo en móviles.
+  - Se removieron estilos duplicados y se redujo el padding.
+- Pruebas:
+  ✅ `black .`
+  ❌ `pytest -q` (faltan dependencias de entorno)
