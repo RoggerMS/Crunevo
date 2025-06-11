@@ -1,7 +1,7 @@
 import os
 import pytest
 from crunevo.app import create_app
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.forum import Pregunta
 

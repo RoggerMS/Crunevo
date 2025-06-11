@@ -10,7 +10,7 @@ from flask import (
 )
 from flask_login import login_user, logout_user, login_required, current_user
 
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.user import User
 from crunevo.models.log import LoginLog
 from crunevo.utils.security import get_geo_location, parse_device

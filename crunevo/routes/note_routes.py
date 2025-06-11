@@ -17,7 +17,7 @@ import os
 from crunevo.utils.storage import allowed_file, upload_file_to_s3, save_file_local
 from crunevo.utils.cloudinary_upload import upload_image
 
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.note import Note
 from crunevo.models.user import User
 

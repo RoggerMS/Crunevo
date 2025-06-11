@@ -10,7 +10,7 @@ from flask import (
     session,
 )
 from flask_login import login_required, current_user
-from crunevo.extensions import db
+from crunevo.models import db
 from crunevo.models.note import Note
 from crunevo.models.post import Post
 from crunevo.utils.storage import save_file_local
