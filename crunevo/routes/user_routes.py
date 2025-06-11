@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from crunevo.models import db
+from crunevo.extensions import db
 from crunevo.models.note import Note
 import logging
 from crunevo.utils.activity_feed import build_user_activity

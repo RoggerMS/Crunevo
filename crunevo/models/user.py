@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from crunevo.models import db
+from crunevo.extensions import db
 
 # Use scrypt to hash all stored passwords
 PASSWORD_HASH_METHOD = "scrypt"

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 
-from crunevo.models import db
+from crunevo.extensions import db
 from crunevo.models.comment import Comment
 from crunevo.models.note import Note
 from crunevo.models.post import Post

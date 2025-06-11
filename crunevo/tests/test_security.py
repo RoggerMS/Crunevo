@@ -1,6 +1,6 @@
 import os
 from crunevo.app import create_app
-from crunevo.models import db
+from crunevo.extensions import db
 from crunevo.models.user import User, PASSWORD_HASH_METHOD
 from scripts.create_user import create_user
 

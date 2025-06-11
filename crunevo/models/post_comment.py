@@ -1,5 +1,5 @@
 from datetime import datetime
-from crunevo.models import db
+from crunevo.extensions import db
 
 
 class PostComment(db.Model):

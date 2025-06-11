@@ -291,3 +291,33 @@ pytest -q
 - Pruebas:
   ✅ `black .`
   ✅ `PYTHONPATH=. pytest -q crunevo/tests`
+
+### [Docs] Uso de `.flaskenv` y configuracion para VS Code (2025-06-11)
+- Nuevos archivos:
+  - `.flaskenv`
+  - `.vscode/launch.json`
+- Modificados:
+  - `README.md`
+- Detalles:
+  - Se agregó `.flaskenv` con `FLASK_APP=run.py` para facilitar `flask run`.
+  - Se añadió configuracion de depuración en VS Code.
+- Pruebas:
+  ✅ `black .`
+  ✅ `PYTHONPATH=. pytest -q`
+
+### [Refactor] Centralizar extensiones en `crunevo/extensions.py` (2025-06-11)
+- Nuevos archivos:
+  - `crunevo/extensions.py`
+- Modificados:
+  - `crunevo/__init__.py`
+  - `crunevo/models/*`
+  - `crunevo/routes/*`
+  - `crunevo/tests/*`
+  - `README.md`
+- Detalles:
+  - Se mueve la instancia de `SQLAlchemy` y `LoginManager` a `crunevo/extensions.py`.
+  - Todos los modelos y rutas ahora importan `db` desde este módulo.
+  - El README explica cómo clonar, crear el entorno y ejecutar `flask run`.
+- Pruebas:
+  ✅ `black .`
+  ❌ `pytest -q` (faltan dependencias de entorno)
