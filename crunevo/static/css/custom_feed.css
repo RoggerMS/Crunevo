@@ -14,12 +14,6 @@
   transform: rotate(90deg);
 }
 
-@media (prefers-color-scheme: dark) {
-  .offcanvas {
-    backdrop-filter: blur(6px);
-    background-color: rgba(30, 30, 30, 0.9);
-  }
-}
 
 .feed-container .btn-primary {
     background-color: #1877f2;
@@ -312,21 +306,10 @@
 }
 /* Espaciado y línea sutil entre tarjetas (global) */
 .note-card + .note-card {
-  border-top: 1px solid #e0e0e0;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  border-top: none;
+  margin-top: 1.25rem;
 }
 
-/* En modo oscuro, línea más tenue */
-@media (prefers-color-scheme: dark) {
-  .note-card + .note-card {
-    border-top-color: #3a3b3c;
-  }
-  .comment-list {
-    background: #2c2c2c;
-    border-top-color: #3a3b3c;
-  }
-}
 
 .input-wrapper input.form-control {
   font-size: 1rem !important;
